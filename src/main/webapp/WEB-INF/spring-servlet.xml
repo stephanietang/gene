@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://www.springframework.org/schema/mvc 
+    http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+	<!-- Detects annotations like @Component, @Service, @Controller, @Repository, @Configuration -->
+	<context:component-scan base-package="com.bolehunt.gene.controller" />
+	
+	<!-- Detects MVC annotations like @RequestMapping -->
+	<mvc:annotation-driven/>
+
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	<!-- defined in root-context.xml -->
+	<!-- 	
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+    	<property name="basename" value="classpath:messages"/>
+    	<property name="defaultEncoding" value="UTF-8" />
+	</bean> 
+	-->
+	
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+    	<property name="defaultLocale" value="zh_CN" />
+	</bean>
+	
+	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="lang" />
+		</bean>
+	</mvc:interceptors>
+	
+	<mvc:resources mapping="/resources/**" location="/public-resources/" cache-period="31556926" />
+	
+	<!-- Spring MVC REST Exception Handling Best Practices -->
+	<!-- See https://stormpath.com/blog/spring-mvc-rest-exception-handling-best-practices-part-1/ -->
+	<!-- Allow Exceptions to be handled in annotated methods if desired.  Otherwise fallback to the
+         'restExceptionResolver' below: -->
+    <bean id="annotationMethodHandlerExceptionResolver"
+          class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerExceptionResolver">
+        <property name="order" value="0"/>
+    </bean>
+    <bean id="restExceptionResolver" class="com.bolehunt.gene.exception.RestExceptionHandler">
+        <property name="order" value="100"/>
+        <property name="errorResolver">
+            <bean class="com.bolehunt.gene.exception.DefaultRestErrorResolver">
+                <property name="localeResolver" ref="localeResolver"/>
+                <property name="defaultMoreInfoUrl" value="mailto:support@mycompany.com"/>
+                <property name="exceptionMappingDefinitions">
+                    <map>
+                        <!-- 404 -->
+                        <entry key="com.bolehunt.gene.exception.UnknownResourceException" value="404, _exmsg"/>
+                        
+                        <!-- 500 (catch all): -->
+                        <entry key="Throwable" value="500"/>
+                    </map>
+                </property>
+            </bean>
+        </property>
+    </bean>
+</beans>

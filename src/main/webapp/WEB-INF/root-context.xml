@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+    
+    <!-- Data Configuration --> 
+    <import resource="data-context.xml" />
+    
+	<!-- Security Configuration / Apache Shiro -->
+	<import resource="shiro-context.xml" />
+	
+	<import resource="email-services-context.xml" />
+	
+	<!-- Detects annotations like @Component, @Service, @Controller, @Repository, @Configuration -->
+	<context:component-scan base-package="com.bolehunt.gene.service" />
+	<context:component-scan base-package="com.bolehunt.gene.validator" />
+	<context:component-scan base-package="com.bolehunt.gene.common" />
+	<context:component-scan base-package="com.bolehunt.gene.util" />
+	
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+    	<property name="basename" value="classpath:messages"/>
+    	<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+	
+</beans>
