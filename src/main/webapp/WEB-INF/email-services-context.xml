@@ -25,15 +25,15 @@
     </int:router>
 
     <int:channel id="emailVerificationTokenSendChannel"/>
-    <int:service-activator id="emailRegistrationMailSenderService" input-channel="emailRegistrationTokenSendChannel"
-                           output-channel="nullChannel" ref="mailSenderService"
-                           method="sendRegistrationEmail">
-    </int:service-activator>
-    
-    <int:channel id="emailRegistrationTokenSendChannel"/>
     <int:service-activator id="emailVerficationMailSenderService" input-channel="emailVerificationTokenSendChannel"
                            output-channel="nullChannel" ref="mailSenderService"
                            method="sendVerificationEmail">
+    </int:service-activator>
+    
+    <int:channel id="emailRegistrationTokenSendChannel"/>
+    <int:service-activator id="emailRegistrationMailSenderService" input-channel="emailRegistrationTokenSendChannel"
+                           output-channel="nullChannel" ref="mailSenderService"
+                           method="sendRegistrationEmail">
     </int:service-activator>
 
     <int:channel id="emailLostPasswordTokenSendChannel"/>

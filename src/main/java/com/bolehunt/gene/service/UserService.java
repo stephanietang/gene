@@ -23,6 +23,10 @@ public interface UserService {
 	
 	public User registerUser(User user);
 	
+	public User enableUser(int userId);
+	
+	public void resetUserPassword(User user, String newPassword, String encodedToken);
+	
 	public void updateUserPassword(User user, String newPassword);
 	
 	public BaseForm initBaseForm();
@@ -36,6 +40,8 @@ public interface UserService {
 	public JsonResponse validateRegisterForm(RegisterForm registerForm);
 	
 	public JsonResponse validateLoginForm(LoginForm loginForm);
+	
+	public JsonResponse validateResetPasswordForm(UpdatePasswordForm resetPasswordForm);
 	
 	public JsonResponse validateUpdatePasswordForm(UpdatePasswordForm updatePasswordForm);
 	

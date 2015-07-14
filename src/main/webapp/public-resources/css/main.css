@@ -2,6 +2,10 @@ body > .container {
   padding: 60px 15px 0;
 }
 
+.forgot-passwd {
+	float : right;
+}
+
 /* footer */
 /* Sticky footer styles
 -------------------------------------------------- */

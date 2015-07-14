@@ -19,10 +19,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bolehunt.gene.common.AppConfig;
 import com.bolehunt.gene.common.Constant;
+import com.bolehunt.gene.common.Constant.VerifyTokenType;
 import com.bolehunt.gene.common.JsonResponse;
 import com.bolehunt.gene.common.Status;
 import com.bolehunt.gene.domain.User;
 import com.bolehunt.gene.domain.UserExample;
+import com.bolehunt.gene.domain.VerifyToken;
+import com.bolehunt.gene.exception.ApplicationException;
 import com.bolehunt.gene.exception.UnknownResourceException;
 import com.bolehunt.gene.form.BaseForm;
 import com.bolehunt.gene.form.LoginForm;
@@ -93,9 +96,22 @@ public class UserServiceImpl implements UserService {
 		
 		log.debug("Insert User {} success", user.getEmail());
 		
-		verifyTokenService.sendEmailVerifyToken(user.getId());
+		verifyTokenService.sendTokenEmail(user.getEmail(), VerifyTokenType.VERIFICATION_EMAIL);
 		
 		return user;
+	}
+	
+	@Override
+	public User enableUser(int userId){
+		User user = this.getUserById(userId);
+        if(user.isUserEnabled()){
+        	throw new ApplicationException(Status.USER_ALREADY_ENABLED);
+        }
+        user.setEnabled(Constant.UserEnableType.ENABLED.getValue());
+        this.updateUserSelective(user);
+        
+        log.debug("User is enabled succssfully");
+        return user;
 	}
 	
 	public static String getSalt() {
@@ -118,6 +134,13 @@ public class UserServiceImpl implements UserService {
 	public void updateUserPassword(User user, String newPassword){
 		user.setPassword(this.encodePassword(newPassword, user.getSalt()));
 		userMapper.updateByPrimaryKeySelective(user);
+	}
+	
+	@Override
+	@Transactional
+	public void resetUserPassword(User user, String newPassword, String base64EncodedToken){
+		verifyTokenService.verifyToken(base64EncodedToken);
+		this.updateUserPassword(user, newPassword);
 	}
 	
 	@Override
@@ -163,6 +186,16 @@ public class UserServiceImpl implements UserService {
 			if(encodePassword.equals(user.getPassword())){
 				isMatched = true;
 			}
+		}
+		return isMatched;
+	}
+	
+	private boolean isEmailTokenMatched(String email, String base64EncodedToken){
+		boolean isMatched = false;
+		VerifyToken verifyToken = verifyTokenService.loadToken(base64EncodedToken);
+		User user = this.getUserByEmail(email);
+		if(user.getId().equals(verifyToken.getUserId())){
+			isMatched = true;
 		}
 		return isMatched;
 	}
@@ -238,6 +271,36 @@ public class UserServiceImpl implements UserService {
 		
 		return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
 		
+	}
+	
+	@Override
+	public JsonResponse validateResetPasswordForm(UpdatePasswordForm form){
+		if(form == null || StringUtils.isBlank(form.getEmail()) || StringUtils.isBlank(form.getToken())){
+			return WebUtil.formatJsonResponse(Status.UNKNOWN_EXCEPTION);
+		}
+		
+		if(form != null && StringUtils.isNotBlank(form.getEmail()) && StringUtils.isNotBlank(form.getToken())){
+			if(! this.isEmailTokenMatched(form.getEmail(), form.getToken())){
+				log.debug("Email and encoded token is not matched");
+				return WebUtil.formatJsonResponse(Status.TOKEN_NOT_FOUND);
+			}
+		}
+		
+		if(form != null && StringUtils.isNotBlank(form.getNewPassword())){
+			if(this.isNewPasswordSameAsOldPassword(form.getEmail(), form.getNewPassword())){
+				log.debug("new password is same as old password");
+				return WebUtil.formatJsonResponse(Status.USER_PASSWORD_DUPLICATE);
+			}
+			
+			// TODO enabled on production
+			// for development, comment just for easy testing
+			/*
+			if(! WebUtil.isValidPassword(form.getNewPassword())){
+				return new JsonResponse(Status.USER_PASSWORD_INCORRECT_FORMAT);
+			}*/
+		}
+		
+		return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
 	}
 
 	@Override

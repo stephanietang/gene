@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bolehunt.gene.common.Constant.VerifyTokenType;
 import com.bolehunt.gene.common.JsonResponse;
 import com.bolehunt.gene.common.Status;
 import com.bolehunt.gene.domain.User;
@@ -127,7 +128,7 @@ public class RegisterController {
 		if(jsonResponse.hasErrors()){
 			return jsonResponse;
 		}else{
-			verifyTokenService.sendVerificationEmail(registerForm.getEmail());
+			verifyTokenService.sendTokenEmail(registerForm.getEmail(), VerifyTokenType.VERIFICATION_EMAIL);
 			Map<String, String> data = new HashMap<String, String>();
 			data.put("email", registerForm.getEmail());
 			data.put("mailDomain", "http://mail.google.com");
@@ -137,11 +138,68 @@ public class RegisterController {
 	}
 	
 	@RequestMapping(value = "/validate", method = RequestMethod.GET)
-	public String validateToken(@RequestParam("token") String base64EncodedToken) {
+	public String validateVerificationToken(@RequestParam("token") String base64EncodedToken) {
 		log.debug("token = {}", base64EncodedToken);
 		
-		verifyTokenService.verifyToken(base64EncodedToken);
+		verifyTokenService.validateVerificationToken(base64EncodedToken);
 		return "user/validateSuccess";
+	}
+	
+	@RequestMapping(value = "/forget_password", method = RequestMethod.GET)
+	public String resetPasswordPage(){
+		
+		return "user/forgetPassword";
+	}
+	
+	@RequestMapping(value="/forget_password.json", method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResponse resetPasswordSubmit(@RequestBody RegisterForm registerForm){
+		JsonResponse jsonResponse = userService.validateSendEmailForm(registerForm);
+		if(jsonResponse.hasErrors()){
+			return jsonResponse;
+		}else{
+			verifyTokenService.sendTokenEmail(registerForm.getEmail(), VerifyTokenType.LOST_PASSWORD_EMAIL);
+			Map<String, String> data = new HashMap<String, String>();
+			data.put("email", registerForm.getEmail());
+			data.put("mailDomain", "http://mail.google.com");
+			return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS, data);
+		}
+		
+	}
+	
+	@RequestMapping(value = "/reset_password", method = RequestMethod.GET)
+	public String resetPasswordPage(@RequestParam("token") String base64EncodedToken, ModelMap model){
+		log.debug("token = {}", base64EncodedToken);
+		
+		User user = verifyTokenService.validateLostPassToken(base64EncodedToken);
+		
+		UpdatePasswordForm updatePasswordForm = new UpdatePasswordForm();
+		updatePasswordForm.setEmail(user.getEmail());
+		updatePasswordForm.setToken(base64EncodedToken);
+		
+		model.put("resetPasswordForm", updatePasswordForm);
+		return "user/resetPassword";
+	}
+	
+	@RequestMapping(value = "/reset_password.json", method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResponse resetPasswordSubmit(@RequestBody UpdatePasswordForm resetPasswordForm) {
+		JsonResponse jsonResponse = userService.validateResetPasswordForm(resetPasswordForm);
+		if(jsonResponse.hasErrors()){
+			return jsonResponse;
+		}else{
+			try{
+				User user = userService.getUserByEmail(resetPasswordForm.getEmail());
+				userService.resetUserPassword(user, resetPasswordForm.getNewPassword(), resetPasswordForm.getToken());
+			
+				log.info("Reset [{}] new password successfully", user.getEmail());
+				return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
+			}catch(Exception e){
+				log.error("Reset new password error, {}", e);
+				return WebUtil.formatJsonResponse(Status.UPDATE_PASSWORD_ERROR);
+			}
+			
+		}
 	}
 	
 	@RequestMapping(value = "/account", method = RequestMethod.GET)

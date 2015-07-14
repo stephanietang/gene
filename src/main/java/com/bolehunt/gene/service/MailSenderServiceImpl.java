@@ -42,29 +42,28 @@ public class MailSenderServiceImpl implements MailSenderService {
 
     public EmailServiceTokenModel sendVerificationEmail(final EmailServiceTokenModel emailVerificationModel) {
         Map<String, String> resources = new HashMap<String, String>();
-          return sendVerificationEmail(emailVerificationModel, config.getVerificationEmailSubject(),
+          return sendEmail(emailVerificationModel, config.getVerificationEmailSubject(),
                   "VerificationEmail.vm", resources);
     }
 
     public EmailServiceTokenModel sendRegistrationEmail(final EmailServiceTokenModel emailVerificationModel) {
         Map<String, String> resources = new HashMap<String, String>();
-        return sendVerificationEmail(emailVerificationModel, config.getRegistrationEmailSubject(),
+        return sendEmail(emailVerificationModel, config.getRegistrationEmailSubject(),
                   "RegistrationEmail.vm", resources);
     }
 
     public EmailServiceTokenModel sendLostPasswordEmail(final EmailServiceTokenModel emailServiceTokenModel) {
         Map<String, String> resources = new HashMap<String, String>();
-         return sendVerificationEmail(emailServiceTokenModel, config.getLostPasswordEmailSubject(),
+         return sendEmail(emailServiceTokenModel, config.getLostPasswordEmailSubject(),
                  "LostPasswordEmail.vm", resources);
     }
-
 
     private void addInlineResource(MimeMessageHelper messageHelper, String resourcePath, String resourceIdentifier) throws MessagingException {
         Resource resource = new ClassPathResource(resourcePath);
         messageHelper.addInline(resourceIdentifier, resource);
     }
 
-    private EmailServiceTokenModel sendVerificationEmail(final EmailServiceTokenModel emailServiceTokenModel, final String emailSubject,
+    private EmailServiceTokenModel sendEmail(final EmailServiceTokenModel emailServiceTokenModel, final String emailSubject,
                                                          final String template, final Map<String, String> resources) {
     	MimeMessagePreparator preparator = new MimeMessagePreparator() {
     		public void prepare(MimeMessage mimeMessage) throws Exception {

@@ -12,11 +12,14 @@
 		<div class="col-sm-10"><form:password path="password" class="form-control" placeholder="password"/></div>
 	</div>
 	<div class="form-group">
-		<div class="col-sm-offset-2 col-sm-10">
+		<div class="col-sm-offset-2 col-sm-8">
 			<div class="checkbox">
 				<label><input id="rememberMe" type="checkbox" name="rememberMe"/><spring:message code="label.common.rememberMe" /></label>
 			</div>
 		</div>
+		<div class="col-sm-2">
+			<div class="forgot-passwd"><a href="${contextPath}/forget_password"><spring:message code="label.common.forgetPassword" /></a></div>
+		</div>	
 	</div>
 	<div class="form-group">
     	<div class="col-sm-offset-2 col-sm-10">

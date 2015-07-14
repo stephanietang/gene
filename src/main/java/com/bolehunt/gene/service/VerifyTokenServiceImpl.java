@@ -41,51 +41,48 @@ public class VerifyTokenServiceImpl implements VerifyTokenService {
 	
 	@Override
 	@Transactional
-	public VerifyToken sendEmailVerifyToken(int userId){
-		User user = userService.getUserById(userId);
+	public void sendTokenEmail(String email, VerifyTokenType verifyTokenType){
+		User user = userService.getUserByEmail(email);
 		
-		VerifyToken verifyToken = new VerifyToken(userId, VerifyTokenType.VERIFICATION_EMAIL, config.getTokenVerificationLiveMinutes());
+		VerifyToken verifyToken = new VerifyToken(user.getId(), verifyTokenType, config.getTokenVerificationLiveMinutes());
 		
 		verifyTokenMapper.insert(verifyToken);
 		
-		log.debug("Insert verify token id = {}, token = {} success", verifyToken.getId(), verifyToken.getToken());
+		log.debug("Insert verify token id = " + verifyToken.getId() + ", token = " + verifyToken.getToken() + ", token type = " + verifyToken.getTokenType() + " success");
 		
 		// send to email send gateway
 		emailServiceGateway.sendVerificationToken(new EmailServiceTokenModel(user, verifyToken, config.getHostNameUrl()));
 		
-		return verifyToken;
 	}
 	
 	@Override
-	public void sendVerificationEmail(String email){
-		
-		User user = userService.getUserByEmail(email);
-		this.sendEmailVerifyToken(user.getId());
-	}
-	
 	@Transactional
-    public VerifyToken verifyToken(String base64EncodedToken) throws ApplicationException{
-        VerifyToken token = this.loadToken(base64EncodedToken);
-        if (token.isTokenVerified()) {
-            throw new ApplicationException(Status.TOKEN_ALREADY_VERIFIED);
-        }
-        token.setVerified(Constant.TokenVerifyType.VERIFIED.getValue());
-        verifyTokenMapper.updateByPrimaryKey(token);
-
-        log.debug("Token is verified successfully");
+    public VerifyToken validateVerificationToken(String base64EncodedToken) throws ApplicationException{
         
-        User user = userService.getUserById(token.getUserId());
-        if(user.isUserEnabled()){
-        	throw new ApplicationException(Status.USER_ALREADY_ENABLED);
-        }
-        user.setEnabled(Constant.UserEnableType.ENABLED.getValue());
-        userService.updateUserSelective(user);
+        VerifyToken token = this.verifyToken(base64EncodedToken);
         
-        log.debug("User is enabled succssfully");
+        userService.enableUser(token.getUserId());
+        
         return token;
     }
 	
-	private VerifyToken loadToken(String base64EncodedToken) throws ApplicationException{
+	@Transactional
+	@Override
+	public User validateLostPassToken(String base64EncodedToken){
+		VerifyToken token = this.loadToken(base64EncodedToken);
+		if (token.isTokenVerified()) {
+            throw new ApplicationException(Status.TOKEN_ALREADY_VERIFIED);
+        }
+		if (token.hasExpired()) {
+            throw new ApplicationException(Status.TOKEN_ALREADY_EXPIRED);
+        }
+        
+        User user = userService.getUserById(token.getUserId());
+        return user;
+	}
+	
+	@Override
+	public VerifyToken loadToken(String base64EncodedToken) throws ApplicationException{
         Assert.notNull(base64EncodedToken);
         String rawToken = new String(Base64.decodeBase64(base64EncodedToken));
         
@@ -106,6 +103,19 @@ public class VerifyTokenServiceImpl implements VerifyTokenService {
         }
         return token;
     }
+	
+	@Override
+	public VerifyToken verifyToken(String base64EncodedToken){
+		VerifyToken token = this.loadToken(base64EncodedToken);
+        if (token.isTokenVerified()) {
+            throw new ApplicationException(Status.TOKEN_ALREADY_VERIFIED);
+        }
+        token.setVerified(Constant.TokenVerifyType.VERIFIED.getValue());
+        verifyTokenMapper.updateByPrimaryKey(token);
+
+        log.debug("Token is verified successfully");
+        return token;
+	}
 	
 	
 }

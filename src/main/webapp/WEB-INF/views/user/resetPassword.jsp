@@ -1,16 +1,13 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../common/header.jsp" %>
 
-<form:form class="form-horizontal" commandName="updatePasswordForm">
-	<div id="updatePwd_error" style="display:none;" class="alert alert-warning" role="alert"></div>
+<form:form class="form-horizontal" commandName="resetPasswordForm">
+	<div id="resetPassword_error" style="display:none;" class="alert alert-warning" role="alert"></div>
 	<div class="form-group">
 		<label for="email" class="col-sm-2 control-label"><spring:message code="label.updatePwd.email" /></label>
-		<div class="col-sm-10"><p class="form-control-static">${updatePasswordForm.email}</p></div>
+		<div class="col-sm-10"><p class="form-control-static">${resetPasswordForm.email}</p></div>
 		<form:hidden id="email" path="email"/>
-	</div>
-	<div class="form-group">
-		<label for="oldPassword" class="col-sm-2 control-label"><spring:message code="label.updatePwd.oldPassword" /></label>
-		<div class="col-sm-10"><form:password path="oldPassword" class="form-control"/></div>
+		<form:hidden id="token" path="token"/>
 	</div>
 	<div class="form-group">
 		<label for="newPassword" class="col-sm-2 control-label"><spring:message code="label.updatePwd.newPassword" /></label>
@@ -29,26 +26,22 @@
 </form:form>
 
 <div style="display:none"> 
-	<div class="jumbotron" id="updatePasswordDiv">
-		<h3><spring:message code="msg.user.updatePassword.success" /></h3>
-		<h4><spring:message code="msg.user.updatePassword.logout" /></h4>
-		<p><a href="${contextPath}/logout"><spring:message code="menu.logout" /></a></p>
+	<div class="jumbotron" id="resetPasswordDiv">
+		<h3><spring:message code="msg.user.resetPassword.success" /></h3>
+		<h4><spring:message code="msg.user.resetPassword.login" /></h4>
+		<p><a href="${contextPath}/login"><spring:message code="menu.login" /></a></p>
 	</div>
 </div>
 
-<spring:message code="title.user.updatePassword.success" var="updatePwdSuccessTitle"/>
+<spring:message code="title.user.resetPassword.success" var="resetPasswordSuccessTitle"/>
 <script>
-var updatePwdsuccessTitle = "${updatePwdSuccessTitle}";
+var resetPasswordsuccessTitle = "${resetPasswordSuccessTitle}";
 $(document).ready(function() {
-	$("#updatePasswordForm").validate({
+	$("#resetPasswordForm").validate({
 		onfocusin: function(element) {
 	        $(element).valid();
 	    },
 		rules: {
-			oldPassword: {
-				required: true,
-				minlength: 4
-			},
 			newPassword: {
 				required: true,
 				minlength: 4
@@ -61,22 +54,22 @@ $(document).ready(function() {
 		},
 		submitHandler:function(form){
 			var email = $('#email').val();
-			var oldPassword = $('#oldPassword').val();
 			var newPassword = $('#newPassword').val();
+			var token = $('#token').val();
 
-		    var json = JSON.stringify({email:email, oldPassword:oldPassword,newPassword:newPassword});
+		    var json = JSON.stringify({email:email, token: token, newPassword:newPassword});
 		    $.ajax({
-		    	url: ctx + "/update_password.json",
+		    	url: ctx + "/reset_password.json",
 		    	type: "post",
 		    	contentType: "application/json; charset=utf-8",
 		        dataType : 'json',
 		        data: json,
 		        success : function(result){
 		        	if(result.status == '200'){
-		        		$.colorbox({inline:true, href:$("#updatePasswordDiv"),title: updatePwdsuccessTitle});
-		        		setCountdown(4,'updatePasswordDiv h4 span',ctx+"/logout");
+		        		$.colorbox({inline:true, href:$("#resetPasswordDiv"),title: resetPasswordsuccessTitle});
+		        		setCountdown(4,'resetPasswordDiv h4 span',ctx+"/login");
 		        	}else{
-		        		$("#updatePwd_error").text(result.message).show();
+		        		$("#resetPassword_error").text(result.message).show();
 		        	}
 		        },
 		        error : function(){
@@ -84,10 +77,6 @@ $(document).ready(function() {
 		        }
 		    });
 		}
-	});
-	
-	$("#oldPassword").focus(function() {
-		$('#updatePwd_error').text('').hide();
 	});
 	
 });

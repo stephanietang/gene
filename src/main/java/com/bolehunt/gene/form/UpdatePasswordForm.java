@@ -6,6 +6,7 @@ public class UpdatePasswordForm {
 	private String oldPassword;
 	private String newPassword;
 	private String confirmNewPassword;
+	private String token;
 	
 	public String getEmail() {
 		return email;
@@ -30,6 +31,12 @@ public class UpdatePasswordForm {
 	}
 	public void setConfirmNewPassword(String confirmNewPassword) {
 		this.confirmNewPassword = confirmNewPassword;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 }
