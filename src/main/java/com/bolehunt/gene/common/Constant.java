@@ -20,7 +20,6 @@ public class Constant {
 		
 	}
 	
-	
 	public enum UserEnableType{
 		
 		NOT_ENABLED (0),
