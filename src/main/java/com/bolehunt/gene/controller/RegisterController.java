@@ -3,12 +3,16 @@ package com.bolehunt.gene.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +24,7 @@ import com.bolehunt.gene.common.Constant.VerifyTokenType;
 import com.bolehunt.gene.common.JsonResponse;
 import com.bolehunt.gene.common.Status;
 import com.bolehunt.gene.domain.User;
+import com.bolehunt.gene.exception.UnknownResourceException;
 import com.bolehunt.gene.form.BaseForm;
 import com.bolehunt.gene.form.RegisterForm;
 import com.bolehunt.gene.form.UpdatePasswordForm;
@@ -31,12 +36,6 @@ import com.bolehunt.gene.util.WebUtil;
 public class RegisterController {
 	
 	private static final Logger log = LoggerFactory.getLogger(RegisterController.class);
-	
-	//@Autowired
-	//RegisterFormValidator registerFormValidator;
-	
-	//@Autowired
-	//UpdatePasswordFormValidator updatePasswordFormValidator;
 	
 	@Autowired
 	private UserService userService;
@@ -53,35 +52,13 @@ public class RegisterController {
 	}
 	
 	@RequestMapping(value="/register", method = RequestMethod.GET)
-	public String register(ModelMap model) {
+	public String registerPage(ModelMap model) {
 		RegisterForm registerForm = new RegisterForm();
 		BaseForm baseForm = userService.initBaseForm();
 		model.put("baseForm", baseForm);
 		model.put("registerForm", registerForm);
 		return "user/register";
 	}
-	
-	/* Replace with post json
-	@RequestMapping(value="/register", method = RequestMethod.POST)
-	public String registerSubmit(@ModelAttribute("registerForm") RegisterForm registerForm, BindingResult result, ModelMap model) {
-		registerFormValidator.validate(registerForm, result);
-		
-		if(result.hasErrors()){
-			return "user/register";
-		}
-		
-		User user = new User();
-		try{
-			BeanUtils.copyProperties(user, registerForm);
-		}catch(Exception e){
-			log.error("copy bean properties error : " + e);
-		}
-		
-		userService.registerUser(user);
-		
-		model.put("user", user);
-		return "user/registerActive";
-	}*/
 	
 	@RequestMapping(value = "/register.json", method = RequestMethod.POST)
 	@ResponseBody
@@ -110,6 +87,7 @@ public class RegisterController {
 	@RequestMapping(value="/confirm_mail", method = RequestMethod.GET)
 	public String confirmMailPage(@RequestParam(value = "email") String email, ModelMap model){
 		model.put("email", email);
+		// TODO: hard-code
 		model.put("mailDomain", "http://mail.google.com");
 		return "user/confirmEmail";
 	}
@@ -139,21 +117,21 @@ public class RegisterController {
 	
 	@RequestMapping(value = "/validate", method = RequestMethod.GET)
 	public String validateVerificationToken(@RequestParam("token") String base64EncodedToken) {
-		log.debug("token = {}", base64EncodedToken);
+		log.info("Validate verification token");
 		
 		verifyTokenService.validateVerificationToken(base64EncodedToken);
 		return "user/validateSuccess";
 	}
 	
 	@RequestMapping(value = "/forget_password", method = RequestMethod.GET)
-	public String resetPasswordPage(){
+	public String forgetPasswordPage(){
 		
 		return "user/forgetPassword";
 	}
 	
 	@RequestMapping(value="/forget_password.json", method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResponse resetPasswordSubmit(@RequestBody RegisterForm registerForm){
+	public JsonResponse forgetPasswordSubmit(@RequestBody RegisterForm registerForm){
 		JsonResponse jsonResponse = userService.validateSendEmailForm(registerForm);
 		if(jsonResponse.hasErrors()){
 			return jsonResponse;
@@ -161,6 +139,7 @@ public class RegisterController {
 			verifyTokenService.sendTokenEmail(registerForm.getEmail(), VerifyTokenType.LOST_PASSWORD_EMAIL);
 			Map<String, String> data = new HashMap<String, String>();
 			data.put("email", registerForm.getEmail());
+			// TODO: hard-code
 			data.put("mailDomain", "http://mail.google.com");
 			return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS, data);
 		}
@@ -218,24 +197,6 @@ public class RegisterController {
 		
 		return "user/updatePassword";
 	}
-	
-	/* Replaced by post json to updatePassword method
-	@RequestMapping(value = "/user/updatePwd", method = RequestMethod.POST)
-	public String updatePassword(@ModelAttribute("updatePasswordForm") UpdatePasswordForm updatePasswordForm, BindingResult result, ModelMap model) {
-		updatePasswordFormValidator.validate(updatePasswordForm, result);
-		
-		if(result.hasErrors()){
-			return "user/updatePwd";
-		}
-		User user = userService.getUserByEmail(updatePasswordForm.getEmail());
-		userService.updateUserPassword(user, updatePasswordForm.getNewPassword());
-		
-		log.info("Update [{}] new password successfully", user.getUsername());
-		
-		//return "redirect:/user/logout";
-		return "user/updatePwd";
-	}
-	*/
 	
 	@RequestMapping(value = "/update_password.json", method = RequestMethod.POST)
 	@ResponseBody

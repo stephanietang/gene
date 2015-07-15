@@ -23,7 +23,7 @@ public interface UserService {
 	
 	public User registerUser(User user);
 	
-	public User enableUser(int userId);
+	public User enableUser(User user);
 	
 	public void resetUserPassword(User user, String newPassword, String encodedToken);
 	

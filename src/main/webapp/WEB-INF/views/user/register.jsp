@@ -49,7 +49,7 @@ jQuery(document).ready(function() {
 		        data: json,
 		        success : function(result){
 		        	if(result.status == '200'){
-		        		$(location).attr('href',ctx+"/confirmmail?email="+email); 
+		        		$(location).attr('href',ctx+"/confirm_mail?email="+email); 
 		        	}else{
 		        		$("#register_error").text(result.message).show();
 		        	}

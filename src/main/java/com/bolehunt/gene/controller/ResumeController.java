@@ -13,19 +13,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.bolehunt.gene.service.UserService;
 
 @Controller
-public class HomeController {
+public class ResumeController {
 	
-	private static final Logger log = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger log = LoggerFactory.getLogger(ResumeController.class);
 	
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping(value = { "/", "/index" }, method = RequestMethod.GET)
-	public String home(ModelMap model, HttpServletRequest request) {
+	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	public String viewResumePage(ModelMap model, HttpServletRequest request) {
 		
 		model.put("baseForm", userService.initBaseForm());
 		
-		return "index";
+		return "resume/viewResume";
 	}
-
+	
+	@RequestMapping(value = "/profile/edit", method = RequestMethod.GET)
+	public String editResumePage(ModelMap model, HttpServletRequest request) {
+		
+		model.put("baseForm", userService.initBaseForm());
+		
+		return "resume/editResume";
+	}
+	
 }

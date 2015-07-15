@@ -81,7 +81,7 @@ public class MailSenderServiceImpl implements MailSenderService {
             }
         };
         
-        log.debug("Sending {} token to : {}", emailServiceTokenModel.getTokenType(), emailServiceTokenModel.getEmailAddress());
+        log.debug("Sending token to : {}, token type = {}", emailServiceTokenModel.getEmailAddress(), emailServiceTokenModel.getTokenType());
         
         try{
         	this.mailSender.send(preparator);

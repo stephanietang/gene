@@ -50,8 +50,8 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><spring:message code="menu.myResume" /> <span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#"><spring:message code="menu.myResume" /></a></li>
-							<li><a href="#">修改简历</a></li>
+							<li><a href="${contextPath}/profile"><spring:message code="menu.myResume" /></a></li>
+							<li><a href="${contextPath}/profile/edit">修改简历</a></li>
               				<li class="divider"></li>
               				<li><a href="${contextPath}/account"><spring:message code="menu.accountSetting" /></a></li>
               				<li><a href="${contextPath}/logout"><spring:message code="menu.logout" /></a></li>

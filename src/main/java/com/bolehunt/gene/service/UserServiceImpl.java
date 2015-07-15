@@ -102,8 +102,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public User enableUser(int userId){
-		User user = this.getUserById(userId);
+	public User enableUser(User user){
         if(user.isUserEnabled()){
         	throw new ApplicationException(Status.USER_ALREADY_ENABLED);
         }

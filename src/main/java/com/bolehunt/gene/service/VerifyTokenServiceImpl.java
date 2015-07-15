@@ -45,10 +45,10 @@ public class VerifyTokenServiceImpl implements VerifyTokenService {
 		User user = userService.getUserByEmail(email);
 		
 		VerifyToken verifyToken = new VerifyToken(user.getId(), verifyTokenType, config.getTokenVerificationLiveMinutes());
-		
+			
 		verifyTokenMapper.insert(verifyToken);
-		
-		log.debug("Insert verify token id = " + verifyToken.getId() + ", token = " + verifyToken.getToken() + ", token type = " + verifyToken.getTokenType() + " success");
+			
+		log.debug("Insert verify token id = " + verifyToken.getId() + ", token type = " + verifyToken.getTokenType() + ", token = " + verifyToken.getToken() + " success");
 		
 		// send to email send gateway
 		emailServiceGateway.sendVerificationToken(new EmailServiceTokenModel(user, verifyToken, config.getHostNameUrl()));
@@ -58,10 +58,15 @@ public class VerifyTokenServiceImpl implements VerifyTokenService {
 	@Override
 	@Transactional
     public VerifyToken validateVerificationToken(String base64EncodedToken) throws ApplicationException{
-        
+		log.debug("token = {}", base64EncodedToken);
+		
         VerifyToken token = this.verifyToken(base64EncodedToken);
         
-        userService.enableUser(token.getUserId());
+        User user = userService.getUserById(token.getUserId());
+        
+        userService.enableUser(user);
+        
+        this.sendTokenEmail(user.getEmail(), VerifyTokenType.REGISTRATION_EMAIL);
         
         return token;
     }

@@ -22,7 +22,7 @@
               <!-- MESSAGE -->
 
               <p>Thanks for coming on board to the sample java-rest project. <br/>
-                  Your registration is complete when you <a href="http://${model.getHostNameUrl()}/validate?token=${model.getEncodedToken()}">click here</a> to validate your email address.</p>
+                  Your registration is complete.</p>
               <br>
 
               <br>
