@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../common/header.jsp" %>
 
+<div class="container">
 <form:form class="form-horizontal" commandName="resetPasswordForm">
 	<div id="resetPassword_error" style="display:none;" class="alert alert-warning" role="alert"></div>
 	<div class="form-group">
@@ -31,6 +32,7 @@
 		<h4><spring:message code="msg.user.resetPassword.login" /></h4>
 		<p><a href="${contextPath}/login"><spring:message code="menu.login" /></a></p>
 	</div>
+</div>
 </div>
 
 <spring:message code="title.user.resetPassword.success" var="resetPasswordSuccessTitle"/>

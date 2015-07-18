@@ -15,7 +15,7 @@ import com.bolehunt.gene.form.LoginForm;
 import com.bolehunt.gene.service.UserService;
 
 @Controller
-public class LoginController {
+public class LoginController extends BaseController {
 	
 	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 	
@@ -24,7 +24,6 @@ public class LoginController {
 	
 	@RequestMapping(value="/login", method = RequestMethod.GET)
 	 public String login(ModelMap model) {
-		model.put("baseForm", userService.initBaseForm());
 		model.addAttribute("loginForm", new LoginForm());
 		return "user/login";
 	}

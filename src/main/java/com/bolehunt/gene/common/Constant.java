@@ -1,5 +1,6 @@
 package com.bolehunt.gene.common;
 
+
 public class Constant {
 	
 	public enum VerifyTokenType{
@@ -51,5 +52,6 @@ public class Constant {
 			return value;
 		}
 	}
+
 	
 }

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../common/header.jsp" %>
 
+<div class="container">
 <form:form class="form-horizontal" commandName="updatePasswordForm">
 	<div id="updatePwd_error" style="display:none;" class="alert alert-warning" role="alert"></div>
 	<div class="form-group">
@@ -34,6 +35,7 @@
 		<h4><spring:message code="msg.user.updatePassword.logout" /></h4>
 		<p><a href="${contextPath}/logout"><spring:message code="menu.logout" /></a></p>
 	</div>
+</div>
 </div>
 
 <spring:message code="title.user.updatePassword.success" var="updatePwdSuccessTitle"/>

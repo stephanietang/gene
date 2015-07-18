@@ -3,16 +3,12 @@ package com.bolehunt.gene.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +20,6 @@ import com.bolehunt.gene.common.Constant.VerifyTokenType;
 import com.bolehunt.gene.common.JsonResponse;
 import com.bolehunt.gene.common.Status;
 import com.bolehunt.gene.domain.User;
-import com.bolehunt.gene.exception.UnknownResourceException;
-import com.bolehunt.gene.form.BaseForm;
 import com.bolehunt.gene.form.RegisterForm;
 import com.bolehunt.gene.form.UpdatePasswordForm;
 import com.bolehunt.gene.service.UserService;
@@ -33,7 +27,7 @@ import com.bolehunt.gene.service.VerifyTokenService;
 import com.bolehunt.gene.util.WebUtil;
 
 @Controller
-public class RegisterController {
+public class RegisterController extends BaseController {
 	
 	private static final Logger log = LoggerFactory.getLogger(RegisterController.class);
 	
@@ -54,8 +48,6 @@ public class RegisterController {
 	@RequestMapping(value="/register", method = RequestMethod.GET)
 	public String registerPage(ModelMap model) {
 		RegisterForm registerForm = new RegisterForm();
-		BaseForm baseForm = userService.initBaseForm();
-		model.put("baseForm", baseForm);
 		model.put("registerForm", registerForm);
 		return "user/register";
 	}
@@ -185,14 +177,13 @@ public class RegisterController {
 	public String accountSetting(ModelMap model) {
 		
 		UpdatePasswordForm updatePasswordForm = new UpdatePasswordForm();
-		BaseForm baseForm = userService.initBaseForm();
-		if(! baseForm.isLogined()){
+		User user = getUser();
+		if(! user.isUserLogin()){
 			return "redirect:/index";
 		}else{
-			updatePasswordForm.setEmail(baseForm.getUser().getEmail());
+			updatePasswordForm.setEmail(user.getEmail());
 		}
 		
-		model.put("baseForm", baseForm);
 		model.put("updatePasswordForm", updatePasswordForm);
 		
 		return "user/updatePassword";

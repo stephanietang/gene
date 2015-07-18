@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../common/header.jsp" %>
 
+<div class="container">
 <form class="form-horizontal" id="forgetPasswordForm">
 	<div class="jumbotron">
 		<h2><spring:message code="title.user.resetPassword" /></h2>
@@ -26,6 +27,7 @@
 	</div>
 </div>
 
+</div>
 <script>
 jQuery(document).ready(function() { 
 	$("#forgetPasswordForm").validate({

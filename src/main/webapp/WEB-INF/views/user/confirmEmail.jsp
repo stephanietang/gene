@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../common/header.jsp" %>
+
+<div class="container">
 <div class="jumbotron">
 	<h2><spring:message code="msg.user.verifyConfirm" /></h2>
 	<p>我们已经将验证邮件发送至邮箱: <a href="${mailDomain}">${email}</a></p>
@@ -12,6 +14,7 @@
 		  <li>还是没有收到验证邮件。<a href="${contextPath}/send_mail?email=${email}">重新发送验证邮件。</a></li>
 		</ul>
 	</div>
+</div>
 </div>
 
 <%@ include file="../common/footer.jsp" %>

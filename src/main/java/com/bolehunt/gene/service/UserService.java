@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.bolehunt.gene.common.JsonResponse;
 import com.bolehunt.gene.domain.User;
-import com.bolehunt.gene.form.BaseForm;
 import com.bolehunt.gene.form.LoginForm;
 import com.bolehunt.gene.form.RegisterForm;
+import com.bolehunt.gene.form.ResumeForm;
 import com.bolehunt.gene.form.UpdatePasswordForm;
 
 public interface UserService {
@@ -29,8 +29,6 @@ public interface UserService {
 	
 	public void updateUserPassword(User user, String newPassword);
 	
-	public BaseForm initBaseForm();
-	
 	public boolean isExistingEmail(String email);
 	
 	public boolean isEmailPasswordMathed(String email, String password);
@@ -46,5 +44,9 @@ public interface UserService {
 	public JsonResponse validateUpdatePasswordForm(UpdatePasswordForm updatePasswordForm);
 	
 	public JsonResponse validateSendEmailForm(RegisterForm registerForm);
+	
+	/******* Resume *******
+	**********************/
+	public ResumeForm retrieveResume(User user);
 
 }

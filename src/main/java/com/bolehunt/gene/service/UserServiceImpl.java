@@ -22,15 +22,17 @@ import com.bolehunt.gene.common.Constant;
 import com.bolehunt.gene.common.Constant.VerifyTokenType;
 import com.bolehunt.gene.common.JsonResponse;
 import com.bolehunt.gene.common.Status;
+import com.bolehunt.gene.domain.BasicInfo;
 import com.bolehunt.gene.domain.User;
 import com.bolehunt.gene.domain.UserExample;
 import com.bolehunt.gene.domain.VerifyToken;
 import com.bolehunt.gene.exception.ApplicationException;
 import com.bolehunt.gene.exception.UnknownResourceException;
-import com.bolehunt.gene.form.BaseForm;
 import com.bolehunt.gene.form.LoginForm;
 import com.bolehunt.gene.form.RegisterForm;
+import com.bolehunt.gene.form.ResumeForm;
 import com.bolehunt.gene.form.UpdatePasswordForm;
+import com.bolehunt.gene.persistence.BasicInfoMapper;
 import com.bolehunt.gene.persistence.UserMapper;
 import com.bolehunt.gene.util.WebUtil;
 
@@ -44,6 +46,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private UserMapper userMapper;
+	
+	@Autowired
+	private BasicInfoMapper basicInfoMapper;
 	
 	@Autowired
 	private VerifyTokenService verifyTokenService;
@@ -140,27 +145,6 @@ public class UserServiceImpl implements UserService {
 	public void resetUserPassword(User user, String newPassword, String base64EncodedToken){
 		verifyTokenService.verifyToken(base64EncodedToken);
 		this.updateUserPassword(user, newPassword);
-	}
-	
-	@Override
-	public BaseForm initBaseForm(){
-		BaseForm baseForm = new BaseForm();
-		Subject currentUser = SecurityUtils.getSubject();
-		User user = null;
-		if (currentUser.isRemembered()) {
-	    	log.info("Remembered PRINCIPAL: " + currentUser.getPrincipal());
-	    	baseForm.setRemembered(true);
-	    	user = this.getUserByEmail(currentUser.getPrincipal().toString());
-	    } else if (currentUser.isAuthenticated()) {
-	    	log.info("Authenticated PRINCIPAL: " + currentUser.getPrincipal());
-	    	baseForm.setAuthenticated(true);
-	    	user = this.getUserByEmail(currentUser.getPrincipal().toString());
-	    } else{
-	    	log.info("No login user");
-	    }
-		baseForm.setUser(user);
-
-		return baseForm;
 	}
 	
 	@Override
@@ -345,4 +329,13 @@ public class UserServiceImpl implements UserService {
 		return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
 	}
 	
+	/******* Resume *******
+	**********************/
+	@Override
+	public ResumeForm retrieveResume(User user){
+		ResumeForm form = new ResumeForm();
+		BasicInfo basicInfo = basicInfoMapper.selectByPrimaryKey(user.getId());
+		form.setBasicInfo(basicInfo);
+		return form;
+	}
 }

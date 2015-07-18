@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../common/header.jsp" %>
 
+<div class="container">
 <form:form class="form-horizontal" method="post" commandName="registerForm">
 	<div id="register_error" style="display:none;" class="alert alert-warning" role="alert"></div>
 	<div class="form-group">
@@ -19,6 +20,7 @@
 	</div>
 	
 </form:form>
+</div>
 
 <script>
 jQuery(document).ready(function() { 

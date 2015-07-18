@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.bolehunt.gene.service.UserService;
 
 @Controller
-public class HomeController {
+public class HomeController extends BaseController {
 	
 	private static final Logger log = LoggerFactory.getLogger(HomeController.class);
 	
@@ -22,8 +22,6 @@ public class HomeController {
 	
 	@RequestMapping(value = { "/", "/index" }, method = RequestMethod.GET)
 	public String home(ModelMap model, HttpServletRequest request) {
-		
-		model.put("baseForm", userService.initBaseForm());
 		
 		return "index";
 	}

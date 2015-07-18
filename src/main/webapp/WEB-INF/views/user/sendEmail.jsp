@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../common/header.jsp" %>
 
+<div class="container">
 <form class="form-horizontal" id="sendEmailForm">
 	<div class="jumbotron">
 		<h2><spring:message code="title.user.sendVerifyEmail" /></h2>
@@ -24,6 +25,8 @@
 		<p>我们已经将验证邮件发送至邮箱: <a id="mail-domain" href=""></a></p>
 		<p><a class="btn btn-lg btn-primary" href="" role="button">点击进入邮箱激活</a></p>
 	</div>
+</div>
+
 </div>
 
 <script>
