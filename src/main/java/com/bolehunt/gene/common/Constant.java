@@ -1,7 +1,10 @@
 package com.bolehunt.gene.common;
 
+import java.text.SimpleDateFormat;
 
 public class Constant {
+	
+	public static final SimpleDateFormat YEAR_MONTH_DATE_FORMAT = new SimpleDateFormat("yyyy-MM");
 	
 	public enum VerifyTokenType{
 		

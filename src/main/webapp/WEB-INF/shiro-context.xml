@@ -16,9 +16,11 @@
 	
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 	    <property name="realm" ref="myShiroRealm"/>
-	    <property name="sessionMode" value="native"/>
+	    <!-- Since Shiro 1.2, use Servlet container's session management instead of 'native' session mode -->
+	    <!-- Session config is set in web.xml -->
+	    <!-- <property name="sessionMode" value="native"/> -->
 	    <!-- Session Timeout in 1 hour -->
-	    <property name="sessionManager.globalSessionTimeout" value="3600000" />
+	    <!-- <property name="sessionManager.globalSessionTimeout" value="3600000" /> -->
 	</bean>
 	
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>

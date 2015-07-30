@@ -3,7 +3,6 @@
 
 <!-- Docs page layout -->
 <div class="container bs-docs-container">
-
 	<div class="row">
 		<div class="col-md-3" role="complementary">
 			<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
@@ -38,17 +37,14 @@
 			
 			<div class="bs-docs-section">
 				<h1 id="education" class="page-header"><a class="anchorjs-link " href="#education" ></a>教育经历</h1>
-				
-				<div class="bs-callout bs-callout-info">
-					<h2>哈佛大学</h2>
-					<p>计算机科学与技术，硕士</p>
-					<p>2007~2009</p>
-				</div>
-				<div class="bs-callout bs-callout-info">
-					<h2>清华大学</h2>
-					<p>计算机科学与技术，本科</p>
-					<p>2003~2007</p>
-				</div>
+				<c:forEach var="education" items="${resumeForm.educationList}"> 
+					<div class="bs-callout bs-callout-info">
+						<h2>${education.schoolName}</h2>
+						<p>${education.department}</p>
+						<p><ct:label list="${AppBeans.degreeList}" key="${education.degreeId}"/></p>
+						<p>${education.startYear}~${education.endYear}</p>
+					</div>
+				</c:forEach>
 			</div>
 
 			<div class="bs-docs-section">

@@ -1,5 +1,6 @@
 package com.bolehunt.gene.util;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.bolehunt.gene.common.JsonResponse;
+import com.bolehunt.gene.common.JsonResponse.Errors;
 import com.bolehunt.gene.common.Status;
 
 
@@ -78,6 +80,14 @@ public final class WebUtil {
 		Locale locale = LocaleContextHolder.getLocale();
 		String message = messageSource.getMessage(status.getMessage(), null, locale);
 		return new JsonResponse(status.getStatus(), message, data);
+	}
+	
+	public static JsonResponse addError(JsonResponse jsonResponse, String field, Status status){
+		Locale locale = LocaleContextHolder.getLocale();
+		String message = messageSource.getMessage(status.getMessage(), null, locale);
+		List<Errors> errorsList = jsonResponse.getErrors();
+		errorsList.add(new Errors(field, message));
+		return jsonResponse;
 	}
 	
 }

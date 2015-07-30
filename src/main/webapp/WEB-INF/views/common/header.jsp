@@ -18,6 +18,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 	<link rel="stylesheet" href="http://v3.bootcss.com/assets/css/docs.min.css" />
 	<link rel="stylesheet" href="${contextPath}/resources/css/colorbox.css" />
+	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-datepicker3.standalone.min.css" />
 	<!-- <link rel="stylesheet" href="${contextPath}/resources/css/main.css"> -->
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -27,6 +28,7 @@
 	<script src="${contextPath}/resources/js/jquery.colorbox-min.js"></script>
 	<script src="${contextPath}/resources/js/additional-methods.js"></script>
 	<script src="${contextPath}/resources/js/message_zh.js"></script>
+	<script src="${contextPath}/resources/js/bootstrap-datepicker.min.js"></script>
 	<!-- <script src="${contextPath}/resources/js/main.js"></script>-->
 	<script>var ctx = "${contextPath}"</script>
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
