@@ -16,9 +16,12 @@
 	
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 	    <property name="realm" ref="myShiroRealm"/>
-	    <property name="sessionMode" value="native"/>
+	    <property name="rememberMeManager" ref="rememberMeManager"/>
+	    <!-- Since Shiro 1.2, use Servlet container's session management instead of 'native' session mode -->
+	    <!-- Session config is set in web.xml -->
+	    <!-- <property name="sessionMode" value="native"/> -->
 	    <!-- Session Timeout in 1 hour -->
-	    <property name="sessionManager.globalSessionTimeout" value="3600000" />
+	    <!-- <property name="sessionManager.globalSessionTimeout" value="3600000" /> -->
 	</bean>
 	
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
@@ -38,6 +41,17 @@
 		<property name="permissionsLookupEnabled" value="true"/>
 		<property name="saltStyle" value="COLUMN"/>
 		<property name="credentialsMatcher" ref="sha512Matcher"/>
+	</bean>
+	
+	<bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+		<property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('${cookie.base64.cipherKey}')}"/>
+		<property name="cookie" ref="rememberMeCookie"/>
+	</bean>
+	
+	<bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+		<constructor-arg value="${rememeberMe.cookie.name}"/>
+		<property name="httpOnly" value="${rememeberMe.cookie.httpOnly}"/>
+		<property name="maxAge" value="${rememeberMe.cookie.maxAge}"/>
 	</bean>
 
 </beans>

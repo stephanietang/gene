@@ -50,21 +50,21 @@ id="WebApp_ID" version="3.0">
 	    <url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
-	<!-- <filter>
+	<filter>
 		<filter-name>CharsetEncodingFilter</filter-name>
 		<filter-class>
 			com.bolehunt.gene.filter.CharsetEncodingFilter
 		</filter-class>
 		<init-param>
 			<param-name>encoding</param-name>
-			<param-value>gb2312</param-value>
+			<param-value>UTF-8</param-value>
 		</init-param>
 	</filter>
   
 	<filter-mapping>
 		<filter-name>CharsetEncodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping> -->
+	</filter-mapping>
 	
 	<!-- <filter>
 		<display-name>JsessionId Filter</display-name>
@@ -80,5 +80,10 @@ id="WebApp_ID" version="3.0">
 	<!-- <session-config>
 	     <tracking-mode>COOKIE</tracking-mode>
 	</session-config> -->
+	
+	<!-- Override Container session timeout in minutes, default is 30 min -->
+	<session-config> 
+		<session-timeout>60</session-timeout> 
+	</session-config>
    
 </web-app>

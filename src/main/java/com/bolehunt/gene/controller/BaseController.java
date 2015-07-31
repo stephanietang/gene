@@ -14,11 +14,13 @@ public class BaseController {
 	
 	private static final Logger log = LoggerFactory.getLogger(BaseController.class);
 	
+	private User user;
+	
 	@Autowired
 	protected UserService userService;
 	
 	@ModelAttribute("user")
-	public User getUser(){
+	public User retrieveUserInfo(){
 		Subject currentUser = SecurityUtils.getSubject();
 		User user = new User();
 		if (currentUser.isRemembered()) {
@@ -33,7 +35,17 @@ public class BaseController {
 	    	log.info("No login user");
 	    	user.setUserLogin(false);
 	    }
+		this.setUser(user);
+		
 		return user;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 }

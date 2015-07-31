@@ -20,7 +20,7 @@ import com.bolehunt.gene.exception.UnknownResourceException;
 
 @ControllerAdvice
 @Controller
-public class ExceptionHandlerController extends BaseController {
+public class ExceptionHandlerController {
 	
 	private static final Logger log = LoggerFactory.getLogger(ExceptionHandlerController.class);
 	

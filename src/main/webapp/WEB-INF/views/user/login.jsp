@@ -15,7 +15,7 @@
 	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-8">
 			<div class="checkbox">
-				<label><input id="rememberMe" type="checkbox" name="rememberMe"/><spring:message code="label.common.rememberMe" /></label>
+				<label><input id="rememberMe" type="checkbox" name="rememberMe" checked="checked"/><spring:message code="label.common.rememberMe" /></label>
 			</div>
 		</div>
 		<div class="col-sm-2">

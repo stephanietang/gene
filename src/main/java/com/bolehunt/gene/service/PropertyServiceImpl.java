@@ -2,8 +2,11 @@ package com.bolehunt.gene.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.bolehunt.gene.common.Label;
@@ -24,19 +27,25 @@ import com.bolehunt.gene.persistence.SexMapper;
 public class PropertyServiceImpl implements PropertyService {
 	
 	@Autowired
-	CountryMapper countryMapper;
+	private CountryMapper countryMapper;
 	
 	@Autowired
-	SexMapper sexMapper;
+	private SexMapper sexMapper;
 	
 	@Autowired
-	ExperienceMapper experienceMapper;
+	private ExperienceMapper experienceMapper;
 	
 	@Autowired
-	DegreeMapper degreeMapper;
+	private DegreeMapper degreeMapper;
+	
+	@Autowired
+	private MessageSource messageSource;
 	
 	public List<Label> getCountryList(){
+		Locale locale = LocaleContextHolder.getLocale();
 		List<Label> labelList = new ArrayList<Label>();
+		labelList.add(new Label(-1,messageSource.getMessage("label.select.country", null, Locale.CHINA)));
+
 		List<Country> countryList = countryMapper.selectByExample(new CountryExample());
 		for(Country c : countryList){
 			labelList.add(new Label(c.getId(), c.getCountryName()));
@@ -46,6 +55,8 @@ public class PropertyServiceImpl implements PropertyService {
 	
 	public List<Label> getSexList(){
 		List<Label> labelList = new ArrayList<Label>();
+		labelList.add(new Label(-1,messageSource.getMessage("label.select.sex", null, Locale.CHINA)));
+		
 		List<Sex> sexList = sexMapper.selectByExample(new SexExample());
 		for(Sex s: sexList){
 			labelList.add(new Label(s.getId(), s.getSexDesc()));
@@ -55,6 +66,7 @@ public class PropertyServiceImpl implements PropertyService {
 	
 	public List<Label> getExperienceList(){
 		List<Label> labelList = new ArrayList<Label>();
+		labelList.add(new Label(-1,messageSource.getMessage("label.select.experience", null, Locale.CHINA)));
 		List<Experience> list = experienceMapper.selectByExample(new ExperienceExample());
 		for(Experience l: list){
 			labelList.add(new Label(l.getId(), l.getExpDesc()));
@@ -64,6 +76,7 @@ public class PropertyServiceImpl implements PropertyService {
 	
 	public List<Label> getDegreeList(){
 		List<Label> labelList = new ArrayList<Label>();
+		labelList.add(new Label(-1,messageSource.getMessage("label.select.degree", null, Locale.CHINA)));
 		List<Degree> list = degreeMapper.selectByExample(new DegreeExample());
 		for(Degree l: list){
 			labelList.add(new Label(l.getId(), l.getDegreeDesc()));

@@ -101,6 +101,7 @@ public class RegisterController extends BaseController {
 			verifyTokenService.sendTokenEmail(registerForm.getEmail(), VerifyTokenType.VERIFICATION_EMAIL);
 			Map<String, String> data = new HashMap<String, String>();
 			data.put("email", registerForm.getEmail());
+			// TODO: hard-code
 			data.put("mailDomain", "http://mail.google.com");
 			return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS, data);
 		}
@@ -176,13 +177,13 @@ public class RegisterController extends BaseController {
 	@RequestMapping(value = "/account", method = RequestMethod.GET)
 	public String accountSetting(ModelMap model) {
 		
-		UpdatePasswordForm updatePasswordForm = new UpdatePasswordForm();
 		User user = getUser();
 		if(! user.isUserLogin()){
 			return "redirect:/index";
-		}else{
-			updatePasswordForm.setEmail(user.getEmail());
 		}
+		
+		UpdatePasswordForm updatePasswordForm = new UpdatePasswordForm();
+		updatePasswordForm.setEmail(user.getEmail());
 		
 		model.put("updatePasswordForm", updatePasswordForm);
 		
