@@ -14,6 +14,7 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,6 +66,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
+	@Cacheable(value="userFindCache", key="#id")
 	public User getUserById(int id) throws UnknownResourceException {
 		User user = userMapper.selectByPrimaryKey(id);
 		if(user == null){

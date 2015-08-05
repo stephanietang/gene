@@ -1,4 +1,9 @@
+# For Eclipse
 /target/
+.classpath
+.project
+.settings/
+
 # Created by https://www.gitignore.io
 
 ### Java ###
