@@ -174,7 +174,7 @@ public class RegisterController extends BaseController {
 		}
 	}
 	
-	@RequestMapping(value = "/account", method = RequestMethod.GET)
+	@RequestMapping(value = "/updatePassword", method = RequestMethod.GET)
 	public String accountSetting(ModelMap model) {
 		
 		User user = getUser();

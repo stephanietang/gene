@@ -54,20 +54,25 @@
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="${contextPath}/index"><spring:message code="menu.index" /></a></li>
-					<li><a href="#">我要招人</a></li>
-					<li><a href="#">如何使用</a></li>
+					<c:if test="${user.userLogin}">
+					<li><a href="${contextPath}/profile"><spring:message code="menu.myResume" /></a></li>
+					</c:if>
+					<li><a href="#"><spring:message code="menu.postList" /></a></li>
+					<li><a href="#"><spring:message code="menu.myPost" /></a></li>
+					<li><a href="#"><spring:message code="menu.userManual" /></a></li>
 					<li><a href="http://v3.bootcss.com/css/#code-block">Bootstrap帮助</a></li>
 					<c:choose><c:when test="${not user.userLogin}">
 					<li><a href="${contextPath}/login"><spring:message code="menu.login" /></a></li>
 					<li><a href="${contextPath}/register"><spring:message code="menu.register" /></a></li>
 					</c:when><c:otherwise>
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><spring:message code="menu.myResume" /> <span class="caret"></span></a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><spring:message code="menu.accountSetting" /> <span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="${contextPath}/profile"><spring:message code="menu.myResume" /></a></li>
-							<li><a href="${contextPath}/profile/edit">修改简历</a></li>
+              				<li><a href="${contextPath}/updatePassword"><spring:message code="menu.updatePassword" /></a></li>
+              				<li><a href="#"><spring:message code="menu.alertSetting" /></a></li>
+              				<li><a href="#"><spring:message code="menu.postFilter" /></a></li>
+              				<li><a href="#"><spring:message code="menu.messageList" /></a></li>
               				<li class="divider"></li>
-              				<li><a href="${contextPath}/account"><spring:message code="menu.accountSetting" /></a></li>
               				<li><a href="${contextPath}/logout"><spring:message code="menu.logout" /></a></li>
 						</ul>
 					</li>
