@@ -36,6 +36,19 @@ id="WebApp_ID" version="3.0">
         <url-pattern>/</url-pattern>
     </servlet-mapping>
     
+    <!-- Web Page and Web Page Fragment Caching -->
+	<filter>
+		<filter-name>SimplePageCachingFilter</filter-name>
+		<filter-class>net.sf.ehcache.constructs.web.filter.SimplePageCachingFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>SimplePageCachingFilter</filter-name>
+		<!-- Config url which pages need to cache -->
+		<url-pattern>/</url-pattern>
+	</filter-mapping>
+    
+    <!-- Shiro Filter -->
     <filter>
 	    <filter-name>shiroFilter</filter-name>
 	    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -50,6 +63,7 @@ id="WebApp_ID" version="3.0">
 	    <url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
+	<!-- Charset Encoding Filter -->
 	<filter>
 		<filter-name>CharsetEncodingFilter</filter-name>
 		<filter-class>
