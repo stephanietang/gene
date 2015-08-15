@@ -39,7 +39,7 @@
 
 	<!-- Development version: Force the browser the retrieve new version of css and js-->
 	<c:set var="version"><%= java.util.UUID.randomUUID() %></c:set>
-	<%-- <link rel="stylesheet" href="${contextPath}/resources/css/main.css?v=${version}"> --%>
+	<link rel="stylesheet" href="${contextPath}/resources/css/main.css?v=${version}">
 	<script src="${contextPath}/resources/js/main.js?v=${version}"></script>
 	
 </head>
@@ -56,6 +56,7 @@
 					<li class="active"><a href="${contextPath}/index"><spring:message code="menu.index" /></a></li>
 					<c:if test="${user.userLogin}">
 					<li><a href="${contextPath}/profile"><spring:message code="menu.myResume" /></a></li>
+					<li><a href="${contextPath}/profile/edit">修改简历</a></li>
 					</c:if>
 					<li><a href="#"><spring:message code="menu.postList" /></a></li>
 					<li><a href="#"><spring:message code="menu.myPost" /></a></li>

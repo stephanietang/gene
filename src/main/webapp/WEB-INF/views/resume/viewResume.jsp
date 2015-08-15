@@ -20,10 +20,10 @@
 				<h1 class="page-header">${resumeForm.basicInfo.name}</h1>
 				<h2 id="basic-info" class="page-header"><a class="anchorjs-link " href="#basic-info" ></a>基本信息</h2>
 				<div>
-					<ct:label list="${AppBeans.sexList}" key="${resumeForm.basicInfo.sexId}"/> | 
-        			<ct:label list="${AppBeans.countryList}" key="${resumeForm.basicInfo.countryId}"/> |
-        			<ct:label list="${AppBeans.degreeList}" key="${resumeForm.basicInfo.degreeId}"/> | 
-        			<ct:label list="${AppBeans.experienceList}" key="${resumeForm.basicInfo.expId}"/> | 
+					<ct:label list="${AppBeans.sexList}" key="${resumeForm.basicInfo.sex}"/> | 
+        			<ct:label list="${AppBeans.countryList}" key="${resumeForm.basicInfo.country}"/> |
+        			<ct:label list="${AppBeans.degreeList}" key="${resumeForm.basicInfo.degree}"/> | 
+        			<ct:label list="${AppBeans.experienceList}" key="${resumeForm.basicInfo.experience}"/> | 
         			${user.email} 
 				</div>
 				<div class="bs-callout bs-callout-warning">

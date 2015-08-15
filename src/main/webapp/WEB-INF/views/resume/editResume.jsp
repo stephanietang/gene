@@ -27,15 +27,15 @@
 				
 				<div class="form-group">
 					<div class="col-sm-6"><form:input path="basicInfo.name" class="form-control" placeholder="姓名" /></div>
-					<div class="col-sm-2"><ct:options list="${AppBeans.countryList}" name="basicInfo.countryId" key="${resumeForm.basicInfo.countryId}"/></div>
+					<div class="col-sm-2"><ct:options list="${AppBeans.countryList}" name="basicInfo.country" key="${resumeForm.basicInfo.country}"/></div>
 					<div class="col-sm-4"><form:input path="basicInfo.telNo" class="form-control" placeholder="手机号码" /></div>
 				</div>
 				<div class="form-group">
-					<div class="col-sm-6"><ct:options list="${AppBeans.experienceList}" name="basicInfo.expId" key="${resumeForm.basicInfo.expId}" /></div>
-					<div class="col-sm-6"><ct:options list="${AppBeans.degreeList}" name="basicInfo.degreeId" key="${resumeForm.basicInfo.degreeId}" /></div>
+					<div class="col-sm-6"><ct:options list="${AppBeans.experienceList}" name="basicInfo.experience" key="${resumeForm.basicInfo.experience}" /></div>
+					<div class="col-sm-6"><ct:options list="${AppBeans.degreeList}" name="basicInfo.degree" key="${resumeForm.basicInfo.degree}" /></div>
 				</div>
 				<div class="form-group">
-					<div class="col-sm-6"><ct:options list="${AppBeans.sexList}" name="basicInfo.sexId" key="${resumeForm.basicInfo.sexId}" /></div>
+					<div class="col-sm-6"><ct:options list="${AppBeans.sexList}" name="basicInfo.sex" key="${resumeForm.basicInfo.sex}" /></div>
 				<div class="col-sm-6">
 					<div class="input-group date" data-date-format="yyyy-mm" data-date="1985-01">
 						<form:input type="text" path="basicInfo.bornYear" class="form-control" readonly="true" /><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
@@ -60,7 +60,7 @@
 				<form:form id="educationForm" class="form-horizontal" commandName="educationForm">
 				<div class="form-group">
 					<label for="schoolName" class="col-sm-2 control-label">学校名称</label>
-					<div class="col-sm-10"><form:input path="schoolName" class="form-control" placeholder="example@example.com" /></div>
+					<div class="col-sm-10"><form:input path="schoolName" class="form-control" placeholder="请填写学校" /></div>
 				</div>
 				<div class="form-group">
 					<label for="schoolName" class="col-sm-2 control-label">学历</label>
@@ -68,18 +68,30 @@
 				</div>
 				<div class="form-group">
 					<spring:message code="button.user.add" var="addButton"/>
-					<input type="submit" class="btn btn-primary" value="${addButton}"></input>
+					<button type="button" class="btn btn-primary" onClick="educationCrudAction('add','')">${addButton}</button>
 				</div>
 				</form:form>
 				<c:forEach var="education" items="${resumeForm.educationList}" varStatus="item"> 
-					<div class="bs-callout bs-callout-info">
+					<div class="bs-callout bs-callout-info text" id="education_text_${item.index}">
 						<h2>${education.schoolName}</h2>
 						<p>${education.department}</p>
 						<p><ct:label list="${AppBeans.degreeList}" key="${education.degreeId}"/></p>
 						<p>${education.startYear}~${education.endYear}</p>
-						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-						<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-						<input type="hidden" name="educationId_${item.index}" value="${education.id}"/>
+						<button type="button" class="btn btn-primary" onClick="showEducationEditBox(this,${item.index})"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</button>
+						<button type="button" class="btn btn-primary" onClick="educationCrudAction('delete',${item.index})"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>
+						<input id="education_id_${item.index}" type="hidden" value="${education.id}"/>
+					</div>
+					<div class="form-horizontal editBox" id="education_edit_${item.index}">
+						<div class="form-group">
+							<label for="schoolName" class="col-sm-2 control-label">学校名称</label>
+							<div class="col-sm-10"><input id="school_name_${item.index}" value="${education.schoolName}" class="form-control" placeholder="请填写学校" /></div>
+						</div>
+						<div class="form-group">
+							<label for="schoolName" class="col-sm-2 control-label">专业</label>
+							<div class="col-sm-10"><input value="${education.department}" class="form-control" placeholder="请填写专业" /></div>
+						</div>
+						<button type="button" class="btn btn-primary" onClick="educationCrudAction('save',${item.index})">Save</button>
+						<button type="button" class="btn btn-primary" onClick="cancelEducationEdit(${item.index})">Cancel</button>
 					</div>
 				</c:forEach>
 			</div>
@@ -107,7 +119,7 @@
 <script>
 jQuery(document).ready(function() { 
 	
-	$('.input-group.date').datepicker({
+	$(".input-group.date").datepicker({
 		format: "yyyy",
 		startView: "years",
 		minViewMode: "years",
@@ -133,9 +145,53 @@ jQuery(document).ready(function() {
 			}
 		}
 	});
-
 	
 });
+
+function showEducationEditBox(editobj, id){
+	$("#education_text_" + id).hide();
+	$("#education_edit_" + id).show();
+}
+
+function cancelEducationEdit(id){
+	$("#education_text_" + id).show();
+	$("#education_edit_" + id).hide();
+}
+
+function educationCrudAction(action,id) {
+	var queryString;
+	//TODO
+	switch(action) {
+		case "add":
+			queryString = 'action='+action+'&school_name='+ $('input[name="schoolName"]').val();
+		break;
+		case "save":
+			queryString = 'action='+action+'&education_id='+ $("education_id_"+id).val() + '&school_name='+ $("#school_name_"+id).val();
+		break;
+		case "delete":
+			queryString = 'action='+action+'&education_id='+ $("education_id_"+id).val();
+		break;
+	}
+	jQuery.ajax({
+		url: "educationCrudAction",
+		data: queryString,
+		type: "POST",
+		success:function(data){
+			switch(action) {
+				case "add":
+					
+				break;
+				case "save":
+						
+				break;
+				case "delete":
+					
+				break;
+			}
+		},
+		error:function (){}
+	});
+}
 </script>
 
 <%@ include file="../common/footer.jsp" %>

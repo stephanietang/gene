@@ -1,6 +1,6 @@
-body {
-    padding-top: 70px;
-}
+/*body {
+   padding-top: 70px;
+}*/
 
 .fr {
 	float: right;
@@ -10,4 +10,7 @@ body {
 	float: left;
 }
 
+.editBox {
+	display: none;
+}
 
