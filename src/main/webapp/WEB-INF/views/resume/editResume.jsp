@@ -202,6 +202,7 @@ function cancelEdit(obj){
 }
 
 function educationCrudAction(action,id) {
+	
 	var json;
 	switch(action) {
 		case "add":
@@ -235,7 +236,7 @@ function educationCrudAction(action,id) {
 				});
 		break;
 	}
-	alert(json);
+	//alert(json);
 	jQuery.ajax({
 		url: ctx + "/profile/educationCrudAction.json",
 		type: "POST",
@@ -248,17 +249,21 @@ function educationCrudAction(action,id) {
 			
 			switch(action) {
 				case "add":
+					clearEducationForm();
+					var lastIndexId = $("#education-experience").children(".exp-item").last().find("input[id^='educationId']").attr("id");
+					var lastIndex = parseInt(lastIndexId.substr(lastIndexId.indexOf("_")+1));
+					var index = lastIndex + 1;
 					var returnEducation = result.data.education;
 					var html = "";
 					html += '<div class="exp-item">';
-					html += 	'<input id="educationId_'+id+'" type="hidden" value="'+returnEducation.id+'" >';
+					html += 	'<input id="educationId_'+index+'" type="hidden" value="'+returnEducation.id+'" >';
 					html +=		'<div class="bs-callout bs-callout-info text-container">';
 					html += 		'<h2>'+ returnEducation.schoolName +'</h2>';
 					html += 		'<p>'+ returnEducation.department +'</p>';
 					html += 		'<p>' + getDegreeTxt(returnEducation.degree) + '</p>';
 					html += 		'<p>'+ returnEducation.startYear + '~' + returnEducation.endYear + '</p>';
 					html += 		'<button type="button" class="btn btn-primary" onClick="showEditContainer(this)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</button>';
-					html += 		'<button type="button" class="btn btn-primary" onClick="educationCrudAction(\'delete\','+ id +')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>';
+					html += 		'<button type="button" class="btn btn-primary" onClick="educationCrudAction(\'delete\','+index+')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>';
 					html +=		'</div>';
 					html +=	'</div>';
 					$("#education-experience").append(html);
@@ -274,7 +279,7 @@ function educationCrudAction(action,id) {
 					html += '<p>' + getDegreeTxt(returnEducation.degree) + '</p>';
 					html += '<p>'+ returnEducation.startYear + '~' + returnEducation.endYear + '</p>';
 					html += '<button type="button" class="btn btn-primary" onClick="showEditContainer(this)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</button>';
-					html += '<button type="button" class="btn btn-primary" onClick="educationCrudAction(\'delete\','+ id +')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>';
+					html += '<button type="button" class="btn btn-primary" onClick="educationCrudAction(\'delete\','+id+')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>';
 					textObj.append(html);
 					
 					textObj.show();
@@ -287,6 +292,14 @@ function educationCrudAction(action,id) {
 		},
 		error:function (){}
 	});
+}
+
+function clearEducationForm(){
+	$(':input','#educationForm')
+	  .removeAttr('checked')
+	  .removeAttr('selected')
+	  .not(':button, :submit, :reset, :hidden, :radio, :checkbox')
+	  .val('');
 }
 
 function getDegreeTxt(degree){
