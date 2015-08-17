@@ -23,9 +23,6 @@ import com.bolehunt.gene.common.Constant;
 import com.bolehunt.gene.common.Constant.VerifyTokenType;
 import com.bolehunt.gene.common.JsonResponse;
 import com.bolehunt.gene.common.Status;
-import com.bolehunt.gene.domain.BasicInfo;
-import com.bolehunt.gene.domain.Education;
-import com.bolehunt.gene.domain.EducationExample;
 import com.bolehunt.gene.domain.User;
 import com.bolehunt.gene.domain.UserExample;
 import com.bolehunt.gene.domain.VerifyToken;
@@ -33,10 +30,7 @@ import com.bolehunt.gene.exception.ApplicationException;
 import com.bolehunt.gene.exception.UnknownResourceException;
 import com.bolehunt.gene.form.LoginForm;
 import com.bolehunt.gene.form.RegisterForm;
-import com.bolehunt.gene.form.ResumeForm;
 import com.bolehunt.gene.form.UpdatePasswordForm;
-import com.bolehunt.gene.persistence.BasicInfoMapper;
-import com.bolehunt.gene.persistence.EducationMapper;
 import com.bolehunt.gene.persistence.UserMapper;
 import com.bolehunt.gene.util.WebUtil;
 
@@ -50,12 +44,6 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private UserMapper userMapper;
-	
-	@Autowired
-	private BasicInfoMapper basicInfoMapper;
-	
-	@Autowired
-	private EducationMapper educationMapper;
 	
 	@Autowired
 	private VerifyTokenService verifyTokenService;
@@ -337,27 +325,4 @@ public class UserServiceImpl implements UserService {
 		return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
 	}
 	
-	/******* Resume *******
-	**********************/
-	@Override
-	public ResumeForm retrieveResume(User user){
-		ResumeForm form = new ResumeForm();
-		BasicInfo basicInfo = basicInfoMapper.selectByPrimaryKey(user.getId());
-		form.setBasicInfo(basicInfo);
-		
-		EducationExample eduEx = new EducationExample();
-		eduEx.createCriteria().andUserIdEqualTo(user.getId());
-		eduEx.setOrderByClause("start_year desc");
-		List<Education> educationList = educationMapper.selectByExample(eduEx);
-		form.setEducationList(educationList);
-		
-		return form;
-	}
-	
-	@Override
-	public void saveResume(ResumeForm resumeForm){
-		BasicInfo basicInfo = resumeForm.getBasicInfo();
-		basicInfoMapper.updateByPrimaryKey(basicInfo);
-		
-	}
 }

@@ -45,10 +45,5 @@ public interface UserService {
 	
 	public JsonResponse validateSendEmailForm(RegisterForm registerForm);
 	
-	/******* Resume *******
-	**********************/
-	public ResumeForm retrieveResume(User user);
-	
-	public void saveResume(ResumeForm resumeForm);
 
 }

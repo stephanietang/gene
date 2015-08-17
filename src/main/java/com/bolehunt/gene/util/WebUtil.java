@@ -39,9 +39,9 @@ public final class WebUtil {
 	}
 
 	/**
-	 * • The password must be at least 6 characters long.
-	 * • The password must have at least one uppercase and one lowercase letter
-	 * • The password must have at least one digit.
+	 * The password must be at least 6 characters long.
+	 * The password must have at least one uppercase and one lowercase letter
+	 * The password must have at least one digit.
 	 * @param password
 	 * @return
 	 */
@@ -76,7 +76,7 @@ public final class WebUtil {
 		return new JsonResponse(status.getStatus(), message);
 	}
 	
-	public static JsonResponse formatJsonResponse(Status status, Map<String, String> data){
+	public static JsonResponse formatJsonResponse(Status status, Map<String, Object> data){
 		Locale locale = LocaleContextHolder.getLocale();
 		String message = messageSource.getMessage(status.getMessage(), null, locale);
 		return new JsonResponse(status.getStatus(), message, data);

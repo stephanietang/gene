@@ -10,7 +10,7 @@ public class JsonResponse {
 	private String status;
 	private List<Errors> errors;
 	private String message;
-	private Map<String, String> data;
+	private Map<String, Object> data;
 	private boolean hasErrors = false;
 	 
 	public JsonResponse(String status, String message) {
@@ -21,7 +21,7 @@ public class JsonResponse {
 		}
 	}
 	
-	public JsonResponse(String status, String message, Map<String, String> data) {
+	public JsonResponse(String status, String message, Map<String, Object> data) {
 		this(status, message);
 		this.data = data;
 	}
@@ -34,11 +34,11 @@ public class JsonResponse {
 		return message;
 	}
 	
-	public Map<String, String> getData() {
+	public Map<String, Object> getData() {
 		return data;
 	}
 
-	public void setData(Map<String, String> data) {
+	public void setData(Map<String, Object> data) {
 		this.data = data;
 	}
 

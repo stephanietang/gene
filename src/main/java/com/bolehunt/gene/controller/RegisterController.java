@@ -99,7 +99,7 @@ public class RegisterController extends BaseController {
 			return jsonResponse;
 		}else{
 			verifyTokenService.sendTokenEmail(registerForm.getEmail(), VerifyTokenType.VERIFICATION_EMAIL);
-			Map<String, String> data = new HashMap<String, String>();
+			Map<String, Object> data = new HashMap<String, Object>();
 			data.put("email", registerForm.getEmail());
 			// TODO: hard-code
 			data.put("mailDomain", "http://mail.google.com");
@@ -130,7 +130,7 @@ public class RegisterController extends BaseController {
 			return jsonResponse;
 		}else{
 			verifyTokenService.sendTokenEmail(registerForm.getEmail(), VerifyTokenType.LOST_PASSWORD_EMAIL);
-			Map<String, String> data = new HashMap<String, String>();
+			Map<String, Object> data = new HashMap<String, Object>();
 			data.put("email", registerForm.getEmail());
 			// TODO: hard-code
 			data.put("mailDomain", "http://mail.google.com");

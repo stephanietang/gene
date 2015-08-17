@@ -45,6 +45,7 @@
 	<!-- See https://stormpath.com/blog/spring-mvc-rest-exception-handling-best-practices-part-1/ -->
 	<!-- Allow Exceptions to be handled in annotated methods if desired.  Otherwise fallback to the
          'restExceptionResolver' below: -->
+    <!-- 
     <bean id="annotationMethodHandlerExceptionResolver"
           class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerExceptionResolver">
         <property name="order" value="0"/>
@@ -57,14 +58,13 @@
                 <property name="defaultMoreInfoUrl" value="mailto:support@mycompany.com"/>
                 <property name="exceptionMappingDefinitions">
                     <map>
-                        <!-- 404 -->
                         <entry key="com.bolehunt.gene.exception.UnknownResourceException" value="404, _exmsg"/>
                         
-                        <!-- 500 (catch all): -->
                         <entry key="Throwable" value="500"/>
                     </map>
                 </property>
             </bean>
         </property>
     </bean>
+	-->
 </beans>

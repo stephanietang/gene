@@ -41,7 +41,7 @@
 					<div class="bs-callout bs-callout-info">
 						<h2>${education.schoolName}</h2>
 						<p>${education.department}</p>
-						<p><ct:label list="${AppBeans.degreeList}" key="${education.degreeId}"/></p>
+						<p><ct:label list="${AppBeans.degreeList}" key="${education.degree}"/></p>
 						<p>${education.startYear}~${education.endYear}</p>
 					</div>
 				</c:forEach>
