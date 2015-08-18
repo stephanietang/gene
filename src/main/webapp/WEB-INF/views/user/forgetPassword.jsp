@@ -5,7 +5,6 @@
 <form class="form-horizontal" id="forgetPasswordForm">
 	<div class="jumbotron">
 		<h2><spring:message code="title.user.resetPassword" /></h2>
-		<div id="forgetPassword_error" style="display:none;" class="alert alert-warning" role="alert"></div>
 		<div class="form-group">
 			<label for="email" class="col-sm-2 control-label"><spring:message code="label.common.email" /></label>
 			<div class="col-sm-10"><input id="email" name="email" placeholder="example@example.com" class="form-control" value="${email}"/></div>
@@ -19,15 +18,28 @@
 	</div>
 </form>
 
-<div style="display:none">
-	<div class="well" id="forgetPasswordDiv">
-		<h2><spring:message code="title.user.resetPassword" /></h2>
-		<p>我们已经将重置密码的邮件发送至邮箱: <a id="mail-domain" href=""></a></p>
-		<p><a class="btn btn-lg btn-primary" href="" role="button">点击进入邮箱重置密码</a></p>
+</div>
+
+<div id="modal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">重置密码</h4>
+	      	</div>
+			<div class="modal-body">
+				<h2><spring:message code="title.user.resetPassword" /></h2>
+				<p>我们已经将重置密码的邮件发送至邮箱: <a id="mail-domain" href=""></a></p>
+				<p><a class="btn btn-lg btn-primary" href="" role="button">点击进入邮箱重置密码</a></p>
+			</div>
+			<div class="modal-footer">
+				
+			</div>
+		</div>
 	</div>
 </div>
 
-</div>
 <script>
 jQuery(document).ready(function() { 
 	$("#forgetPasswordForm").validate({
@@ -53,23 +65,23 @@ jQuery(document).ready(function() {
 		        	if(result.status == '200'){
 		        		var mailDomain = result.data.mailDomain;
 		        		var email = result.data.email;
-		        		$("#forgetPasswordDiv #mail-domain").attr("href", mailDomain).text(email);
-		        		$("#forgetPasswordDiv .btn").attr("href", mailDomain);
-		        		$.colorbox({inline:true, href:$("#forgetPasswordDiv"),title: "重置密码"});
+		        		$("#modal #mail-domain").attr("href", mailDomain).text(email);
+		        		$("#modal .btn").attr("href", mailDomain);
+		        		$('#modal').modal('show');
 		        		
 		        	}else{
-		        		$("#forgetPassword_error").text(result.message).show();
+		        		$("#errorMessage").text(result.message).show();
 		        	}
 		        },
 		        error : function(){
-		            $(this).html("Error!");
+		        	$("#errorMessage").text("Error!").show();
 		        }
 		    });
 		}
 	});
 	
 	$("#email").focus(function() {
-		$('#forgetPassword_error').text('').hide();
+		$('#errorMessage').text("").hide();
 	});
 	
 });

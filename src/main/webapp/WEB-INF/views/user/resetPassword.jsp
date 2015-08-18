@@ -3,7 +3,6 @@
 
 <div class="container">
 <form:form class="form-horizontal" commandName="resetPasswordForm">
-	<div id="resetPassword_error" style="display:none;" class="alert alert-warning" role="alert"></div>
 	<div class="form-group">
 		<label for="email" class="col-sm-2 control-label"><spring:message code="label.updatePwd.email" /></label>
 		<div class="col-sm-10"><p class="form-control-static">${resetPasswordForm.email}</p></div>
@@ -28,16 +27,34 @@
 
 <div style="display:none"> 
 	<div class="jumbotron" id="resetPasswordDiv">
-		<h3><spring:message code="msg.user.resetPassword.success" /></h3>
-		<h4><spring:message code="msg.user.resetPassword.login" /></h4>
-		<p><a href="${contextPath}/login"><spring:message code="menu.login" /></a></p>
+		
 	</div>
 </div>
 </div>
 
-<spring:message code="title.user.resetPassword.success" var="resetPasswordSuccessTitle"/>
+<div id="modal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title"><spring:message code="title.user.resetPassword.success" /></h4>
+	      	</div>
+			<div class="modal-body">
+				<div id="countdown-wrapper">
+					<h3><spring:message code="msg.user.resetPassword.success" /></h3>
+					<h4><spring:message code="msg.user.resetPassword.login" /></h4>
+					<p><a href="${contextPath}/login"><spring:message code="menu.login" /></a></p>
+				</div>
+			</div>
+			<div class="modal-footer">
+				
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
-var resetPasswordsuccessTitle = "${resetPasswordSuccessTitle}";
 $(document).ready(function() {
 	$("#resetPasswordForm").validate({
 		onfocusin: function(element) {
@@ -68,14 +85,14 @@ $(document).ready(function() {
 		        data: json,
 		        success : function(result){
 		        	if(result.status == '200'){
-		        		$.colorbox({inline:true, href:$("#resetPasswordDiv"),title: resetPasswordsuccessTitle});
-		        		setCountdown(4,'resetPasswordDiv h4 span',ctx+"/login");
+		        		$('#modal').modal('show');
+		        		setCountdown(4,'countdown-wrapper h4 span',ctx+"/login");
 		        	}else{
-		        		$("#resetPassword_error").text(result.message).show();
+		        		$("#errorMessage").text(result.message).show();
 		        	}
 		        },
 		        error : function(){
-		            $(this).html("Error!");
+		        	$("#errorMessage").text("Error!").show();
 		        }
 		    });
 		}

@@ -3,7 +3,6 @@
 
 <div class="container">
 <form:form class="form-horizontal" method="post" commandName="registerForm">
-	<div id="register_error" style="display:none;" class="alert alert-warning" role="alert"></div>
 	<div class="form-group">
 		<label for="email" class="col-sm-2 control-label"><spring:message code="label.common.email" /></label>
 		<div class="col-sm-10"><form:input path="email" class="form-control" placeholder="example@example.com" /></div>
@@ -53,18 +52,18 @@ jQuery(document).ready(function() {
 		        	if(result.status == '200'){
 		        		$(location).attr('href',ctx+"/confirm_mail?email="+email); 
 		        	}else{
-		        		$("#register_error").text(result.message).show();
+		        		$("#errorMessage").text(result.message).show();
 		        	}
 		        },
 		        error : function(){
-		            $(this).html("Error!");
+		        	$("#errorMessage").text("Error!").show();
 		        }
 		    });
 		}
 	});
 	
 	$("#email").focus(function() {
-		$('#register_error').text('').hide();
+		$('#errorMessage').text("").hide();
 	});
 });
 </script>

@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bolehunt.gene.common.JsonResponse;
+import com.bolehunt.gene.common.Status;
 import com.bolehunt.gene.domain.User;
 import com.bolehunt.gene.form.EducationForm;
 import com.bolehunt.gene.form.ResumeForm;
 import com.bolehunt.gene.service.ResumeService;
+import com.bolehunt.gene.util.WebUtil;
 
 @Controller
 public class ResumeController extends BaseController {

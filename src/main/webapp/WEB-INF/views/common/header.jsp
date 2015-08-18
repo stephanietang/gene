@@ -17,7 +17,6 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 	<link rel="stylesheet" href="http://v3.bootcss.com/assets/css/docs.min.css" />
-	<link rel="stylesheet" href="${contextPath}/resources/css/colorbox.css" />
 	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-datepicker3.standalone.min.css" />
 	<!-- <link rel="stylesheet" href="${contextPath}/resources/css/main.css"> -->
 	
@@ -25,7 +24,6 @@
 	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	<script src="http://v3.bootcss.com/assets/js/docs.min.js"></script>
-	<script src="${contextPath}/resources/js/jquery.colorbox-min.js"></script>
 	<script src="${contextPath}/resources/js/additional-methods.js"></script>
 	<script src="${contextPath}/resources/js/message_zh.js"></script>
 	<script src="${contextPath}/resources/js/bootstrap-datepicker.min.js"></script>
@@ -82,3 +80,7 @@
 			</div>
 		</div>
 	</header>
+	
+	<div class="row">
+		<div id="errorMessage" class="col-md-offset-2 col-md-8 alert alert-warning dn" role="alert"></div>
+	</div>

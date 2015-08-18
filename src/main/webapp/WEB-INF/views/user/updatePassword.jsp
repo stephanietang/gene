@@ -3,7 +3,6 @@
 
 <div class="container">
 <form:form class="form-horizontal" commandName="updatePasswordForm">
-	<div id="updatePwd_error" style="display:none;" class="alert alert-warning" role="alert"></div>
 	<div class="form-group">
 		<label for="email" class="col-sm-2 control-label"><spring:message code="label.updatePwd.email" /></label>
 		<div class="col-sm-10"><p class="form-control-static">${updatePasswordForm.email}</p></div>
@@ -29,18 +28,31 @@
 	</div>
 </form:form>
 
-<div style="display:none"> 
-	<div class="jumbotron" id="updatePasswordDiv">
-		<h3><spring:message code="msg.user.updatePassword.success" /></h3>
-		<h4><spring:message code="msg.user.updatePassword.logout" /></h4>
-		<p><a href="${contextPath}/logout"><spring:message code="menu.logout" /></a></p>
-	</div>
-</div>
 </div>
 
-<spring:message code="title.user.updatePassword.success" var="updatePwdSuccessTitle"/>
+<div id="modal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title"><spring:message code="title.user.updatePassword.success" /></h4>
+	      	</div>
+			<div class="modal-body">
+				<div id="countdown-wrapper">
+					<h3><spring:message code="msg.user.updatePassword.success" /></h3>
+					<h4><spring:message code="msg.user.updatePassword.logout" /></h4>
+					<p><a href="${contextPath}/logout"><spring:message code="menu.logout" /></a></p>
+				</div>
+			</div>
+			<div class="modal-footer">
+				
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
-var updatePwdsuccessTitle = "${updatePwdSuccessTitle}";
 $(document).ready(function() {
 	$("#updatePasswordForm").validate({
 		onfocusin: function(element) {
@@ -75,21 +87,21 @@ $(document).ready(function() {
 		        data: json,
 		        success : function(result){
 		        	if(result.status == '200'){
-		        		$.colorbox({inline:true, href:$("#updatePasswordDiv"),title: updatePwdsuccessTitle});
-		        		setCountdown(4,'updatePasswordDiv h4 span',ctx+"/logout");
+		        		$('#modal').modal('show');
+		        		setCountdown(4,'countdown-wrapper h4 span',ctx+"/logout");
 		        	}else{
-		        		$("#updatePwd_error").text(result.message).show();
+		        		$("#errorMessage").text(result.message).show();
 		        	}
 		        },
 		        error : function(){
-		            $(this).html("Error!");
+		        	$("#errorMessage").text("Error!").show();
 		        }
 		    });
 		}
 	});
 	
 	$("#oldPassword").focus(function() {
-		$('#updatePwd_error').text('').hide();
+		$('#errorMessage').text("").hide();
 	});
 	
 });

@@ -3,7 +3,7 @@
 
 <div class="container">
 <div class="jumbotron">
-	<h2><spring:message code="msg.user.verifyConfirm" /></h2>
+	<h2>请验证邮箱完成注册</h2>
 	<p>我们已经将验证邮件发送至邮箱: <a href="${mailDomain}">${email}</a></p>
 	<p><a class="btn btn-lg btn-primary" href="${mailDomain}" role="button">点击进入邮箱激活</a></p>
 	<p>没有收到验证邮件？</p>

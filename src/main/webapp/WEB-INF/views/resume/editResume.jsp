@@ -97,35 +97,12 @@
 							<p><ct:label list="${AppBeans.degreeList}" key="${education.degree}"/></p>
 							<p>${education.startYear}~${education.endYear}</p>
 							<div class="btn btn-primary edu-edit" data-eduid="${education.id}" data-schoolname="${education.schoolName}" data-degree="${education.degree}" data-department="${education.department}" data-startyear="${education.startYear}" data-endyear="${education.endYear}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</div>
-							<div class="btn btn-primary edu-delete" data-toggle="modal" data-target="#myModal" data-eduid="${education.id}">
+							<div class="btn btn-primary edu-delete" data-toggle="modal" data-target="#modal" data-eduid="${education.id}">
 								<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
 							</div>
 						</div>
 					</div>
 				</c:forEach>
-				</div>
-				
-				<!-- Modal -->
-				<div id="myModal" class="modal fade" role="dialog">
-					<div class="modal-dialog">
-				
-						<!-- Modal content-->
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h4 class="modal-title">确认删除</h4>
-					      	</div>
-							<div class="modal-body">
-								<input type="hidden" id="modal-item-id" >
-								<input type="hidden" id="modal-refer-item-id" >
-								<button type="button" class="btn btn-default delete-ok" data-dismiss="modal">确认删除</button>
-								<button type="button" class="btn btn-default delete-cancel" data-dismiss="modal">取消</button>
-							</div>
-							<div class="modal-footer">
-								
-							</div>
-						</div>
-					</div>
 				</div>
 				
 				<div id="edu-hidden-template" class="dn">
@@ -175,6 +152,27 @@
 			</div>
 		</div>
 
+	</div>
+</div>
+
+<div id="modal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">确认删除</h4>
+	      	</div>
+			<div class="modal-body">
+				<input type="hidden" id="modal-item-id" >
+				<input type="hidden" id="modal-refer-item-id" >
+				<button type="button" class="btn btn-default delete-ok" data-dismiss="modal">确认删除</button>
+				<button type="button" class="btn btn-default delete-cancel" data-dismiss="modal">取消</button>
+			</div>
+			<div class="modal-footer">
+				
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -262,20 +260,23 @@ jQuery(document).ready(function() {
 			dataType : "json",
 			data: json,
 			success:function(result){
-				// TODO
-				globals.token = 1;
-				
-				// clear add form
-				$(":input","#eduAddForm")
-				  .removeAttr("checked")
-				  .removeAttr("selected")
-				  .not(":button, :submit, :reset, :hidden, :radio, :checkbox")
-				  .val("");
-				
-				var educationItems = result.data.educations;
-				initEducationList(educationItems);
+				if(result.status == '200'){
+					// clear add form
+					$(":input","#eduAddForm")
+					  .removeAttr("checked")
+					  .removeAttr("selected")
+					  .not(":button, :submit, :reset, :hidden, :radio, :checkbox")
+					  .val("");
+					
+					var educationItems = result.data.educations;
+					initEducationList(educationItems);
+				}else{
+					$("#errorMessage").text(result.message).show();
+				}
 			},
-			error:function (){}
+			error:function (){
+				$("#errorMessage").text("Error!").show();
+			}
 		});
 	});
 	
@@ -318,24 +319,15 @@ jQuery(document).ready(function() {
 		var referId = $(deleteBtn).parents(".education-item").attr("id");
 		$("#modal-item-id").val(id);
 		$("#modal-refer-item-id").val(referId);
-		alert(referId);
 	});
 	
-	$("#education-section").on("click",".delete-ok",function(){
-		var json;
+	$(document).on("click",".delete-ok",function(){
 		var referId = $("#modal-refer-item-id").val();
-		// TODO
-		alert(referId);
-		var referItem = $(""+referId);
-		json = JSON.stringify({
+		var referItem = $("#"+referId);
+		var json = JSON.stringify({
 			action : "delete",
-			educationId : $("#modal-item-id").val(),
-			token : globals.token
+			educationId : $("#modal-item-id").val()
 			});
-		alert(json);
-		
-		$(referItem).remove();
-		return ;
 		jQuery.ajax({
 			url: ctx + "/profile/educationCrudAction.json",
 			type: "POST",
@@ -364,14 +356,14 @@ function initEducationList(eduItems){
 		var department = eduItems[i].department;
 		var startYear = eduItems[i].startYear;
 		var endYear = eduItems[i].endYear;
-		html += '<div class="education-item">';
+		html += '<div class="education-item" id="education-item_'+i+'">';
 		html +=		'<div class="bs-callout bs-callout-info text-container">';
 		html +=			'<h2>'+schoolName+'</h2>';
 		html +=			'<p>'+department+'</p>';
 		html +=			'<p>'+getDegreeTxt(degree)+'</p>';
 		html +=			'<p>'+startYear+'~'+endYear+'</p>';
 		html +=			'<div class="btn btn-primary edu-edit" data-eduid="'+educationId+'" data-schoolname="'+schoolName+'" data-degree="'+degree+'" data-department="'+department+'" data-startyear="'+startYear+'" data-endyear="'+endYear+'"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</div>';
-		html +=			'<div class="btn btn-primary edu-delete" data-eduid="'+educationId+'" data-toggle="modal" data-target="#myModal" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</div>';
+		html +=			'<div class="btn btn-primary edu-delete" data-eduid="'+educationId+'" data-toggle="modal" data-target="#modal" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</div>';
 		html +=		'</div>';
 		html +=	'</div>';
 	}
