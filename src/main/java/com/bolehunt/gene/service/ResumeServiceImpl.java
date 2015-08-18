@@ -34,13 +34,18 @@ public class ResumeServiceImpl implements ResumeService {
 		BasicInfo basicInfo = basicInfoMapper.selectByPrimaryKey(user.getId());
 		form.setBasicInfo(basicInfo);
 		
-		EducationExample eduEx = new EducationExample();
-		eduEx.createCriteria().andUserIdEqualTo(user.getId());
-		eduEx.setOrderByClause("start_year desc");
-		List<Education> educationList = educationMapper.selectByExample(eduEx);
+		List<Education> educationList = retrieveEducationList(user.getId());
 		form.setEducationList(educationList);
 		
 		return form;
+	}
+	
+	@Override
+	public List<Education> retrieveEducationList(int userId) {
+		EducationExample eduEx = new EducationExample();
+		eduEx.createCriteria().andUserIdEqualTo(userId);
+		eduEx.setOrderByClause("start_year desc, end_year desc");
+		return educationMapper.selectByExample(eduEx);
 	}
 	
 	@Override
@@ -74,7 +79,8 @@ public class ResumeServiceImpl implements ResumeService {
 			educationMapper.insert(education);
 			
 			Map<String, Object> data = new HashMap<String, Object>();
-			data.put("education", education);
+			List<Education> educationList = retrieveEducationList(user.getId());
+			data.put("educations", educationList);
 			jsonResponse.setData(data);
 			
 		}else if("save".equals(educationForm.getAction())){
@@ -88,7 +94,8 @@ public class ResumeServiceImpl implements ResumeService {
 			educationMapper.updateByPrimaryKeySelective(education);
 			
 			Map<String, Object> data = new HashMap<String, Object>();
-			data.put("education", education);
+			List<Education> educationList = retrieveEducationList(user.getId());
+			data.put("educations", educationList);
 			jsonResponse.setData(data);
 			
 		}else if("delete".equals(educationForm.getAction())){
