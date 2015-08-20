@@ -12,6 +12,10 @@ public class JsonResponse {
 	private String message;
 	private Map<String, Object> data;
 	private boolean hasErrors = false;
+	
+	public JsonResponse(){
+		
+	}
 	 
 	public JsonResponse(String status, String message) {
 		this.status = status;

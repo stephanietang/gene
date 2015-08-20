@@ -11,6 +11,7 @@
 					<li><a href="#basic-info">基本信息</a></li>
 					<li><a href="#education">教育经历</a></li>
 					<li><a href="#work-experience">工作经历</a></li>
+					<li><a href="#self-intro">工作经历</a></li>
 				</ul>
 				<a class="back-to-top" href="#top">回到顶部</a>
             
@@ -105,7 +106,7 @@
 				</c:forEach>
 				</div>
 				
-				<div id="edu-hidden-template" class="dn">
+				<div id="edu-hidden-template" class="hide">
 					<form class="form-horizontal" >
 						<input type="hidden" id="eduId" name="eduId" value="" />
 						<div class="form-group">
@@ -149,6 +150,21 @@
 					<p class="text-left">Java工程师</p>
 					<p class="text-left">2009~2013</p>
 				</div>
+			</div>
+			
+			<div class="bs-docs-section">
+				<h1 id="self-intro" class="page-header"><a class="anchorjs-link " href="#self-intro"></a>自我描述</h1>
+				
+				<form id="selfIntroForm">
+					<input name="title" type="text" placeholder="Title?" />
+					<textarea name="content" data-provide="markdown" rows="10"></textarea>
+					<label class="checkbox">
+						<input name="publish" type="checkbox"> Publish
+					</label>
+			    	<hr/>
+			    	<button type="submit" class="btn">Submit</button>
+			  	</form> 
+			  	
 			</div>
 		</div>
 
@@ -209,6 +225,56 @@ jQuery(document).ready(function() {
 		}
 	});
 	
+	$("#eduAddForm").validate({
+		rules: {
+			schoolName: {
+				required: true
+			},
+			degree : {
+				required: true
+			},
+			department: {
+				required: true
+			},
+			startYear: {
+				required: true,
+				digits: true
+			},
+			endYear: {
+				required: true,
+				digits: true
+			}
+		}
+	});
+	
+	//validate on newly created form
+	function initValidationEducationForm(oForm){
+		
+		$(oForm).validate({
+			onfocusin: function(element) { // validate immediately when focus on the input box
+		        $(element).valid();
+		    },
+			rules: {
+				schoolName: {
+					required: true
+				},
+				degree : {
+					required: true
+				},
+				department: {
+					required: true
+				},
+				startYear: {
+					required: true,
+					digits: true
+				},
+				endYear: {
+					required: true,
+					digits: true
+				}
+			}
+		});
+	}	
 	
 	$("#education-section").on("click",".edu-edit",function(){
 		var html = "";
@@ -228,6 +294,9 @@ jQuery(document).ready(function() {
 		
 		$(".edu-edit").attr("disabled",true);
 		$(".edu-delete").attr("disabled",true);
+		
+		initValidationEducationForm(oForm);
+		
 	});
 	
 	$("#education-section").on("click",".edu-edit-cancel",function(){
@@ -241,16 +310,23 @@ jQuery(document).ready(function() {
 	});
 	
 	$("#education-section").on("click",".edu-add",function(){
-		var json;
 		var oForm = $("#eduAddForm");
+		
+		var valid = $(oForm).valid();
+		
+		if(! valid){
+			return ;
+		}
+		
+		var json;
+		
 		json = JSON.stringify({
 			action : "add", 
 			schoolName : $('input[name="schoolName"]',oForm).val(),
 			degree : $('select[name="degree"]',oForm).val(),
 			startYear : $('input[name="startYear"]',oForm).val(),
 			endYear : $('input[name="endYear"]',oForm).val(),
-			department : $('input[name="department"]',oForm).val(),
-			token : globals.token
+			department : $('input[name="department"]',oForm).val()
 			});
 		
 		jQuery.ajax({
@@ -271,18 +347,27 @@ jQuery(document).ready(function() {
 					var educationItems = result.data.educations;
 					initEducationList(educationItems);
 				}else{
-					$("#errorMessage").text(result.message).show();
+					alert(result.message);
 				}
 			},
 			error:function (){
-				$("#errorMessage").text("Error!").show();
+				alert("Error!");
 			}
 		});
 	});
 	
 	$("#education-section").on("click",".edu-save",function(){
-		var json;
+		
 		var oForm = $("#eduEditForm");
+		
+		var valid = $(oForm).valid();
+		
+		if(! valid){
+			return ;
+		}
+		
+		var json;
+		
 		json = JSON.stringify({
 			action : "save", 
 			educationId : $("#eduId",oForm).val(),
@@ -290,8 +375,7 @@ jQuery(document).ready(function() {
 			degree : $('select[name="degree"]',oForm).val(),
 			startYear : $('input[name="startYear"]',oForm).val(),
 			endYear : $('input[name="endYear"]',oForm).val(),
-			department : $('input[name="department"]',oForm).val(),
-			token : globals.token
+			department : $('input[name="department"]',oForm).val()
 			});
 		
 		jQuery.ajax({
@@ -301,13 +385,16 @@ jQuery(document).ready(function() {
 			dataType : "json",
 			data: json,
 			success:function(result){
-				// TODO
-				globals.token = 1;
-				
-				var eduItems = result.data.educations;
-				initEducationList(eduItems);
+				if(result.status == '200'){
+					var eduItems = result.data.educations;
+					initEducationList(eduItems);
+				}else{
+					alert(result.message);
+				}
 			},
-			error:function (){}
+			error:function (){
+				alert("Error!");
+			}
 		});
 		
 		$("#eduAddForm").removeClass("disabled");
@@ -335,12 +422,15 @@ jQuery(document).ready(function() {
 			dataType : "json",
 			data: json,
 			success:function(result){
-				// TODO
-				globals.token = 1;
-				
-				$(referItem).remove();
+				if(result.status == '200'){
+					$(referItem).remove();
+				}else{
+					alert(result.message);
+				}
 			},
-			error:function (){}
+			error:function (){
+				alert("Error!");
+			}
 		});
 	});
 	
@@ -385,10 +475,6 @@ function getDegreeTxt(degree){
 	return degreeTxt;
 }
 
-window.globals = {
-	
-	token : "f432be451d8144fb8928a242fee7c51b"
-};
 </script>
 
 <%@ include file="../common/footer.jsp" %>

@@ -14,19 +14,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title></title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-	<link rel="stylesheet" href="http://v3.bootcss.com/assets/css/docs.min.css" />
+	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-3.3.5.css">
+	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-theme-3.3.5.css">
+	<link rel="stylesheet" href="${contextPath}/resources/css/docs.min.css" />
 	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-datepicker3.standalone.min.css" />
+	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-markdown.min.css" />
 	<!-- <link rel="stylesheet" href="${contextPath}/resources/css/main.css"> -->
 	
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<script src="http://v3.bootcss.com/assets/js/docs.min.js"></script>
+	<script src="${contextPath}/resources/js/jquery-1.11.3.min.js"></script>
+	<script src="${contextPath}/resources/js/jquery.validate-1.14.0.min.js"></script>
+	<script src="${contextPath}/resources/js/bootstrap-3.3.5.min.js"></script>
+	<script src="${contextPath}/resources/js/docs.min.js"></script>
 	<script src="${contextPath}/resources/js/additional-methods.js"></script>
 	<script src="${contextPath}/resources/js/message_zh.js"></script>
 	<script src="${contextPath}/resources/js/bootstrap-datepicker.min.js"></script>
+	<script src="${contextPath}/resources/js/bootstrap-markdown.js"></script>
+	<script src="${contextPath}/resources/js/markdown.js"></script>
+	<script src="${contextPath}/resources/js/to-markdown.js"></script>
 	<!-- <script src="${contextPath}/resources/js/main.js"></script>-->
 	<script>var ctx = "${contextPath}"</script>
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -82,5 +86,5 @@
 	</header>
 	
 	<div class="row">
-		<div id="errorMessage" class="col-md-offset-2 col-md-8 alert alert-warning dn" role="alert"></div>
+		<div id="errorMessage" class="col-md-offset-2 col-md-8 alert alert-warning hide" role="alert">aaaa</div>
 	</div>

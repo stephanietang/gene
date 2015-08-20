@@ -10,10 +10,6 @@
 	float: left;
 }
 
-.dn {
-	display: none;
-}
-
 .disabled {
 	opacity: .5;
 	background-color: #DDDDDD;

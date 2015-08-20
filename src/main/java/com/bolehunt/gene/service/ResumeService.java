@@ -18,6 +18,6 @@ public interface ResumeService {
 	
 	public JsonResponse validateEducationForm(EducationForm educationForm);
 	
-	public void proceedEducationForm(EducationForm educationForm, User user, JsonResponse jsonResponse);
+	public JsonResponse proceedEducationForm(EducationForm educationForm, User user);
 
 }

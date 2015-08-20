@@ -61,46 +61,84 @@ public class ResumeServiceImpl implements ResumeService {
 			return WebUtil.formatJsonResponse(Status.UNKNOWN_EXCEPTION);
 		}
 		
-		// TODO verify token
-		
 		return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
 	}
 	
 	@Override
-	public void proceedEducationForm(EducationForm educationForm, User user, JsonResponse jsonResponse){
+	public JsonResponse proceedEducationForm(EducationForm educationForm, User user){
+		JsonResponse jsonResponse = null;
 		if("add".equals(educationForm.getAction())){
-			Education education = new Education();
-			education.setUserId(user.getId());
-			education.setSchoolName(educationForm.getSchoolName());
-			education.setDegree(educationForm.getDegree());
-			education.setStartYear(educationForm.getStartYear());
-			education.setEndYear(educationForm.getEndYear());
-			education.setDepartment(educationForm.getDepartment());
-			educationMapper.insert(education);
 			
-			Map<String, Object> data = new HashMap<String, Object>();
-			List<Education> educationList = retrieveEducationList(user.getId());
-			data.put("educations", educationList);
-			jsonResponse.setData(data);
+			jsonResponse = addEducation(educationForm, user);
+		
+		} else if("save".equals(educationForm.getAction())){
 			
-		}else if("save".equals(educationForm.getAction())){
-			Education education = new Education();
-			education.setId(educationForm.getEducationId());
-			education.setSchoolName(educationForm.getSchoolName());
-			education.setDegree(educationForm.getDegree());
-			education.setStartYear(educationForm.getStartYear());
-			education.setEndYear(educationForm.getEndYear());
-			education.setDepartment(educationForm.getDepartment());
-			educationMapper.updateByPrimaryKeySelective(education);
-			
-			Map<String, Object> data = new HashMap<String, Object>();
-			List<Education> educationList = retrieveEducationList(user.getId());
-			data.put("educations", educationList);
-			jsonResponse.setData(data);
+			jsonResponse = updateEducation(educationForm, user);
 			
 		}else if("delete".equals(educationForm.getAction())){
-			educationMapper.deleteByPrimaryKey(educationForm.getEducationId());
+			
+			jsonResponse = deleteEducation(educationForm, user);
+		
 		}
+		return jsonResponse;
+	}
+	
+	private JsonResponse addEducation(EducationForm educationForm, User user){
+		
+		Education education = new Education();
+		education.setUserId(user.getId());
+		education.setSchoolName(educationForm.getSchoolName());
+		education.setDegree(educationForm.getDegree());
+		education.setStartYear(educationForm.getStartYear());
+		education.setEndYear(educationForm.getEndYear());
+		education.setDepartment(educationForm.getDepartment());
+		educationMapper.insert(education);
+		
+		Map<String, Object> data = new HashMap<String, Object>();
+		List<Education> educationList = retrieveEducationList(user.getId());
+		JsonResponse jsonResponse = WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
+		data.put("educations", educationList);
+		jsonResponse.setData(data);
+		return jsonResponse;
+	}
+	
+	private JsonResponse updateEducation(EducationForm educationForm, User user){
+		Education education = educationMapper.selectByPrimaryKey(educationForm.getEducationId());
+		
+		if(education == null){
+			return WebUtil.formatJsonResponse(Status.UNKNOWN_EXCEPTION);
+		}else if(! education.getUserId().equals(user.getId())){
+			return WebUtil.formatJsonResponse(Status.USER_FORBIDDEN_ACCESS);
+		}
+		
+		education.setSchoolName(educationForm.getSchoolName());
+		education.setDegree(educationForm.getDegree());
+		education.setStartYear(educationForm.getStartYear());
+		education.setEndYear(educationForm.getEndYear());
+		education.setDepartment(educationForm.getDepartment());
+		educationMapper.updateByPrimaryKeySelective(education);
+		
+		Map<String, Object> data = new HashMap<String, Object>();
+		List<Education> educationList = retrieveEducationList(user.getId());
+		JsonResponse jsonResponse = WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
+		data.put("educations", educationList);
+		jsonResponse.setData(data);
+		
+		return jsonResponse;
+	}
+	
+	private JsonResponse deleteEducation(EducationForm educationForm, User user){
+		Education education = educationMapper.selectByPrimaryKey(educationForm.getEducationId());
+		
+		if(education == null){
+			return WebUtil.formatJsonResponse(Status.UNKNOWN_EXCEPTION);
+		}else if(! education.getUserId().equals(user.getId())){
+			return WebUtil.formatJsonResponse(Status.USER_FORBIDDEN_ACCESS);
+		}
+		
+		educationMapper.deleteByPrimaryKey(educationForm.getEducationId());
+		return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
+		
 	}
 
 }

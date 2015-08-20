@@ -14,6 +14,7 @@ public enum Status {
 	USER_EMAIL_EXIST("201", "20106", "errMsg.user.email.existing"),
 	USER_EMAIL_INCORRECT_FORMAT("201","20107","errMsg.user.email.incorrect"),
 	USER_ALREADY_ENABLED("201", "20108", "errMsg.user.already.enalbed"),
+	USER_FORBIDDEN_ACCESS("201", "20109", "errMsg.user.forbidden.access"),
 	
 	TOKEN_ALREADY_VERIFIED("202", "20201", "errMsg.token.already.verified"),
 	TOKEN_ALREADY_EXPIRED("202", "20202", "errMsg.token.already.expired"),

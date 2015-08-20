@@ -75,10 +75,17 @@ public class ResumeController extends BaseController {
 	public JsonResponse educationCrudAction(@RequestBody EducationForm educationForm) {
 		
 		User user = getUser();
+		if(! user.isUserLogin()){
+			return WebUtil.formatJsonResponse(Status.UNKNOWN_EXCEPTION);
+		}
 		JsonResponse jsonResponse = resumeService.validateEducationForm(educationForm);
-		resumeService.proceedEducationForm(educationForm, user, jsonResponse);
+		if(jsonResponse.hasErrors()){
+			return jsonResponse;
+		}
+		
+		JsonResponse returnResponse = resumeService.proceedEducationForm(educationForm, user);
 		
 		log.info("Proceed education form successfully [{}]", user.getEmail());
-	    return jsonResponse;
+	    return returnResponse;
 	}
 }
