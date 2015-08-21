@@ -19,6 +19,7 @@
 	<link rel="stylesheet" href="${contextPath}/resources/css/docs.min.css" />
 	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-datepicker3.standalone.min.css" />
 	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-markdown.min.css" />
+	<link rel="stylesheet" href="${contextPath}/resources/css/fileinput.css" />
 	<!-- <link rel="stylesheet" href="${contextPath}/resources/css/main.css"> -->
 	
 	<script src="${contextPath}/resources/js/jquery-1.11.3.min.js"></script>
@@ -31,6 +32,8 @@
 	<script src="${contextPath}/resources/js/bootstrap-markdown.js"></script>
 	<script src="${contextPath}/resources/js/markdown.js"></script>
 	<script src="${contextPath}/resources/js/to-markdown.js"></script>
+	<script src="${contextPath}/resources/js/fileinput.js"></script>
+	<script src="${contextPath}/resources/js/fileinput_locale_zh.js"></script>
 	<!-- <script src="${contextPath}/resources/js/main.js"></script>-->
 	<script>var ctx = "${contextPath}"</script>
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->

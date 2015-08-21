@@ -11,7 +11,8 @@
 					<li><a href="#basic-info">基本信息</a></li>
 					<li><a href="#education">教育经历</a></li>
 					<li><a href="#work-experience">工作经历</a></li>
-					<li><a href="#self-intro">工作经历</a></li>
+					<li><a href="#self-intro">自我描述</a></li>
+					<li><a href="#works">作品展示</a></li>
 				</ul>
 				<a class="back-to-top" href="#top">回到顶部</a>
             
@@ -57,6 +58,39 @@
 				</div>
 			</div>
 			</form:form>
+			
+			<div class="bs-docs-section">
+				<h1 id="expected-work" class="page-header"><a class="anchorjs-link " href="#expected-work"></a>期望工作</h1>
+				<h2>您期望的工作地点是?</h2>
+				<div id="expected-location">
+					<div class="form-group">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" class="check" id="checkAll"> 深圳
+							</label>
+						</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" class="check"> 宝安区
+							</label>
+						</div>
+					    <div class="checkbox">
+							<label>
+								<input type="checkbox" class="check"> 福田区
+							</label>
+						</div>
+					    
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" class="check"> 罗湖区
+							</label>
+						</div>
+					</div>
+				</div>
+				<h2>您的职业方向是?</h2>
+				<div id="expected-profession">
+				</div>
+			</div>
 			
 			<div id="education-section" class="bs-docs-section" >
 				<h1 class="page-header"><a class="anchorjs-link " href="#education" ></a>教育经历</h1>
@@ -166,6 +200,13 @@
 			  	</form> 
 			  	
 			</div>
+			
+			<div class="bs-docs-section">
+				<h1 id="works" class="page-header"><a class="anchorjs-link " href="#works"></a>作品展示</h1>
+				
+				<input id="works-upload" name="works-upload[]" type="file" multiple class="file-loading">
+			  	
+			</div>
 		</div>
 
 	</div>
@@ -194,7 +235,17 @@
 
 	
 <script>
-jQuery(document).ready(function() { 
+jQuery(document).ready(function() {
+	
+	$("#checkAll").click(function () {
+	    $(".check").prop('checked', $(this).prop('checked'));
+	});
+	
+	$("#works-upload").fileinput({
+	    uploadUrl: "http://localhost/file-upload-single/1", // server upload action
+	    uploadAsync: true,
+	    maxFileCount: 5
+	});
 	
 	$(document).on("click", ".year-date", function() {
 		$(this).datepicker({
