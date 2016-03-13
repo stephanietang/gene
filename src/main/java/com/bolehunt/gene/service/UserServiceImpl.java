@@ -23,6 +23,7 @@ import com.bolehunt.gene.common.Constant;
 import com.bolehunt.gene.common.Constant.VerifyTokenType;
 import com.bolehunt.gene.common.JsonResponse;
 import com.bolehunt.gene.common.Status;
+import com.bolehunt.gene.domain.Menu;
 import com.bolehunt.gene.domain.User;
 import com.bolehunt.gene.domain.UserExample;
 import com.bolehunt.gene.domain.VerifyToken;
@@ -47,6 +48,18 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private VerifyTokenService verifyTokenService;
+	
+	@Override
+	public Menu getUserMenu(User user) {
+		
+		Menu menu = new Menu();
+		if(user != null) {
+			menu.setUserLogin(true);
+			menu.setTalent(true); // TODO
+		}
+		
+		return menu;
+	}
 	
 	@Override
 	public List<User> getAllUsers() {

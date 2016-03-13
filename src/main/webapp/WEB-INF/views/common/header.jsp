@@ -59,7 +59,7 @@
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="${contextPath}/index"><spring:message code="menu.index" /></a></li>
-					<c:if test="${user.userLogin}">
+					<c:if test="${menu.talent}">
 					<li><a href="${contextPath}/profile"><spring:message code="menu.myResume" /></a></li>
 					<li><a href="${contextPath}/profile/edit">修改简历</a></li>
 					</c:if>
@@ -67,7 +67,7 @@
 					<li><a href="#"><spring:message code="menu.myPost" /></a></li>
 					<li><a href="#"><spring:message code="menu.userManual" /></a></li>
 					<li><a href="http://v3.bootcss.com/css/#code-block">Bootstrap帮助</a></li>
-					<c:choose><c:when test="${not user.userLogin}">
+					<c:choose><c:when test="${menu.userLogin}">
 					<li><a href="${contextPath}/login"><spring:message code="menu.login" /></a></li>
 					<li><a href="${contextPath}/register"><spring:message code="menu.register" /></a></li>
 					</c:when><c:otherwise>

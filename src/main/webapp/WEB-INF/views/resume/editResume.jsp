@@ -19,14 +19,16 @@
 			</nav>
 		</div>
 		
-		
+		<div>aaaa:${avatar}</div>
 		<div class="col-md-9" role="main">
+			<label class="control-label">Upload Image via ajax</label>
+	        <input id="avatar-upload" type="file" name="avatar">
 			<form:form id="resumeForm" class="form-horizontal" method="post" action="${contextPath}/profile/edit" commandName="resumeForm">
 			<div class="bs-docs-section">
 				<form:hidden path="basicInfo.userId" />
 				<h1 class="page-header">${resumeForm.basicInfo.name}</h1>
 				<h2 id="basic-info" class="page-header"><a class="anchorjs-link " href="#basic-info" ></a>基本信息</h2>
-				
+				<div>uuid======   ${avatarUuid} aaa</div>
 				<div class="form-group">
 					<div class="col-sm-6"><form:input path="basicInfo.name" class="form-control" placeholder="姓名" /></div>
 					<div class="col-sm-2"><ct:options list="${AppBeans.countryList}" name="basicInfo.country" key="${resumeForm.basicInfo.country}"/></div>
@@ -204,8 +206,9 @@
 			<div class="bs-docs-section">
 				<h1 id="works" class="page-header"><a class="anchorjs-link " href="#works"></a>作品展示</h1>
 				
-				<input id="works-upload" name="works-upload[]" type="file" multiple class="file-loading">
-			  	
+	            <label class="control-label">Upload Works</label>
+				<input id="works-upload" type="file" name="files" multiple>
+				
 			</div>
 		</div>
 
@@ -232,20 +235,47 @@
 		</div>
 	</div>
 </div>
-
 	
 <script>
-jQuery(document).ready(function() {
+$(document).on('ready', function() {
+	
+	$("#avatar-upload").fileinput({
+		language: 'zh',
+		showUpload: true,
+		showCaption: false,
+		type: 'POST',
+		cache: false,
+        allowedFileExtensions: ['jpg', 'png', 'gif'],
+        allowedFileTypes: ['image'],
+        maxFileSize: 2000,
+        enctype: 'multipart/form-data',
+	    uploadUrl: ctx + "/uploadAvatar",
+	    initialPreviewShowDelete: true,
+	    overwriteInitial: true,
+	    initialPreview: [
+			"<img src='"+ctx+"/image/" + ${avatarUuid} + "' class='file-preview-image' alt='Avatar' title='Avatar'>"
+		],
+	});
+	
+	$("#works-upload").fileinput({
+		language: 'zh',
+		showUpload: true,
+		showCaption: false,
+		type: 'POST',
+		cache: false,
+        allowedFileExtensions: ['jpg', 'png', 'gif'],
+        allowedFileTypes: ['image'],
+        maxFileSize: 2000,
+        enctype: 'multipart/form-data',
+	    uploadUrl: ctx + "/uploadWorks",
+	    uploadAsync: true,
+	    maxFileCount: 5
+	});
 	
 	$("#checkAll").click(function () {
 	    $(".check").prop('checked', $(this).prop('checked'));
 	});
-	
-	$("#works-upload").fileinput({
-	    uploadUrl: "http://localhost/file-upload-single/1", // server upload action
-	    uploadAsync: true,
-	    maxFileCount: 5
-	});
+
 	
 	$(document).on("click", ".year-date", function() {
 		$(this).datepicker({
@@ -297,35 +327,6 @@ jQuery(document).ready(function() {
 			}
 		}
 	});
-	
-	//validate on newly created form
-	function initValidationEducationForm(oForm){
-		
-		$(oForm).validate({
-			onfocusin: function(element) { // validate immediately when focus on the input box
-		        $(element).valid();
-		    },
-			rules: {
-				schoolName: {
-					required: true
-				},
-				degree : {
-					required: true
-				},
-				department: {
-					required: true
-				},
-				startYear: {
-					required: true,
-					digits: true
-				},
-				endYear: {
-					required: true,
-					digits: true
-				}
-			}
-		});
-	}	
 	
 	$("#education-section").on("click",".edu-edit",function(){
 		var html = "";
@@ -486,6 +487,35 @@ jQuery(document).ready(function() {
 	});
 	
 });
+
+//validate on newly created form
+function initValidationEducationForm(oForm){
+	
+	$(oForm).validate({
+		onfocusin: function(element) { // validate immediately when focus on the input box
+	        $(element).valid();
+	    },
+		rules: {
+			schoolName: {
+				required: true
+			},
+			degree : {
+				required: true
+			},
+			department: {
+				required: true
+			},
+			startYear: {
+				required: true,
+				digits: true
+			},
+			endYear: {
+				required: true,
+				digits: true
+			}
+		}
+	});
+}
 
 function initEducationList(eduItems){
 	$("#education-items-container").empty();

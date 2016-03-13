@@ -21,6 +21,8 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	
 	<!-- defined in root-context.xml -->
 	<!-- 	
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
@@ -37,6 +39,11 @@
 		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
 			<property name="paramName" value="lang" />
 		</bean>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+    		<mvc:exclude-mapping path="/resources/**" />
+			<bean class="com.bolehunt.gene.filter.SessionInterceptor" />
+		</mvc:interceptor>
 	</mvc:interceptors>
 	
 	<mvc:resources mapping="/resources/**" location="/public-resources/" cache-period="31556926" />

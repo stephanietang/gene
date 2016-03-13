@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bolehunt.gene.common.JsonResponse;
-import com.bolehunt.gene.common.Status;
-import com.bolehunt.gene.domain.User;
+import com.bolehunt.gene.domain.Avatar;
 import com.bolehunt.gene.form.EducationForm;
 import com.bolehunt.gene.form.ResumeForm;
+import com.bolehunt.gene.service.FileService;
 import com.bolehunt.gene.service.ResumeService;
-import com.bolehunt.gene.util.WebUtil;
 
 @Controller
 public class ResumeController extends BaseController {
@@ -27,12 +26,11 @@ public class ResumeController extends BaseController {
 	@Autowired
 	private ResumeService resumeService;
 	
+	@Autowired
+	private FileService fileService;
+	
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
 	public String viewResumePage(ModelMap model) {
-		User user = getUser();
-		if(!user.userLogin){
-			return "redirect:/index";
-		}
 		
 		ResumeForm resumeForm = resumeService.retrieveResume(user);
 		
@@ -41,26 +39,24 @@ public class ResumeController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/profile/edit", method = RequestMethod.GET)
-	public String editResumePage(ModelMap model) {
-		User user = getUser();
-		if(!user.userLogin){
-			return "redirect:/index";
-		}
-		
+	public String editResumePage(@ModelAttribute ModelMap model) {
+
 		ResumeForm resumeForm = resumeService.retrieveResume(user);
 		model.put("resumeForm", resumeForm);
 		
 		EducationForm educationForm = new EducationForm();
 		model.put("educationForm", educationForm);
+		
+		Avatar avatar = fileService.getAvatarByUserId(user.getId());
+		if(avatar != null){
+			model.put("avatar", avatar.getUuid());
+		}
+		
 		return "resume/editResume";
 	}
 	
 	@RequestMapping(value = "/profile/edit", method = RequestMethod.POST)
 	public String editResumePageSubmit(@ModelAttribute("resumeForm") ResumeForm resumeForm) {
-		User user = getUser();
-		if(!user.userLogin){
-			return "redirect:/index";
-		}
 		
 		resumeService.saveResume(resumeForm);
 		
@@ -74,10 +70,6 @@ public class ResumeController extends BaseController {
 	@ResponseBody
 	public JsonResponse educationCrudAction(@RequestBody EducationForm educationForm) {
 		
-		User user = getUser();
-		if(! user.isUserLogin()){
-			return WebUtil.formatJsonResponse(Status.UNKNOWN_EXCEPTION);
-		}
 		JsonResponse jsonResponse = resumeService.validateEducationForm(educationForm);
 		if(jsonResponse.hasErrors()){
 			return jsonResponse;

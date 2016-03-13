@@ -3,6 +3,7 @@ package com.bolehunt.gene.service;
 import java.util.List;
 
 import com.bolehunt.gene.common.JsonResponse;
+import com.bolehunt.gene.domain.Menu;
 import com.bolehunt.gene.domain.User;
 import com.bolehunt.gene.form.LoginForm;
 import com.bolehunt.gene.form.RegisterForm;
@@ -10,6 +11,8 @@ import com.bolehunt.gene.form.ResumeForm;
 import com.bolehunt.gene.form.UpdatePasswordForm;
 
 public interface UserService {
+	
+	public Menu getUserMenu(User user);
 	
 	public List<User> getAllUsers();
 	

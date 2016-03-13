@@ -24,6 +24,7 @@
 	    <!-- <property name="sessionManager.globalSessionTimeout" value="3600000" /> -->
 	</bean>
 	
+	<!-- Spring integration -->
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
 

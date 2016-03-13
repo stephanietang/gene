@@ -19,6 +19,10 @@ public class LoginController extends BaseController {
 	
 	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 	
+	LoginController() {
+		log.debug("LoginController constructor");
+	}
+	
 	@Autowired
 	private UserService userService;
 	

@@ -177,16 +177,4 @@ public class User implements Serializable {
     	return this.enabled.equals(Constant.UserEnableType.ENABLED.getValue())? true : false;
     }
     
-    public boolean userLogin = false;
-
-	public boolean isUserLogin() {
-		return userLogin;
-	}
-
-	public void setUserLogin(boolean userLogin) {
-		this.userLogin = userLogin;
-	}
-    
-    
-    
 }

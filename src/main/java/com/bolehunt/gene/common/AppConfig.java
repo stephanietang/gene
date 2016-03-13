@@ -23,6 +23,8 @@ public class AppConfig {
 	private final static String TOKEN_REGISTRATION_LIVE_MINUTES = "token.emailRegistration.timeToLive.inMinutes";
 	private final static String TOKEN_LOST_PASSWORD_LIVE_MINUTES = "token.lostPassword.timeToLive.inMinutes";
 	
+	private final static String FILE_UPLOAD_PATH = "fileupload.path";
+	
 	@Autowired
     protected Environment env;
 	
@@ -64,6 +66,10 @@ public class AppConfig {
 	
 	public int getTokenLostPasswordLiveMinutes(){
 		return Integer.parseInt(env.getProperty(TOKEN_LOST_PASSWORD_LIVE_MINUTES));
+	}
+	
+	public String getFileUploadPath(){
+		return env.getProperty(FILE_UPLOAD_PATH);
 	}
 	
 	

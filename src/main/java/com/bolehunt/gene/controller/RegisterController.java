@@ -22,7 +22,6 @@ import com.bolehunt.gene.common.Status;
 import com.bolehunt.gene.domain.User;
 import com.bolehunt.gene.form.RegisterForm;
 import com.bolehunt.gene.form.UpdatePasswordForm;
-import com.bolehunt.gene.service.UserService;
 import com.bolehunt.gene.service.VerifyTokenService;
 import com.bolehunt.gene.util.WebUtil;
 
@@ -30,9 +29,6 @@ import com.bolehunt.gene.util.WebUtil;
 public class RegisterController extends BaseController {
 	
 	private static final Logger log = LoggerFactory.getLogger(RegisterController.class);
-	
-	@Autowired
-	private UserService userService;
 	
 	@Autowired
 	private VerifyTokenService verifyTokenService;
@@ -176,11 +172,6 @@ public class RegisterController extends BaseController {
 	
 	@RequestMapping(value = "/updatePassword", method = RequestMethod.GET)
 	public String accountSetting(ModelMap model) {
-		
-		User user = getUser();
-		if(! user.isUserLogin()){
-			return "redirect:/index";
-		}
 		
 		UpdatePasswordForm updatePasswordForm = new UpdatePasswordForm();
 		updatePasswordForm.setEmail(user.getEmail());
