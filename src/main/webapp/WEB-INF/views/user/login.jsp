@@ -24,9 +24,10 @@
 	<div class="form-group">
     	<div class="col-sm-offset-2 col-sm-10">
     		<spring:message code="button.user.login" var="loginButton"/>
-			<input type="submit" class="btn btn-primary" value="${loginButton}"></input>
+			<input type="submit" class="btn btn-primary" id="loginButton" value="${loginButton}"></input>
 		</div>
 	</div>
+	
 </form:form>
 </div>
 	
@@ -47,38 +48,19 @@ jQuery(document).ready(function() {
 			}
 		},
 		submitHandler:function(form){
-			var email = $('#email').val();
-			var password = $('#password').val();
-			var rememberMe = false;
-			if($("#rememberMe").is(':checked')){
-				rememberMe = true;
-			}
-		    var json = JSON.stringify({email:email, password:password, rememberMe: rememberMe});
-		    $.ajax({
-		    	url: ctx + "/login.json",
-		    	type: "post",
-		    	contentType: "application/json; charset=utf-8",
-		        dataType : 'json',
-		        data: json,
-		        success : function(result){
-		        	if(result.status == '200'){
-		        		$(location).attr('href',ctx + "/index"); 
-		        	}else{
-		        		$("#errorMessage").text(result.message).show();
-		        	}
-		        },
-		        error : function(){
-		        	$("#errorMessage").text("Error!").show();
-		        }
-		    });
+			$('#loginButton').attr('disabled','disabled');
+			// use native form not $(form) to avoid recursive validation
+			form.submit();
 		}
 	});
 	
 	$("#email").focus(function() {
+		$('#msg').text("").hide();
 		$('#errorMessage').text("").hide();
 	});
 	
 	$("#password").focus(function() {
+		$('#msg').text("").hide();
 		$('#errorMessage').text("").hide();
 	});
 });

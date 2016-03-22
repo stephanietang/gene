@@ -55,6 +55,10 @@ public class Constant {
 			return value;
 		}
 	}
+	
+	public static enum SecurityRole {
+		ROLE_TALENT, ROLE_ENTERPRISE, ROLE_ADMIN
+	}
 
 	
 }

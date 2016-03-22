@@ -1,4 +1,4 @@
-package com.bolehunt.gene.service;
+package com.bolehunt.gene.service.impl;
 
 import java.util.List;
 
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.bolehunt.gene.domain.Avatar;
 import com.bolehunt.gene.domain.AvatarExample;
 import com.bolehunt.gene.persistence.AvatarMapper;
+import com.bolehunt.gene.service.FileService;
 
 @Service
 public class FileServiceImpl implements FileService {

@@ -3,6 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="ct" tagdir="/WEB-INF/tags" %>
 <%@ page import="com.bolehunt.gene.common.AppBeans" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
@@ -13,6 +14,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
 	<title></title>
 	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-3.3.5.css">
 	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-theme-3.3.5.css">
@@ -46,7 +49,11 @@
 	<c:set var="version"><%= java.util.UUID.randomUUID() %></c:set>
 	<link rel="stylesheet" href="${contextPath}/resources/css/main.css?v=${version}">
 	<script src="${contextPath}/resources/js/main.js?v=${version}"></script>
-	
+	<script>
+		function logoutSubmit() {
+			document.getElementById("logoutForm").submit();
+		}
+	</script>
 </head>
 <body>
 	<a id="skippy" class="sr-only sr-only-focusable" href="#content"><div class="container"><span class="skiplink-text">Skip to main content</span></div></a>
@@ -59,35 +66,40 @@
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="${contextPath}/index"><spring:message code="menu.index" /></a></li>
-					<c:if test="${menu.talent}">
-					<li><a href="${contextPath}/profile"><spring:message code="menu.myResume" /></a></li>
-					<li><a href="${contextPath}/profile/edit">修改简历</a></li>
-					</c:if>
+					<sec:authorize access="hasRole('ROLE_TALENT')">
+						<li><a href="${contextPath}/talent/profile"><spring:message code="menu.myResume" /></a></li>
+						<li><a href="${contextPath}/talent/profile/edit">修改简历</a></li>
+					</sec:authorize>
 					<li><a href="#"><spring:message code="menu.postList" /></a></li>
 					<li><a href="#"><spring:message code="menu.myPost" /></a></li>
 					<li><a href="#"><spring:message code="menu.userManual" /></a></li>
 					<li><a href="http://v3.bootcss.com/css/#code-block">Bootstrap帮助</a></li>
-					<c:choose><c:when test="${menu.userLogin}">
-					<li><a href="${contextPath}/login"><spring:message code="menu.login" /></a></li>
-					<li><a href="${contextPath}/register"><spring:message code="menu.register" /></a></li>
-					</c:when><c:otherwise>
+					<c:choose><c:when test="${pageContext.request.userPrincipal.name != null}">
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><spring:message code="menu.accountSetting" /> <span class="caret"></span></a>
 						<ul class="dropdown-menu">
-              				<li><a href="${contextPath}/updatePassword"><spring:message code="menu.updatePassword" /></a></li>
+              				<li><a href="<c:url value="/updatePassword" />"><spring:message code="menu.updatePassword" /></a></li>
               				<li><a href="#"><spring:message code="menu.alertSetting" /></a></li>
               				<li><a href="#"><spring:message code="menu.postFilter" /></a></li>
               				<li><a href="#"><spring:message code="menu.messageList" /></a></li>
               				<li class="divider"></li>
-              				<li><a href="${contextPath}/logout"><spring:message code="menu.logout" /></a></li>
+              				<li><a href="javascript:logoutSubmit()"><spring:message code="menu.logout" /></a></li>
 						</ul>
 					</li>
+					</c:when><c:otherwise>
+					<li><a href="<c:url value="/login" />"><spring:message code="menu.login" /></a></li>
+					<li><a href="<c:url value="/register" />"><spring:message code="menu.register" /></a></li>
 					</c:otherwise></c:choose>
 				</ul>
 			</div>
 		</div>
 	</header>
 	
-	<div class="row">
-		<div id="errorMessage" class="col-md-offset-2 col-md-8 alert alert-warning hide" role="alert">aaaa</div>
-	</div>
+	<form:form action="logout" method="post" id="logoutForm"></form:form>
+	
+	<c:if test="${not empty errorMessage}">
+		<div class="row"><div id="errorMessage" class="col-md-offset-2 col-md-8 alert alert-danger" role="alert">${errorMessage}</div></div>
+	</c:if>
+	<c:if test="${not empty msg}">
+		<div class="row"><div id="msg" class="col-md-offset-2 col-md-8 alert alert-info" role="alert">${msg}</div></div>
+	</c:if>

@@ -11,8 +11,8 @@
 	
 	<properties>
         <springframework.version>4.1.6.RELEASE</springframework.version>
+        <springsecurity.version>4.0.1.RELEASE</springsecurity.version>
         <springframework.integration.version>3.0.7.RELEASE</springframework.integration.version>
-        <shiro.version>1.2.3</shiro.version>
         <java.version>1.7</java.version>
         <org.slf4j-version>1.5.10</org.slf4j-version>
     </properties> 
@@ -69,6 +69,23 @@
             <artifactId>spring-context-support</artifactId>
             <version>${springframework.version}</version>
         </dependency>
+        
+        <!-- Spring security -->
+		<dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${springsecurity.version}</version>
+        </dependency>
+		<dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${springsecurity.version}</version>
+        </dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${springsecurity.version}</version>
+		</dependency>
 
 		<!-- Mysql -->
 		<dependency>
@@ -106,23 +123,6 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
-		</dependency>
-		
-		<!-- Shiro -->
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-core</artifactId>
-			<version>${shiro.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-web</artifactId>
-			<version>${shiro.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-spring</artifactId>
-			<version>${shiro.version}</version>
 		</dependency>
 		
 		<!-- Logging -->

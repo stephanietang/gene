@@ -9,9 +9,6 @@ import org.springframework.core.env.Environment;
 @PropertySource({"classpath:application.properties"})
 public class AppConfig {
 	
-	private final static String SHIRO_APPLICATION_SALT = "shiro.applicationSalt";
-	private final static String SHIRO_HASH_ITERATION = "shiro.hashIterations";
-	
 	private final static String HOST_NAME_Url = "hostNameUrl";
 	
 	private final static String EMAIL_FROM_ADDRESS = "email.services.fromAddress";
@@ -27,14 +24,6 @@ public class AppConfig {
 	
 	@Autowired
     protected Environment env;
-	
-	public String getShiroApplicationSalt(){
-		return env.getProperty(SHIRO_APPLICATION_SALT);
-	}
-	
-	public String getShiroHashIteration(){
-		return env.getProperty(SHIRO_HASH_ITERATION);
-	}
 
 	public String getHostNameUrl(){
 		return env.getProperty(HOST_NAME_Url);

@@ -19,5 +19,11 @@ public class HomeController extends BaseController {
 		
 		return "index";
 	}
+ 
+    @RequestMapping(value = "/403", method = RequestMethod.GET)
+    public String accessDeniedPage(ModelMap model) {
+        model.addAttribute("user", getPrincipal());
+        return "403";
+    }
 
 }

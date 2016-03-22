@@ -10,7 +10,7 @@ id="WebApp_ID" version="3.0">
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:META-INF/root-context.xml</param-value>
+		<param-value>classpath:META-INF/root-context.xml, classpath:META-INF/spring-security.xml</param-value>
 	</context-param>
 	
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
@@ -30,38 +30,21 @@ id="WebApp_ID" version="3.0">
 	    </init-param>
     	<load-on-startup>1</load-on-startup>
     </servlet>
-	
 	<servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
     
     <!-- Web Page and Web Page Fragment Caching -->
-	<filter>
+	<!-- <filter>
 		<filter-name>SimplePageCachingFilter</filter-name>
 		<filter-class>net.sf.ehcache.constructs.web.filter.SimplePageCachingFilter</filter-class>
 	</filter>
-	
 	<filter-mapping>
 		<filter-name>SimplePageCachingFilter</filter-name>
-		<!-- Config url which pages need to cache -->
+		Config url which pages need to cache
 		<url-pattern>/</url-pattern>
-	</filter-mapping>
-    
-    <!-- Shiro Filter -->
-    <filter>
-	    <filter-name>shiroFilter</filter-name>
-	    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-	    <init-param>
-	        <param-name>targetFilterLifecycle</param-name>
-	        <param-value>true</param-value>
-	    </init-param>
-	</filter>
-	
-	<filter-mapping>
-	    <filter-name>shiroFilter</filter-name>
-	    <url-pattern>/*</url-pattern>
-	</filter-mapping>
+	</filter-mapping> -->
 	
 	<!-- Charset Encoding Filter -->
 	<filter>
@@ -74,9 +57,18 @@ id="WebApp_ID" version="3.0">
 			<param-value>UTF-8</param-value>
 		</init-param>
 	</filter>
-  
 	<filter-mapping>
 		<filter-name>CharsetEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- spring security -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
@@ -97,7 +89,7 @@ id="WebApp_ID" version="3.0">
 	
 	<!-- Override Container session timeout in minutes, default is 30 min -->
 	<session-config> 
-		<session-timeout>60</session-timeout> 
+		<session-timeout>30</session-timeout> 
 	</session-config>
    
 </web-app>

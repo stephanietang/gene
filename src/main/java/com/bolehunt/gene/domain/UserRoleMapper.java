@@ -1,4 +1,4 @@
-package com.bolehunt.gene.persistence;
+package com.bolehunt.gene.domain;
 
 import com.bolehunt.gene.domain.UserRole;
 import com.bolehunt.gene.domain.UserRoleExample;

@@ -1,16 +1,9 @@
-package com.bolehunt.gene.service;
+package com.bolehunt.gene.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.crypto.SecureRandomNumberGenerator;
-import org.apache.shiro.crypto.hash.Sha512Hash;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +16,19 @@ import com.bolehunt.gene.common.Constant;
 import com.bolehunt.gene.common.Constant.VerifyTokenType;
 import com.bolehunt.gene.common.JsonResponse;
 import com.bolehunt.gene.common.Status;
-import com.bolehunt.gene.domain.Menu;
+import com.bolehunt.gene.domain.Role;
+import com.bolehunt.gene.domain.RoleExample;
 import com.bolehunt.gene.domain.User;
 import com.bolehunt.gene.domain.UserExample;
 import com.bolehunt.gene.domain.VerifyToken;
 import com.bolehunt.gene.exception.ApplicationException;
 import com.bolehunt.gene.exception.UnknownResourceException;
-import com.bolehunt.gene.form.LoginForm;
 import com.bolehunt.gene.form.RegisterForm;
 import com.bolehunt.gene.form.UpdatePasswordForm;
+import com.bolehunt.gene.persistence.RoleMapper;
 import com.bolehunt.gene.persistence.UserMapper;
+import com.bolehunt.gene.service.UserService;
+import com.bolehunt.gene.service.VerifyTokenService;
 import com.bolehunt.gene.util.WebUtil;
 
 @Service
@@ -47,19 +43,10 @@ public class UserServiceImpl implements UserService {
 	private UserMapper userMapper;
 	
 	@Autowired
-	private VerifyTokenService verifyTokenService;
+	private RoleMapper roleMapper;
 	
-	@Override
-	public Menu getUserMenu(User user) {
-		
-		Menu menu = new Menu();
-		if(user != null) {
-			menu.setUserLogin(true);
-			menu.setTalent(true); // TODO
-		}
-		
-		return menu;
-	}
+	@Autowired
+	private VerifyTokenService verifyTokenService;
 	
 	@Override
 	public List<User> getAllUsers() {
@@ -128,20 +115,15 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public static String getSalt() {
-	    return new SecureRandomNumberGenerator().nextBytes().toBase64();
+		//to_base(64)
+		return "";
 	}
 	
 	public String encodePassword(String rawPassword, String salt) {
-	    return new Sha512Hash(rawPassword, this.getCombinedSalt(salt), this.getIterations()).toBase64();
+		// hash algorithm
+		return "";
 	}
 	
-	public String getCombinedSalt(String salt) {
-		return config.getShiroApplicationSalt() + ":" + salt;
-	}
-	
-	public Integer getIterations() {
-		return Integer.parseInt(config.getShiroHashIteration());
-	}
 	
 	@Override
 	public void updateUserPassword(User user, String newPassword){
@@ -232,40 +214,6 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public JsonResponse validateLoginForm(LoginForm form){
-		if(form == null){
-			return WebUtil.formatJsonResponse(Status.UNKNOWN_EXCEPTION);
-		}
-		
-		String email = form.getEmail();
-		String password = form.getPassword();
-		boolean rememberMe = form.isRememberMe();
-		
-		Subject currentUser = SecurityUtils.getSubject();
-		
-		if(! currentUser.isAuthenticated()){
-			UsernamePasswordToken token = new UsernamePasswordToken(email, password);
-			token.setRememberMe(rememberMe);
-			try{
-	            currentUser.login(token);
-	            log.info( "User [" + currentUser.getPrincipal() + "] logged in successfully." );
-			} catch ( UnknownAccountException uae ) {
-				log.error("There is no user with email [{}] ", email);
-				return WebUtil.formatJsonResponse(Status.USER_EMAIL_OR_PASSWORD_INCORRECT);
-			} catch ( IncorrectCredentialsException ice ) {
-				log.error("password doesn't match, email = {}, password = {}", email, password);
-				return WebUtil.formatJsonResponse(Status.USER_EMAIL_OR_PASSWORD_INCORRECT);
-			} catch ( LockedAccountException lae ) {
-				log.error("email [{}] is locked");
-				return WebUtil.formatJsonResponse(Status.UNKNOWN_EXCEPTION);
-			}
-		}
-		
-		return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
-		
-	}
-	
-	@Override
 	public JsonResponse validateResetPasswordForm(UpdatePasswordForm form){
 		if(form == null || StringUtils.isBlank(form.getEmail()) || StringUtils.isBlank(form.getToken())){
 			return WebUtil.formatJsonResponse(Status.UNKNOWN_EXCEPTION);
@@ -338,4 +286,8 @@ public class UserServiceImpl implements UserService {
 		return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
 	}
 	
+	@Override
+	public List<Role> getRoleListByUser(User user) {
+		return roleMapper.getRoleListByUser(user);
+	}
 }

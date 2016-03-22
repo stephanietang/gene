@@ -1,4 +1,4 @@
-package com.bolehunt.gene.service;
+package com.bolehunt.gene.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +12,7 @@ import com.bolehunt.gene.common.Label;
 import com.bolehunt.gene.domain.SystemParam;
 import com.bolehunt.gene.domain.SystemParamExample;
 import com.bolehunt.gene.persistence.SystemParamMapper;
+import com.bolehunt.gene.service.PropertyService;
 
 @Service
 public class PropertyServiceImpl implements PropertyService {

@@ -36,7 +36,7 @@ public class RegisterController extends BaseController {
 	// TODO: for development
 	@RequestMapping(value="/user/{userId}", method = RequestMethod.GET)
 	@ResponseBody
-	public User getUser(@PathVariable(value = "userId") int userId) {
+	public User getUserById(@PathVariable(value = "userId") int userId) {
 		User user = userService.getUserById(userId);
 		return user;
 	}
@@ -174,7 +174,7 @@ public class RegisterController extends BaseController {
 	public String accountSetting(ModelMap model) {
 		
 		UpdatePasswordForm updatePasswordForm = new UpdatePasswordForm();
-		updatePasswordForm.setEmail(user.getEmail());
+		updatePasswordForm.setEmail(getUser().getEmail());
 		
 		model.put("updatePasswordForm", updatePasswordForm);
 		

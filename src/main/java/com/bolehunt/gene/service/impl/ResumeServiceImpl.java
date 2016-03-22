@@ -1,4 +1,4 @@
-package com.bolehunt.gene.service;
+package com.bolehunt.gene.service.impl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +17,7 @@ import com.bolehunt.gene.form.EducationForm;
 import com.bolehunt.gene.form.ResumeForm;
 import com.bolehunt.gene.persistence.BasicInfoMapper;
 import com.bolehunt.gene.persistence.EducationMapper;
+import com.bolehunt.gene.service.ResumeService;
 import com.bolehunt.gene.util.WebUtil;
 
 @Service

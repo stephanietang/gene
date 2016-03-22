@@ -236,4 +236,11 @@
     set name = #{name,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  	<select id="getRoleListByUser" parameterType="com.bolehunt.gene.domain.User" resultMap="BaseResultMap">
+    select r.id, r.name
+    from role r, user_role ur
+    where r.id = ur.role_id AND 
+    ur.user_id = #{id,jdbcType=INTEGER}
+	</select>
 </mapper>

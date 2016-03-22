@@ -7,9 +7,6 @@
     
     <!-- Data Configuration --> 
     <import resource="data-context.xml" />
-    
-	<!-- Security Configuration / Apache Shiro -->
-	<import resource="shiro-context.xml" />
 	
 	<import resource="email-services-context.xml" />
 	
@@ -18,6 +15,7 @@
 	<context:component-scan base-package="com.bolehunt.gene.validator" />
 	<context:component-scan base-package="com.bolehunt.gene.common" />
 	<context:component-scan base-package="com.bolehunt.gene.util" />
+	<context:component-scan base-package="com.bolehunt.gene.security" />
 	
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
     	<property name="basename" value="classpath:messages"/>

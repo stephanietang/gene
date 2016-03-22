@@ -3,16 +3,12 @@ package com.bolehunt.gene.service;
 import java.util.List;
 
 import com.bolehunt.gene.common.JsonResponse;
-import com.bolehunt.gene.domain.Menu;
+import com.bolehunt.gene.domain.Role;
 import com.bolehunt.gene.domain.User;
-import com.bolehunt.gene.form.LoginForm;
 import com.bolehunt.gene.form.RegisterForm;
-import com.bolehunt.gene.form.ResumeForm;
 import com.bolehunt.gene.form.UpdatePasswordForm;
 
 public interface UserService {
-	
-	public Menu getUserMenu(User user);
 	
 	public List<User> getAllUsers();
 	
@@ -40,13 +36,14 @@ public interface UserService {
 	
 	public JsonResponse validateRegisterForm(RegisterForm registerForm);
 	
-	public JsonResponse validateLoginForm(LoginForm loginForm);
-	
 	public JsonResponse validateResetPasswordForm(UpdatePasswordForm resetPasswordForm);
 	
 	public JsonResponse validateUpdatePasswordForm(UpdatePasswordForm updatePasswordForm);
 	
 	public JsonResponse validateSendEmailForm(RegisterForm registerForm);
+	
+	public List<Role> getRoleListByUser(User user);
+	
 	
 
 }

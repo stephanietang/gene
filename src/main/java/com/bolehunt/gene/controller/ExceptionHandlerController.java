@@ -1,4 +1,4 @@
-package com.bolehunt.gene.controller;
+/*package com.bolehunt.gene.controller;
 
 import java.util.Locale;
 
@@ -58,7 +58,7 @@ public class ExceptionHandlerController {
  
 	}
  
-	/*@ExceptionHandler(Exception.class)
+	@ExceptionHandler(Exception.class)
 	public ModelAndView handleAllException(Exception ex) {
  
 		log.debug("handleAllException");
@@ -68,6 +68,7 @@ public class ExceptionHandlerController {
  
 		return model;
  
-	}*/
+	}
 
 }
+*/

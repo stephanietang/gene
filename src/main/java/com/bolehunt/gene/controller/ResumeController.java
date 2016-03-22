@@ -1,5 +1,7 @@
 package com.bolehunt.gene.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,25 +31,30 @@ public class ResumeController extends BaseController {
 	@Autowired
 	private FileService fileService;
 	
-	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	@RequestMapping(value = "/talent/profile", method = RequestMethod.GET)
 	public String viewResumePage(ModelMap model) {
 		
-		ResumeForm resumeForm = resumeService.retrieveResume(user);
+		ResumeForm resumeForm = resumeService.retrieveResume(getUser());
 		
 		model.put("resumeForm", resumeForm);
 		return "resume/viewResume";
 	}
 	
-	@RequestMapping(value = "/profile/edit", method = RequestMethod.GET)
-	public String editResumePage(@ModelAttribute ModelMap model) {
+	@RequestMapping(value = "/talent/profile/edit", method = RequestMethod.GET)
+	public String editResumePage(@ModelAttribute ModelMap model, HttpServletRequest request) {
+		
+		if (super.isRememberMeAuthenticated()) { // requires authentication
+			super.setRememberMeTargetUrlToSession(request, "/talent/profile/edit");
+			return "redirect:/login";
+		}
 
-		ResumeForm resumeForm = resumeService.retrieveResume(user);
+		ResumeForm resumeForm = resumeService.retrieveResume(getUser());
 		model.put("resumeForm", resumeForm);
 		
 		EducationForm educationForm = new EducationForm();
 		model.put("educationForm", educationForm);
 		
-		Avatar avatar = fileService.getAvatarByUserId(user.getId());
+		Avatar avatar = fileService.getAvatarByUserId(getUser().getId());
 		if(avatar != null){
 			model.put("avatar", avatar.getUuid());
 		}
@@ -55,18 +62,18 @@ public class ResumeController extends BaseController {
 		return "resume/editResume";
 	}
 	
-	@RequestMapping(value = "/profile/edit", method = RequestMethod.POST)
+	@RequestMapping(value = "/talent/profile/edit", method = RequestMethod.POST)
 	public String editResumePageSubmit(@ModelAttribute("resumeForm") ResumeForm resumeForm) {
 		
 		resumeService.saveResume(resumeForm);
 		
-		log.info("Save resume successfully [{}]", user.getEmail());
+		log.info("Save resume successfully [{}]", getUser().getEmail());
 		
 		return "redirect:/profile/edit";
 		
 	}
 	
-	@RequestMapping(value = "/profile/educationCrudAction.json", method = RequestMethod.POST)
+	@RequestMapping(value = "/talent/profile/educationCrudAction.json", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonResponse educationCrudAction(@RequestBody EducationForm educationForm) {
 		
@@ -75,9 +82,9 @@ public class ResumeController extends BaseController {
 			return jsonResponse;
 		}
 		
-		JsonResponse returnResponse = resumeService.proceedEducationForm(educationForm, user);
+		JsonResponse returnResponse = resumeService.proceedEducationForm(educationForm, getUser());
 		
-		log.info("Proceed education form successfully [{}]", user.getEmail());
+		log.info("Proceed education form successfully [{}]", getUser().getEmail());
 	    return returnResponse;
 	}
 }

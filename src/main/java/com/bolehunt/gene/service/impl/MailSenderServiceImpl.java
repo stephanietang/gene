@@ -1,4 +1,4 @@
-package com.bolehunt.gene.service;
+package com.bolehunt.gene.service.impl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +21,7 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import com.bolehunt.gene.common.AppConfig;
 import com.bolehunt.gene.domain.EmailServiceTokenModel;
+import com.bolehunt.gene.service.MailSenderService;
 
 @Service("mailSenderService")
 public class MailSenderServiceImpl implements MailSenderService {

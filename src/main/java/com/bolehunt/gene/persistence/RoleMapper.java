@@ -2,6 +2,7 @@ package com.bolehunt.gene.persistence;
 
 import com.bolehunt.gene.domain.Role;
 import com.bolehunt.gene.domain.RoleExample;
+import com.bolehunt.gene.domain.User;
 
 import java.util.List;
 
@@ -95,4 +96,7 @@ public interface RoleMapper {
      * @mbggenerated Thu Jun 04 09:55:21 CST 2015
      */
     int updateByPrimaryKey(Role record);
+    
+    
+    public List<Role> getRoleListByUser(User user);
 }

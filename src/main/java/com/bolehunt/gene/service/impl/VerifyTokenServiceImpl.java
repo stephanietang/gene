@@ -1,4 +1,4 @@
-package com.bolehunt.gene.service;
+package com.bolehunt.gene.service.impl;
 
 import java.util.List;
 
@@ -21,6 +21,8 @@ import com.bolehunt.gene.domain.VerifyTokenExample;
 import com.bolehunt.gene.exception.ApplicationException;
 import com.bolehunt.gene.gateway.EmailServiceGateway;
 import com.bolehunt.gene.persistence.VerifyTokenMapper;
+import com.bolehunt.gene.service.UserService;
+import com.bolehunt.gene.service.VerifyTokenService;
 
 @Service
 public class VerifyTokenServiceImpl implements VerifyTokenService {
