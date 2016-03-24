@@ -1,6 +1,5 @@
 package com.bolehunt.gene.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -8,16 +7,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bolehunt.gene.common.AppConfig;
 import com.bolehunt.gene.common.Constant;
-import com.bolehunt.gene.common.Constant.VerifyTokenType;
+import com.bolehunt.gene.common.Constant.UserEnableType;
 import com.bolehunt.gene.common.JsonResponse;
 import com.bolehunt.gene.common.Status;
 import com.bolehunt.gene.domain.Role;
-import com.bolehunt.gene.domain.RoleExample;
 import com.bolehunt.gene.domain.User;
 import com.bolehunt.gene.domain.UserExample;
 import com.bolehunt.gene.domain.VerifyToken;
@@ -91,20 +90,19 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public User registerUser(User user){
 		user.setEnabled(Constant.UserEnableType.NOT_ENABLED.getValue());
-		user.setSalt(getSalt());
-		user.setPassword(this.encodePassword(user.getPassword(), user.getSalt()));
+		user.setPassword(this.encodePassword(user.getPassword()));
 		userMapper.insert(user);
 		
 		log.debug("Insert User {} success", user.getEmail());
 		
-		verifyTokenService.sendTokenEmail(user.getEmail(), VerifyTokenType.VERIFICATION_EMAIL);
+		//verifyTokenService.sendTokenEmail(user.getEmail(), VerifyTokenType.VERIFICATION_EMAIL);
 		
 		return user;
 	}
 	
 	@Override
 	public User enableUser(User user){
-        if(user.isUserEnabled()){
+        if(user.getEnabled().equals(UserEnableType.ENABLED.getValue())){
         	throw new ApplicationException(Status.USER_ALREADY_ENABLED);
         }
         user.setEnabled(Constant.UserEnableType.ENABLED.getValue());
@@ -114,20 +112,17 @@ public class UserServiceImpl implements UserService {
         return user;
 	}
 	
-	public static String getSalt() {
-		//to_base(64)
-		return "";
-	}
-	
-	public String encodePassword(String rawPassword, String salt) {
-		// hash algorithm
-		return "";
+	private String encodePassword(String rawPassword) {
+		// use bCrypt to hash password
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String hashedPassword = passwordEncoder.encode(rawPassword);
+		return hashedPassword;
 	}
 	
 	
 	@Override
 	public void updateUserPassword(User user, String newPassword){
-		user.setPassword(this.encodePassword(newPassword, user.getSalt()));
+		user.setPassword(this.encodePassword(newPassword));
 		userMapper.updateByPrimaryKeySelective(user);
 	}
 	
@@ -156,7 +151,7 @@ public class UserServiceImpl implements UserService {
 		boolean isMatched = false;
 		User user = this.getUserByEmail(email);
 		if(user != null && password != null){
-			String encodePassword = this.encodePassword(password, user.getSalt());
+			String encodePassword = this.encodePassword(password);
 			if(encodePassword.equals(user.getPassword())){
 				isMatched = true;
 			}
@@ -178,7 +173,7 @@ public class UserServiceImpl implements UserService {
 	public boolean isNewPasswordSameAsOldPassword(String email, String newPassword){
 		boolean isSame = false;
 		User user = this.getUserByEmail(email);
-		String encodeNewPassword = this.encodePassword(newPassword, user.getSalt());
+		String encodeNewPassword = this.encodePassword(newPassword);
 		if(encodeNewPassword.equals(user.getPassword())){
 			isSame = true;
 		}

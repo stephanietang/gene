@@ -38,15 +38,20 @@ jQuery(document).ready(function() {
 			}
 		},
 		submitHandler:function(form){
+			$.ajaxSetup({
+	            headers:
+	            { 'X-CSRF-TOKEN': $('meta[name="_csrf"]').attr('content') }
+	        });
+			
 			var email = $('#email').val();
 			var password = $('#password').val();
 		    var json = JSON.stringify({email:email, password:password});
 		    
 		    $.ajax({
 		    	url: ctx + "/register.json",
-		    	type: "post",
+		    	type: "POST",
 		    	contentType: "application/json; charset=utf-8",
-		        dataType : 'json',
+		    	dataType: "json",
 		        data: json,
 		        success : function(result){
 		        	if(result.status == '200'){
