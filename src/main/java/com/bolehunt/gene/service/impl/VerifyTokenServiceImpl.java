@@ -12,15 +12,15 @@ import org.springframework.util.Assert;
 
 import com.bolehunt.gene.common.AppConfig;
 import com.bolehunt.gene.common.Constant;
-import com.bolehunt.gene.common.Status;
 import com.bolehunt.gene.common.Constant.VerifyTokenType;
-import com.bolehunt.gene.domain.EmailServiceTokenModel;
+import com.bolehunt.gene.common.Status;
 import com.bolehunt.gene.domain.User;
 import com.bolehunt.gene.domain.VerifyToken;
 import com.bolehunt.gene.domain.VerifyTokenExample;
 import com.bolehunt.gene.exception.ApplicationException;
 import com.bolehunt.gene.gateway.EmailServiceGateway;
 import com.bolehunt.gene.persistence.VerifyTokenMapper;
+import com.bolehunt.gene.service.MailSenderService;
 import com.bolehunt.gene.service.UserService;
 import com.bolehunt.gene.service.VerifyTokenService;
 
@@ -33,13 +33,16 @@ public class VerifyTokenServiceImpl implements VerifyTokenService {
 	private AppConfig config;
 
 	@Autowired
-	VerifyTokenMapper verifyTokenMapper; 
+	private VerifyTokenMapper verifyTokenMapper; 
 	
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	
 	@Autowired
 	private EmailServiceGateway emailServiceGateway;
+	
+	@Autowired
+	private MailSenderService mailSenderService;
 	
 	@Override
 	@Transactional
@@ -53,7 +56,12 @@ public class VerifyTokenServiceImpl implements VerifyTokenService {
 		log.debug("Insert verify token id = " + verifyToken.getId() + ", token type = " + verifyToken.getTokenType() + ", token = " + verifyToken.getToken() + " success");
 		
 		// send to email send gateway
-		emailServiceGateway.sendVerificationToken(new EmailServiceTokenModel(user, verifyToken, config.getHostNameUrl()));
+		//emailServiceGateway.sendVerificationToken(new EmailServiceTokenModel(user, verifyToken, config.getHostNameUrl()));
+		try{
+			mailSenderService.sendEmail();
+		}catch(Exception e){
+			
+		}
 		
 	}
 	

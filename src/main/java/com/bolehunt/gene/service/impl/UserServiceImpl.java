@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bolehunt.gene.common.AppConfig;
 import com.bolehunt.gene.common.Constant;
 import com.bolehunt.gene.common.Constant.UserEnableType;
+import com.bolehunt.gene.common.Constant.VerifyTokenType;
 import com.bolehunt.gene.common.Status;
 import com.bolehunt.gene.domain.Role;
 import com.bolehunt.gene.domain.User;
@@ -93,7 +94,7 @@ public class UserServiceImpl implements UserService {
 		
 		log.debug("Insert User {} success", user.getEmail());
 		
-		//verifyTokenService.sendTokenEmail(user.getEmail(), VerifyTokenType.VERIFICATION_EMAIL);
+		verifyTokenService.sendTokenEmail(user.getEmail(), VerifyTokenType.VERIFICATION_EMAIL);
 		
 		return user;
 	}

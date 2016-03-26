@@ -10,5 +10,6 @@ public interface MailSenderService {
 
     public EmailServiceTokenModel sendLostPasswordEmail(EmailServiceTokenModel emailServiceTokenModel);
 
+    public void sendEmail() throws Exception; 
 
 }
