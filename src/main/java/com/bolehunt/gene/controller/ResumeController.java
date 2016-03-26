@@ -1,10 +1,14 @@
 package com.bolehunt.gene.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,7 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bolehunt.gene.common.JsonResponse;
+import com.bolehunt.gene.common.RestMessage;
+import com.bolehunt.gene.common.Status;
 import com.bolehunt.gene.domain.Avatar;
+import com.bolehunt.gene.domain.Education;
 import com.bolehunt.gene.form.EducationForm;
 import com.bolehunt.gene.form.ResumeForm;
 import com.bolehunt.gene.service.FileService;
@@ -74,17 +81,16 @@ public class ResumeController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/talent/profile/educationCrudAction.json", method = RequestMethod.POST)
-	@ResponseBody
-	public JsonResponse educationCrudAction(@RequestBody EducationForm educationForm) {
+	public ResponseEntity<RestMessage> educationCrudAction(@RequestBody EducationForm educationForm) {
 		
-		JsonResponse jsonResponse = resumeService.validateEducationForm(educationForm);
-		if(jsonResponse.hasErrors()){
-			return jsonResponse;
-		}
+		resumeService.validateEducationForm(educationForm);
 		
-		JsonResponse returnResponse = resumeService.proceedEducationForm(educationForm, getUser());
+		resumeService.proceedEducationForm(educationForm, getUser());
 		
 		log.info("Proceed education form successfully [{}]", getUser().getEmail());
-	    return returnResponse;
+		
+		List<Education> educationList = resumeService.retrieveEducationList(getUser().getId());
+		
+		return new ResponseEntity<RestMessage>(RestMessage.getSuccessMessage(null), HttpStatus.OK);
 	}
 }

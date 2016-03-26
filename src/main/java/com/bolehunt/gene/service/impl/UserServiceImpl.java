@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bolehunt.gene.common.AppConfig;
 import com.bolehunt.gene.common.Constant;
 import com.bolehunt.gene.common.Constant.UserEnableType;
-import com.bolehunt.gene.common.JsonResponse;
 import com.bolehunt.gene.common.Status;
 import com.bolehunt.gene.domain.Role;
 import com.bolehunt.gene.domain.User;
@@ -28,7 +27,6 @@ import com.bolehunt.gene.persistence.RoleMapper;
 import com.bolehunt.gene.persistence.UserMapper;
 import com.bolehunt.gene.service.UserService;
 import com.bolehunt.gene.service.VerifyTokenService;
-import com.bolehunt.gene.util.WebUtil;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -64,7 +62,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public User getUserByEmail(String email) throws UnknownResourceException{
+	public User getUserByEmail(String email) throws UnknownResourceException {
 		UserExample userEx = new UserExample();
 		userEx.createCriteria().andEmailEqualTo(email);
 		List<User> userList = userMapper.selectByExample(userEx);
@@ -88,7 +86,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	@Transactional
-	public User registerUser(User user){
+	public User registerUser(User user) {
 		user.setEnabled(Constant.UserEnableType.NOT_ENABLED.getValue());
 		user.setPassword(this.encodePassword(user.getPassword()));
 		userMapper.insert(user);
@@ -181,19 +179,19 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public JsonResponse validateRegisterForm(RegisterForm registerForm){
+	public void validateRegisterForm(RegisterForm registerForm){
 		
 		if(registerForm == null){
-			return WebUtil.formatJsonResponse(Status.UNKNOWN_EXCEPTION);
+			throw new ApplicationException(Status.UNKNOWN_EXCEPTION);
 		}
 				
 		if(registerForm != null && StringUtils.isNotBlank(registerForm.getEmail())){
 			if(this.isExistingEmail(registerForm.getEmail())){
-				return WebUtil.formatJsonResponse(Status.USER_EMAIL_EXIST);
+				throw new ApplicationException(Status.USER_EMAIL_EXIST);
 			}
 			/* Use Jquery to validate
 			 * if(! WebUtil.isValidEmailAddress(registerForm.getEmail())){
-				return WebUtil.formatJsonResponse(Status.USER_EMAIL_INCORRECT_FORMAT);
+				throw new ApplicationException(Status.USER_EMAIL_INCORRECT_FORMAT);
 			}*/
 		}
 		
@@ -201,30 +199,29 @@ public class UserServiceImpl implements UserService {
 		// for development, comment just for easy testing
 		/*if(registerForm != null && StringUtils.isNotBlank(registerForm.getPassword())){
 			if(! WebUtil.isValidPassword(registerForm.getPassword())){
-				return WebUtil.formatJsonResponse(Status.USER_PASSWORD_INCORRECT_FORMAT);
+				throw new ApplicationException(Status.USER_PASSWORD_INCORRECT_FORMAT);
 			}
 		}*/
 		
-		return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
 	}
 	
 	@Override
-	public JsonResponse validateResetPasswordForm(UpdatePasswordForm form){
+	public void validateResetPasswordForm(UpdatePasswordForm form){
 		if(form == null || StringUtils.isBlank(form.getEmail()) || StringUtils.isBlank(form.getToken())){
-			return WebUtil.formatJsonResponse(Status.UNKNOWN_EXCEPTION);
+			throw new ApplicationException(Status.UNKNOWN_EXCEPTION);
 		}
 		
 		if(form != null && StringUtils.isNotBlank(form.getEmail()) && StringUtils.isNotBlank(form.getToken())){
 			if(! this.isEmailTokenMatched(form.getEmail(), form.getToken())){
 				log.debug("Email and encoded token is not matched");
-				return WebUtil.formatJsonResponse(Status.TOKEN_NOT_FOUND);
+				throw new ApplicationException(Status.TOKEN_NOT_FOUND);
 			}
 		}
 		
 		if(form != null && StringUtils.isNotBlank(form.getNewPassword())){
 			if(this.isNewPasswordSameAsOldPassword(form.getEmail(), form.getNewPassword())){
 				log.debug("new password is same as old password");
-				return WebUtil.formatJsonResponse(Status.USER_PASSWORD_DUPLICATE);
+				throw new ApplicationException(Status.USER_PASSWORD_DUPLICATE);
 			}
 			
 			// TODO enabled on production
@@ -235,50 +232,47 @@ public class UserServiceImpl implements UserService {
 			}*/
 		}
 		
-		return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
 	}
 
 	@Override
-	public JsonResponse validateUpdatePasswordForm(UpdatePasswordForm form){
+	public void validateUpdatePasswordForm(UpdatePasswordForm form){
 		if(form == null || StringUtils.isBlank(form.getEmail())){
-			return WebUtil.formatJsonResponse(Status.UNKNOWN_EXCEPTION);
+			throw new ApplicationException(Status.UNKNOWN_EXCEPTION);
 		}
 		
 		if(form != null && StringUtils.isNotBlank(form.getEmail()) && StringUtils.isNotBlank(form.getOldPassword())){
 			if(! this.isEmailPasswordMathed(form.getEmail(), form.getOldPassword())){
 				log.debug("Email and old password is not matched");
-				return WebUtil.formatJsonResponse(Status.USER_PASSWORD_NOT_MATCH);
+				throw new ApplicationException(Status.USER_PASSWORD_NOT_MATCH);
 			}
 		}
 		
 		if(form != null && StringUtils.isNotBlank(form.getNewPassword())){
 			if(this.isNewPasswordSameAsOldPassword(form.getEmail(), form.getNewPassword())){
 				log.debug("new password is same as old password");
-				return WebUtil.formatJsonResponse(Status.USER_PASSWORD_DUPLICATE);
+				throw new ApplicationException(Status.USER_PASSWORD_DUPLICATE);
 			}
 			
 			// TODO enabled on production
 			// for development, comment just for easy testing
 			/*
 			if(! WebUtil.isValidPassword(form.getNewPassword())){
-				return new JsonResponse(Status.USER_PASSWORD_INCORRECT_FORMAT);
+				throw new ApplicationException(Status.USER_PASSWORD_INCORRECT_FORMAT);
 			}*/
 		}
 		
-		return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
 	}
 	
 	@Override
-	public JsonResponse validateSendEmailForm(RegisterForm form){
+	public void validateSendEmailForm(RegisterForm form){
 		if(form == null || StringUtils.isBlank(form.getEmail())){
-			return WebUtil.formatJsonResponse(Status.UNKNOWN_EXCEPTION);
+			throw new ApplicationException(Status.UNKNOWN_EXCEPTION);
 		}
 		
 		if(! this.isExistingEmail(form.getEmail())){
-			return WebUtil.formatJsonResponse(Status.USER_EMAIL_NOT_EXIST);
+			throw new ApplicationException(Status.USER_EMAIL_NOT_EXIST);
 		}
 		
-		return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
 	}
 	
 	@Override

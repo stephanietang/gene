@@ -21,6 +21,10 @@
 </form:form>
 </div>
 
+<form:form id="confirm-form" method="post" commandName="registerForm">
+	<form:hidden id="hidden-email" path="email" />
+</form:form>
+
 <script>
 jQuery(document).ready(function() { 
 	$("#registerForm").validate({
@@ -38,10 +42,8 @@ jQuery(document).ready(function() {
 			}
 		},
 		submitHandler:function(form){
-			$.ajaxSetup({
-	            headers:
-	            { 'X-CSRF-TOKEN': $('meta[name="_csrf"]').attr('content') }
-	        });
+			
+			csrfAjaxSetup();
 			
 			var email = $('#email').val();
 			var password = $('#password').val();
@@ -53,15 +55,17 @@ jQuery(document).ready(function() {
 		    	contentType: "application/json; charset=utf-8",
 		    	dataType: "json",
 		        data: json,
-		        success : function(result){
-		        	if(result.status == '200'){
-		        		$(location).attr('href',ctx+"/confirm_mail?email="+email); 
-		        	}else{
-		        		$("#errorMessage").text(result.message).show();
+		        success : function(data){
+		        	if(data.status == 'success'){
+		        		$('#hidden-email').val(email);
+		        		$('#confirm-form').prop('action', ctx+"/confirm_mail");
+		        		$('#confirm-form').submit();
+		        	}else if(data.status == 'error'){
+		        		displayError(data);
 		        	}
 		        },
 		        error : function(){
-		        	$("#errorMessage").text("Error!").show();
+		        	$('#errorMessage').text('error').show();
 		        }
 		    });
 		}

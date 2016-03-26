@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class JsonResponse {
 	
-	public final static String DEFAULT_SUCCESS_STATUS = Status.COMMON_SUCCESS.getStatus();
+	public final static String DEFAULT_SUCCESS_STATUS = Status.SUCCESS.getStatus();
 	
 	private String status;
 	private List<Errors> errors;

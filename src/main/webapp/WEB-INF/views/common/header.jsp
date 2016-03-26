@@ -97,9 +97,5 @@
 	
 	<form:form action="logout" method="post" id="logoutForm"></form:form>
 	
-	<c:if test="${not empty errorMessage}">
-		<div class="row"><div id="errorMessage" class="col-md-offset-2 col-md-8 alert alert-danger" role="alert">${errorMessage}</div></div>
-	</c:if>
-	<c:if test="${not empty msg}">
-		<div class="row"><div id="msg" class="col-md-offset-2 col-md-8 alert alert-info" role="alert">${msg}</div></div>
-	</c:if>
+	<div id="errorMessage" class="col-md-offset-2 col-md-8 alert alert-danger" role="alert" style="display:none">${errorMessage}</div>
+	<div id="msg" class="col-md-offset-2 col-md-8 alert alert-info" role="alert" style="display:none">${msg}</div>

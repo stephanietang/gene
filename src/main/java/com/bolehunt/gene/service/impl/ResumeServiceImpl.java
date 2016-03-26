@@ -1,24 +1,21 @@
 package com.bolehunt.gene.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bolehunt.gene.common.JsonResponse;
 import com.bolehunt.gene.common.Status;
 import com.bolehunt.gene.domain.BasicInfo;
 import com.bolehunt.gene.domain.Education;
 import com.bolehunt.gene.domain.EducationExample;
 import com.bolehunt.gene.domain.User;
+import com.bolehunt.gene.exception.ApplicationException;
 import com.bolehunt.gene.form.EducationForm;
 import com.bolehunt.gene.form.ResumeForm;
 import com.bolehunt.gene.persistence.BasicInfoMapper;
 import com.bolehunt.gene.persistence.EducationMapper;
 import com.bolehunt.gene.service.ResumeService;
-import com.bolehunt.gene.util.WebUtil;
 
 @Service
 public class ResumeServiceImpl implements ResumeService {
@@ -57,34 +54,30 @@ public class ResumeServiceImpl implements ResumeService {
 	}
 	
 	@Override
-	public JsonResponse validateEducationForm(EducationForm educationForm){
+	public void validateEducationForm(EducationForm educationForm){
 		if(educationForm == null){
-			return WebUtil.formatJsonResponse(Status.UNKNOWN_EXCEPTION);
+			throw new ApplicationException(Status.UNKNOWN_EXCEPTION);
 		}
-		
-		return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
 	}
 	
 	@Override
-	public JsonResponse proceedEducationForm(EducationForm educationForm, User user){
-		JsonResponse jsonResponse = null;
+	public void proceedEducationForm(EducationForm educationForm, User user){
 		if("add".equals(educationForm.getAction())){
 			
-			jsonResponse = addEducation(educationForm, user);
+			addEducation(educationForm, user);
 		
 		} else if("save".equals(educationForm.getAction())){
 			
-			jsonResponse = updateEducation(educationForm, user);
+			updateEducation(educationForm, user);
 			
 		}else if("delete".equals(educationForm.getAction())){
 			
-			jsonResponse = deleteEducation(educationForm, user);
+			deleteEducation(educationForm, user);
 		
 		}
-		return jsonResponse;
 	}
 	
-	private JsonResponse addEducation(EducationForm educationForm, User user){
+	private void addEducation(EducationForm educationForm, User user){
 		
 		Education education = new Education();
 		education.setUserId(user.getId());
@@ -95,21 +88,15 @@ public class ResumeServiceImpl implements ResumeService {
 		education.setDepartment(educationForm.getDepartment());
 		educationMapper.insert(education);
 		
-		Map<String, Object> data = new HashMap<String, Object>();
-		List<Education> educationList = retrieveEducationList(user.getId());
-		JsonResponse jsonResponse = WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
-		data.put("educations", educationList);
-		jsonResponse.setData(data);
-		return jsonResponse;
 	}
 	
-	private JsonResponse updateEducation(EducationForm educationForm, User user){
+	private void updateEducation(EducationForm educationForm, User user){
 		Education education = educationMapper.selectByPrimaryKey(educationForm.getEducationId());
 		
 		if(education == null){
-			return WebUtil.formatJsonResponse(Status.UNKNOWN_EXCEPTION);
+			throw new ApplicationException(Status.UNKNOWN_EXCEPTION);
 		}else if(! education.getUserId().equals(user.getId())){
-			return WebUtil.formatJsonResponse(Status.USER_FORBIDDEN_ACCESS);
+			throw new ApplicationException(Status.USER_FORBIDDEN_ACCESS);
 		}
 		
 		education.setSchoolName(educationForm.getSchoolName());
@@ -119,26 +106,18 @@ public class ResumeServiceImpl implements ResumeService {
 		education.setDepartment(educationForm.getDepartment());
 		educationMapper.updateByPrimaryKeySelective(education);
 		
-		Map<String, Object> data = new HashMap<String, Object>();
-		List<Education> educationList = retrieveEducationList(user.getId());
-		JsonResponse jsonResponse = WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
-		data.put("educations", educationList);
-		jsonResponse.setData(data);
-		
-		return jsonResponse;
 	}
 	
-	private JsonResponse deleteEducation(EducationForm educationForm, User user){
+	private void deleteEducation(EducationForm educationForm, User user){
 		Education education = educationMapper.selectByPrimaryKey(educationForm.getEducationId());
 		
 		if(education == null){
-			return WebUtil.formatJsonResponse(Status.UNKNOWN_EXCEPTION);
+			throw new ApplicationException(Status.UNKNOWN_EXCEPTION);
 		}else if(! education.getUserId().equals(user.getId())){
-			return WebUtil.formatJsonResponse(Status.USER_FORBIDDEN_ACCESS);
+			throw new ApplicationException(Status.USER_FORBIDDEN_ACCESS);
 		}
 		
 		educationMapper.deleteByPrimaryKey(educationForm.getEducationId());
-		return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
 		
 	}
 

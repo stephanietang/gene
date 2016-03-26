@@ -1,5 +1,7 @@
-/*package com.bolehunt.gene.controller;
+package com.bolehunt.gene.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,12 +11,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bolehunt.gene.common.RestMessage;
 import com.bolehunt.gene.exception.ApplicationException;
 import com.bolehunt.gene.exception.UnknownResourceException;
 
@@ -32,19 +38,19 @@ public class ExceptionHandlerController {
 	}
 	
 	@ExceptionHandler(ApplicationException.class)
-	public ModelAndView handleCustomException(ApplicationException ex) {
+	@ResponseBody
+	@ResponseStatus(HttpStatus.OK)
+	public RestMessage handleCustomException(ApplicationException ex) {
  
 		log.debug("handleCustomException status = {}, message = {}", ex.getStatus().getStatus(), ex.getStatus().getMessage());
 		
 		Locale locale = LocaleContextHolder.getLocale();
 		String message = messageSource.getMessage(ex.getStatus().getMessage(), null, locale);
+		List<String> errorList = new ArrayList<String>();
+		errorList.add(message);
 		
-		ModelAndView model = new ModelAndView("error");
-		model.addObject("status", ex.getStatus().getStatus());
-		model.addObject("message", message);
- 
-		return model;
- 
+		RestMessage restError = RestMessage.getErrorMessage(errorList);
+        return restError; 
 	}
 	
 	// ignore path for static resources
@@ -71,4 +77,3 @@ public class ExceptionHandlerController {
 	}
 
 }
-*/

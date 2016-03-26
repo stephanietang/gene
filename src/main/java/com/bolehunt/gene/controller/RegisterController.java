@@ -7,23 +7,25 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.bolehunt.gene.common.Constant.VerifyTokenType;
-import com.bolehunt.gene.common.JsonResponse;
-import com.bolehunt.gene.common.Status;
+import com.bolehunt.gene.common.RestMessage;
 import com.bolehunt.gene.domain.User;
 import com.bolehunt.gene.form.RegisterForm;
 import com.bolehunt.gene.form.UpdatePasswordForm;
 import com.bolehunt.gene.service.VerifyTokenService;
-import com.bolehunt.gene.util.WebUtil;
 
 @Controller
 public class RegisterController extends BaseController {
@@ -43,38 +45,38 @@ public class RegisterController extends BaseController {
 	
 	@RequestMapping(value="/register", method = RequestMethod.GET)
 	public String registerPage(ModelMap model) {
-		RegisterForm registerForm = new RegisterForm();
-		model.put("registerForm", registerForm);
+		model.addAttribute("registerForm", new RegisterForm());
+	
 		return "user/register";
 	}
 	
 	@RequestMapping(value = "/register.json", method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResponse registerSubmit(@RequestBody RegisterForm registerForm) {
-		JsonResponse jsonResponse = userService.validateRegisterForm(registerForm);
-		if(jsonResponse.hasErrors()){
-			return jsonResponse;
-		}else{
-			User user = new User();
-			try{
-				BeanUtils.copyProperties(user, registerForm);
-			}catch(Exception e){
-				log.error("copy bean properties error : " + e);
-			}
-			
-			userService.registerUser(user);
-			
-			log.info("Register [{}] new user successfully", user.getEmail());
-			
-			return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
-			
+	@ResponseStatus(HttpStatus.OK)
+	public RestMessage registerSubmit(@RequestBody RegisterForm registerForm) {
+		
+		userService.validateRegisterForm(registerForm);
+		
+		User user = new User();
+		try{
+			BeanUtils.copyProperties(user, registerForm);
+		}catch(Exception e){
+			log.error("copy bean properties error : " + e);
 		}
+			
+		userService.registerUser(user);
+			
+		log.info("Register [{}] new user successfully", user.getEmail());
+			
+		return RestMessage.getSuccessMessage(null);
 	}
 	
 	// Redirect to confirm page of sending verification email after registration
-	@RequestMapping(value="/confirm_mail", method = RequestMethod.GET)
-	public String confirmMailPage(@RequestParam(value = "email") String email, ModelMap model){
-		model.put("email", email);
+	@RequestMapping(value="/confirm_mail", method = RequestMethod.POST)
+	public String confirmMailPage(@ModelAttribute("registerForm") RegisterForm form, ModelMap model){
+		String email = form.getEmail();
+		
+		model.addAttribute("email", email);
 		// TODO: hard-code
 		model.put("mailDomain", "http://mail.google.com");
 		return "user/confirmEmail";
@@ -88,19 +90,15 @@ public class RegisterController extends BaseController {
 	}
 	
 	@RequestMapping(value="/send_mail.json", method = RequestMethod.POST)
-	@ResponseBody
-	public JsonResponse sendEmail(@RequestBody RegisterForm registerForm){
-		JsonResponse jsonResponse = userService.validateSendEmailForm(registerForm);
-		if(jsonResponse.hasErrors()){
-			return jsonResponse;
-		}else{
-			verifyTokenService.sendTokenEmail(registerForm.getEmail(), VerifyTokenType.VERIFICATION_EMAIL);
-			Map<String, Object> data = new HashMap<String, Object>();
-			data.put("email", registerForm.getEmail());
-			// TODO: hard-code
-			data.put("mailDomain", "http://mail.google.com");
-			return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS, data);
-		}
+	public ResponseEntity<RestMessage> sendEmail(@RequestBody RegisterForm registerForm){
+		userService.validateSendEmailForm(registerForm);
+		verifyTokenService.sendTokenEmail(registerForm.getEmail(), VerifyTokenType.VERIFICATION_EMAIL);
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("email", registerForm.getEmail());
+		// TODO: hard-code
+		data.put("mailDomain", "http://mail.google.com");
+		
+		return new ResponseEntity<RestMessage>(RestMessage.getSuccessMessage(null), HttpStatus.OK);
 		
 	}
 	
@@ -119,19 +117,16 @@ public class RegisterController extends BaseController {
 	}
 	
 	@RequestMapping(value="/forget_password.json", method = RequestMethod.POST)
-	@ResponseBody
-	public JsonResponse forgetPasswordSubmit(@RequestBody RegisterForm registerForm){
-		JsonResponse jsonResponse = userService.validateSendEmailForm(registerForm);
-		if(jsonResponse.hasErrors()){
-			return jsonResponse;
-		}else{
-			verifyTokenService.sendTokenEmail(registerForm.getEmail(), VerifyTokenType.LOST_PASSWORD_EMAIL);
-			Map<String, Object> data = new HashMap<String, Object>();
-			data.put("email", registerForm.getEmail());
-			// TODO: hard-code
-			data.put("mailDomain", "http://mail.google.com");
-			return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS, data);
-		}
+	public ResponseEntity<RestMessage> forgetPasswordSubmit(@RequestBody RegisterForm registerForm){
+		
+		userService.validateSendEmailForm(registerForm);
+		
+		verifyTokenService.sendTokenEmail(registerForm.getEmail(), VerifyTokenType.LOST_PASSWORD_EMAIL);
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("email", registerForm.getEmail());
+		// TODO: hard-code
+		data.put("mailDomain", "http://mail.google.com");
+		return new ResponseEntity<RestMessage>(RestMessage.getSuccessMessage(null), HttpStatus.OK);
 		
 	}
 	
@@ -150,24 +145,15 @@ public class RegisterController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/reset_password.json", method = RequestMethod.POST)
-	@ResponseBody
-	public JsonResponse resetPasswordSubmit(@RequestBody UpdatePasswordForm resetPasswordForm) {
-		JsonResponse jsonResponse = userService.validateResetPasswordForm(resetPasswordForm);
-		if(jsonResponse.hasErrors()){
-			return jsonResponse;
-		}else{
-			try{
-				User user = userService.getUserByEmail(resetPasswordForm.getEmail());
-				userService.resetUserPassword(user, resetPasswordForm.getNewPassword(), resetPasswordForm.getToken());
+	public ResponseEntity<RestMessage> resetPasswordSubmit(@RequestBody UpdatePasswordForm resetPasswordForm) {
+		userService.validateResetPasswordForm(resetPasswordForm);
+		
+		User user = userService.getUserByEmail(resetPasswordForm.getEmail());
+		userService.resetUserPassword(user, resetPasswordForm.getNewPassword(), resetPasswordForm.getToken());
+		
+		log.info("Reset [{}] new password successfully", user.getEmail());
 			
-				log.info("Reset [{}] new password successfully", user.getEmail());
-				return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
-			}catch(Exception e){
-				log.error("Reset new password error, {}", e);
-				return WebUtil.formatJsonResponse(Status.UPDATE_PASSWORD_ERROR);
-			}
-			
-		}
+		return new ResponseEntity<RestMessage>(RestMessage.getSuccessMessage(null), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/updatePassword", method = RequestMethod.GET)
@@ -182,24 +168,14 @@ public class RegisterController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/update_password.json", method = RequestMethod.POST)
-	@ResponseBody
-	public JsonResponse updatePassword(@RequestBody UpdatePasswordForm updatePasswordForm) {
-		JsonResponse jsonResponse = userService.validateUpdatePasswordForm(updatePasswordForm);
-		if(jsonResponse.hasErrors()){
-			return jsonResponse;
-		}else{
-			try{
-				User user = userService.getUserByEmail(updatePasswordForm.getEmail());
-				userService.updateUserPassword(user, updatePasswordForm.getNewPassword());
-			
-				log.info("Update [{}] new password successfully", user.getEmail());
-				return WebUtil.formatJsonResponse(Status.COMMON_SUCCESS);
-			}catch(Exception e){
-				log.error("Update new password error, {}", e);
-				return WebUtil.formatJsonResponse(Status.UPDATE_PASSWORD_ERROR);
-			}
-			
-		}
+	public ResponseEntity<RestMessage> updatePassword(@RequestBody UpdatePasswordForm updatePasswordForm) {
+		userService.validateUpdatePasswordForm(updatePasswordForm);
+		
+		User user = userService.getUserByEmail(updatePasswordForm.getEmail());
+		userService.updateUserPassword(user, updatePasswordForm.getNewPassword());
+		
+		log.info("Update [{}] new password successfully", user.getEmail());
+		return new ResponseEntity<RestMessage>(RestMessage.getSuccessMessage(null), HttpStatus.OK);
 	}
 	
 	

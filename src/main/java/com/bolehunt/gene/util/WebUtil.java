@@ -70,6 +70,12 @@ public final class WebUtil {
 	    return (atleastOneUpper && atleastOneLower && atleastOneDigit);
 	}
 	
+	public static String formatErrorMessage(Status status) {
+		Locale locale = LocaleContextHolder.getLocale();
+		String message = messageSource.getMessage(status.getMessage(), null, locale);
+		return message;
+	}
+	
 	public static JsonResponse formatJsonResponse(Status status){
 		Locale locale = LocaleContextHolder.getLocale();
 		String message = messageSource.getMessage(status.getMessage(), null, locale);

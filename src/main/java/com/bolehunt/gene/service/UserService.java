@@ -2,7 +2,6 @@ package com.bolehunt.gene.service;
 
 import java.util.List;
 
-import com.bolehunt.gene.common.JsonResponse;
 import com.bolehunt.gene.domain.Role;
 import com.bolehunt.gene.domain.User;
 import com.bolehunt.gene.form.RegisterForm;
@@ -34,13 +33,13 @@ public interface UserService {
 	
 	public boolean isNewPasswordSameAsOldPassword(String email, String newPassword);
 	
-	public JsonResponse validateRegisterForm(RegisterForm registerForm);
+	public void validateRegisterForm(RegisterForm registerForm);
 	
-	public JsonResponse validateResetPasswordForm(UpdatePasswordForm resetPasswordForm);
+	public void validateResetPasswordForm(UpdatePasswordForm resetPasswordForm);
 	
-	public JsonResponse validateUpdatePasswordForm(UpdatePasswordForm updatePasswordForm);
+	public void validateUpdatePasswordForm(UpdatePasswordForm updatePasswordForm);
 	
-	public JsonResponse validateSendEmailForm(RegisterForm registerForm);
+	public void validateSendEmailForm(RegisterForm registerForm);
 	
 	public List<Role> getRoleListByUser(User user);
 	

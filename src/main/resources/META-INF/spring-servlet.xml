@@ -39,39 +39,8 @@
 		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
 			<property name="paramName" value="lang" />
 		</bean>
-		<mvc:interceptor>
-			<mvc:mapping path="/**"/>
-    		<mvc:exclude-mapping path="/resources/**" />
-			<bean class="com.bolehunt.gene.filter.SessionInterceptor" />
-		</mvc:interceptor>
 	</mvc:interceptors>
 	
 	<mvc:resources mapping="/resources/**" location="/public-resources/" cache-period="31556926" />
 	
-	<!-- Spring MVC REST Exception Handling Best Practices -->
-	<!-- See https://stormpath.com/blog/spring-mvc-rest-exception-handling-best-practices-part-1/ -->
-	<!-- Allow Exceptions to be handled in annotated methods if desired.  Otherwise fallback to the
-         'restExceptionResolver' below: -->
-    <!-- 
-    <bean id="annotationMethodHandlerExceptionResolver"
-          class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerExceptionResolver">
-        <property name="order" value="0"/>
-    </bean>
-    <bean id="restExceptionResolver" class="com.bolehunt.gene.exception.RestExceptionHandler">
-        <property name="order" value="100"/>
-        <property name="errorResolver">
-            <bean class="com.bolehunt.gene.exception.DefaultRestErrorResolver">
-                <property name="localeResolver" ref="localeResolver"/>
-                <property name="defaultMoreInfoUrl" value="mailto:support@mycompany.com"/>
-                <property name="exceptionMappingDefinitions">
-                    <map>
-                        <entry key="com.bolehunt.gene.exception.UnknownResourceException" value="404, _exmsg"/>
-                        
-                        <entry key="Throwable" value="500"/>
-                    </map>
-                </property>
-            </bean>
-        </property>
-    </bean>
-	-->
 </beans>

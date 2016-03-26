@@ -2,7 +2,7 @@ package com.bolehunt.gene.common;
 
 public enum Status {
 	
-	COMMON_SUCCESS("200", "200", "msg.success"),
+	SUCCESS("200", "200", "msg.success"),
 	
 	UNKNOWN_EXCEPTION("404", "404", "errMsg.unknownException"),
 	
