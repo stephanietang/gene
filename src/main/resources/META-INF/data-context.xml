@@ -16,7 +16,7 @@
  
 	<!-- Database Configuration / MyBatis -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="${${Env}.jdbc.driverClassName}" />
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="${${Env}.jdbc.url}" />
 		<property name="username" value="${${Env}.jdbc.username}" />
 		<property name="password" value="${${Env}.jdbc.password}" />

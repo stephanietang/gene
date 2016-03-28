@@ -7,7 +7,7 @@ import com.bolehunt.gene.exception.ApplicationException;
 
 public interface VerifyTokenService {
 	
-	public void sendTokenEmail(String email, VerifyTokenType verifyTokenType);
+	public void insertVerifyToken(String email, VerifyTokenType verifyTokenType);
 	
 	public VerifyToken validateVerificationToken(String base64EncodedToken);
 	

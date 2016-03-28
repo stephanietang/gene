@@ -8,8 +8,6 @@
     <!-- Data Configuration --> 
     <import resource="data-context.xml" />
 	
-	<import resource="email-services-context.xml" />
-	
 	<!-- Detects annotations like @Component, @Service, @Controller, @Repository, @Configuration -->
 	<context:component-scan base-package="com.bolehunt.gene.service" />
 	<context:component-scan base-package="com.bolehunt.gene.validator" />

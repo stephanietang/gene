@@ -92,7 +92,7 @@ public class RegisterController extends BaseController {
 	@RequestMapping(value="/send_mail.json", method = RequestMethod.POST)
 	public ResponseEntity<RestMessage> sendEmail(@RequestBody RegisterForm registerForm){
 		userService.validateSendEmailForm(registerForm);
-		verifyTokenService.sendTokenEmail(registerForm.getEmail(), VerifyTokenType.VERIFICATION_EMAIL);
+		verifyTokenService.insertVerifyToken(registerForm.getEmail(), VerifyTokenType.VERIFICATION_EMAIL);
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("email", registerForm.getEmail());
 		// TODO: hard-code
@@ -121,7 +121,7 @@ public class RegisterController extends BaseController {
 		
 		userService.validateSendEmailForm(registerForm);
 		
-		verifyTokenService.sendTokenEmail(registerForm.getEmail(), VerifyTokenType.LOST_PASSWORD_EMAIL);
+		verifyTokenService.insertVerifyToken(registerForm.getEmail(), VerifyTokenType.LOST_PASSWORD_EMAIL);
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("email", registerForm.getEmail());
 		// TODO: hard-code

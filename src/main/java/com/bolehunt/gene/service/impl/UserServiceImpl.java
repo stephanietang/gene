@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
 		
 		log.debug("Insert User {} success", user.getEmail());
 		
-		verifyTokenService.sendTokenEmail(user.getEmail(), VerifyTokenType.VERIFICATION_EMAIL);
+		verifyTokenService.insertVerifyToken(user.getEmail(), VerifyTokenType.VERIFICATION_EMAIL);
 		
 		return user;
 	}

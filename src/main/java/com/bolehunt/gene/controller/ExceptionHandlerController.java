@@ -67,7 +67,7 @@ public class ExceptionHandlerController {
 	@ExceptionHandler(Exception.class)
 	public ModelAndView handleAllException(Exception ex) {
  
-		log.debug("handleAllException");
+		log.debug("handleAllException: ", ex);
 		
 		ModelAndView model = new ModelAndView("error");
 		model.addObject("errMsg", "Unknown Exception!");
