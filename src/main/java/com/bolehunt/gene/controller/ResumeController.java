@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,10 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.bolehunt.gene.common.JsonResponse;
 import com.bolehunt.gene.common.RestMessage;
-import com.bolehunt.gene.common.Status;
 import com.bolehunt.gene.domain.Avatar;
 import com.bolehunt.gene.domain.Education;
 import com.bolehunt.gene.form.EducationForm;
@@ -40,7 +38,6 @@ public class ResumeController extends BaseController {
 	
 	@RequestMapping(value = "/talent/profile", method = RequestMethod.GET)
 	public String viewResumePage(ModelMap model) {
-		
 		ResumeForm resumeForm = resumeService.retrieveResume(getUser());
 		
 		model.put("resumeForm", resumeForm);
@@ -81,7 +78,9 @@ public class ResumeController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/talent/profile/educationCrudAction.json", method = RequestMethod.POST)
-	public ResponseEntity<RestMessage> educationCrudAction(@RequestBody EducationForm educationForm) {
+	@ResponseBody
+	@ResponseStatus(HttpStatus.OK)
+	public RestMessage<List<Education>> educationCrudAction(@RequestBody EducationForm educationForm) {
 		
 		resumeService.validateEducationForm(educationForm);
 		
@@ -91,6 +90,6 @@ public class ResumeController extends BaseController {
 		
 		List<Education> educationList = resumeService.retrieveEducationList(getUser().getId());
 		
-		return new ResponseEntity<RestMessage>(RestMessage.getSuccessMessage(null), HttpStatus.OK);
+		return new RestMessage<List<Education>>().getSuccessMessage(educationList);
 	}
 }

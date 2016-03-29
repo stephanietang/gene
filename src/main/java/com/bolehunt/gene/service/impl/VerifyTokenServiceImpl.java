@@ -13,7 +13,7 @@ import org.springframework.util.Assert;
 import com.bolehunt.gene.common.AppConfig;
 import com.bolehunt.gene.common.Constant;
 import com.bolehunt.gene.common.Constant.VerifyTokenType;
-import com.bolehunt.gene.common.Status;
+import com.bolehunt.gene.common.ErrorStatus;
 import com.bolehunt.gene.domain.User;
 import com.bolehunt.gene.domain.VerifyToken;
 import com.bolehunt.gene.domain.VerifyTokenExample;
@@ -70,10 +70,10 @@ public class VerifyTokenServiceImpl implements VerifyTokenService {
 	public User validateLostPassToken(String base64EncodedToken){
 		VerifyToken token = this.loadToken(base64EncodedToken);
 		if (token.isTokenVerified()) {
-            throw new ApplicationException(Status.TOKEN_ALREADY_VERIFIED);
+            throw new ApplicationException(ErrorStatus.TOKEN_ALREADY_VERIFIED);
         }
 		if (token.hasExpired()) {
-            throw new ApplicationException(Status.TOKEN_ALREADY_EXPIRED);
+            throw new ApplicationException(ErrorStatus.TOKEN_ALREADY_EXPIRED);
         }
         
         User user = userService.getUserById(token.getUserId());
@@ -95,10 +95,10 @@ public class VerifyTokenServiceImpl implements VerifyTokenService {
         }
         
         if (token == null) {
-            throw new ApplicationException(Status.TOKEN_NOT_FOUND);
+            throw new ApplicationException(ErrorStatus.TOKEN_NOT_FOUND);
         }
         if (token.hasExpired()) {
-            throw new ApplicationException(Status.TOKEN_ALREADY_EXPIRED);
+            throw new ApplicationException(ErrorStatus.TOKEN_ALREADY_EXPIRED);
         }
         return token;
     }
@@ -107,7 +107,7 @@ public class VerifyTokenServiceImpl implements VerifyTokenService {
 	public VerifyToken verifyToken(String base64EncodedToken){
 		VerifyToken token = this.loadToken(base64EncodedToken);
         if (token.isTokenVerified()) {
-            throw new ApplicationException(Status.TOKEN_ALREADY_VERIFIED);
+            throw new ApplicationException(ErrorStatus.TOKEN_ALREADY_VERIFIED);
         }
         token.setVerified(Constant.TokenVerifyType.VERIFIED.getValue());
         verifyTokenMapper.updateByPrimaryKey(token);

@@ -1,24 +1,42 @@
 package com.bolehunt.gene.exception;
 
-import com.bolehunt.gene.common.Status;
+import java.util.List;
+
+import com.bolehunt.gene.common.ErrorStatus;
 
 public class ApplicationException extends RuntimeException {
 
 	private static final long serialVersionUID = -8175936104094875229L;
 	
-	public ApplicationException(Status status) {
+	public ApplicationException(List<ErrorStatus> errorList) {
 		super();
-		this.status = status;
+		this.errorList = errorList;
+	}
+	
+	public ApplicationException(ErrorStatus error) {
+		super();
+		this.error = error;
 	}
 
-	private Status status;
+	private List<ErrorStatus> errorList;
+	
+	private ErrorStatus error;
 
-	public Status getStatus() {
-		return status;
+	public List<ErrorStatus> getErrorList() {
+		return errorList;
 	}
 
-	public void setStatus(Status status) {
-		this.status = status;
+	public void setErrorList(List<ErrorStatus> errorList) {
+		this.errorList = errorList;
 	}
+
+	public ErrorStatus getError() {
+		return error;
+	}
+
+	public void setError(ErrorStatus error) {
+		this.error = error;
+	}
+	
  
 }

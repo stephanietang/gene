@@ -55,24 +55,24 @@ jQuery(document).ready(function() {
 		    	contentType: "application/json; charset=utf-8",
 		    	dataType: "json",
 		        data: json,
-		        success : function(data){
-		        	if(data.status == 'success'){
+		        success : function(result){
+		        	if(result.status == 'success'){
 		        		$('#hidden-email').val(email);
 		        		$('#confirm-form').prop('action', ctx+"/confirm_mail");
 		        		$('#confirm-form').submit();
-		        	}else if(data.status == 'error'){
-		        		displayError(data);
+		        	}else if(result.status == 'error'){
+		        		displayErrorList(result);
 		        	}
 		        },
 		        error : function(){
-		        	$('#errorMessage').text('error').show();
+		        	$("#errorMessage").text("Error!").show();
 		        }
 		    });
 		}
 	});
 	
 	$("#email").focus(function() {
-		$('#errorMessage').text("").hide();
+		resetGlobalMessage();
 	});
 });
 </script>

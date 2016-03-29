@@ -42,7 +42,7 @@
 				<div id="countdown-wrapper">
 					<h3><spring:message code="msg.user.updatePassword.success" /></h3>
 					<h4><spring:message code="msg.user.updatePassword.logout" /></h4>
-					<p><a href="${contextPath}/logout"><spring:message code="menu.logout" /></a></p>
+					<p><a href="javascript:logoutSubmit()"><spring:message code="menu.logout" /></a></p>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -79,6 +79,9 @@ $(document).ready(function() {
 			var newPassword = $('#newPassword').val();
 
 		    var json = JSON.stringify({email:email, oldPassword:oldPassword,newPassword:newPassword});
+		    
+		    csrfAjaxSetup();
+		    
 		    $.ajax({
 		    	url: ctx + "/update_password.json",
 		    	type: "post",
@@ -86,11 +89,11 @@ $(document).ready(function() {
 		        dataType : 'json',
 		        data: json,
 		        success : function(result){
-		        	if(result.status == '200'){
+		        	if(result.status == 'success'){
 		        		$('#modal').modal('show');
-		        		setCountdown(4,'countdown-wrapper h4 span',ctx+"/logout");
-		        	}else{
-		        		$("#errorMessage").text(result.message).show();
+		        		setCountdown(4,'countdown-wrapper h4 span',logoutSubmit);
+		        	}else if(result.status == 'error'){
+		        		displayErrorList(result);
 		        	}
 		        },
 		        error : function(){
@@ -101,7 +104,7 @@ $(document).ready(function() {
 	});
 	
 	$("#oldPassword").focus(function() {
-		$('#errorMessage').text("").hide();
+		resetGlobalMessage();
 	});
 	
 });

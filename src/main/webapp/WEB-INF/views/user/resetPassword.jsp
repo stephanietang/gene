@@ -44,7 +44,7 @@
 				<div id="countdown-wrapper">
 					<h3><spring:message code="msg.user.resetPassword.success" /></h3>
 					<h4><spring:message code="msg.user.resetPassword.login" /></h4>
-					<p><a href="${contextPath}/login"><spring:message code="menu.login" /></a></p>
+					<p><a href="<c:url value="/login" />"><spring:message code="menu.login" /></a></p>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -72,6 +72,8 @@ $(document).ready(function() {
 			}
 		},
 		submitHandler:function(form){
+			csrfAjaxSetup();
+			
 			var email = $('#email').val();
 			var newPassword = $('#newPassword').val();
 			var token = $('#token').val();
@@ -84,11 +86,11 @@ $(document).ready(function() {
 		        dataType : 'json',
 		        data: json,
 		        success : function(result){
-		        	if(result.status == '200'){
+		        	if(result.status == 'success'){
 		        		$('#modal').modal('show');
-		        		setCountdown(4,'countdown-wrapper h4 span',ctx+"/login");
-		        	}else{
-		        		$("#errorMessage").text(result.message).show();
+		        		setCountdown(4,'countdown-wrapper h4 span',redirectIndex);
+		        	}else if(result.status == 'error'){
+		        		displayErrorList(result);
 		        	}
 		        },
 		        error : function(){

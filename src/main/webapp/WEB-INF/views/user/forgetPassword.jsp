@@ -30,8 +30,8 @@
 	      	</div>
 			<div class="modal-body">
 				<h2><spring:message code="title.user.resetPassword" /></h2>
-				<p>我们已经将重置密码的邮件发送至邮箱: <a id="mail-domain" href=""></a></p>
-				<p><a class="btn btn-lg btn-primary" href="" role="button">点击进入邮箱重置密码</a></p>
+				<p>我们已经将重置密码的邮件发送至邮箱: <a id="mail-domain" href="" target="_blank"></a></p>
+				<p><a class="btn btn-lg btn-primary" href="" role="button" target="_blank">点击进入邮箱重置密码</a></p>
 			</div>
 			<div class="modal-footer">
 				
@@ -53,8 +53,11 @@ jQuery(document).ready(function() {
 			}
 		},
 		submitHandler:function(form){
+			csrfAjaxSetup();
+			
 			var email = $('#email').val();
 		    var json = JSON.stringify({email:email});
+		    
 		    $.ajax({
 		    	url: ctx + "/forget_password.json",
 		    	type: "post",
@@ -62,15 +65,14 @@ jQuery(document).ready(function() {
 		        dataType : 'json',
 		        data: json,
 		        success : function(result){
-		        	if(result.status == '200'){
+		        	if(result.status == 'success'){
 		        		var mailDomain = result.data.mailDomain;
 		        		var email = result.data.email;
 		        		$("#modal #mail-domain").attr("href", mailDomain).text(email);
 		        		$("#modal .btn").attr("href", mailDomain);
 		        		$('#modal').modal('show');
-		        		
-		        	}else{
-		        		$("#errorMessage").text(result.message).show();
+		        	}else if(result.status == 'error'){
+		        		displayErrorList(result);
 		        	}
 		        },
 		        error : function(){
@@ -81,7 +83,7 @@ jQuery(document).ready(function() {
 	});
 	
 	$("#email").focus(function() {
-		$('#errorMessage').text("").hide();
+		resetGlobalMessage();
 	});
 	
 });

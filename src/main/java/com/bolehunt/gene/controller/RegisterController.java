@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,10 +21,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.bolehunt.gene.common.Constant.VerifyTokenType;
 import com.bolehunt.gene.common.RestMessage;
+import com.bolehunt.gene.common.RestSuccessMessage;
 import com.bolehunt.gene.domain.User;
 import com.bolehunt.gene.form.RegisterForm;
 import com.bolehunt.gene.form.UpdatePasswordForm;
 import com.bolehunt.gene.service.VerifyTokenService;
+import com.bolehunt.gene.util.WebUtil;
 
 @Controller
 public class RegisterController extends BaseController {
@@ -53,7 +54,7 @@ public class RegisterController extends BaseController {
 	@RequestMapping(value = "/register.json", method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
-	public RestMessage registerSubmit(@RequestBody RegisterForm registerForm) {
+	public RestSuccessMessage registerSubmit(@RequestBody RegisterForm registerForm) {
 		
 		userService.validateRegisterForm(registerForm);
 		
@@ -61,44 +62,54 @@ public class RegisterController extends BaseController {
 		try{
 			BeanUtils.copyProperties(user, registerForm);
 		}catch(Exception e){
-			log.error("copy bean properties error : " + e);
+			log.error("copy bean properties error : ", e);
 		}
 			
 		userService.registerUser(user);
 			
 		log.info("Register [{}] new user successfully", user.getEmail());
-			
-		return RestMessage.getSuccessMessage(null);
+		
+		return RestSuccessMessage.getInstance();
 	}
 	
-	// Redirect to confirm page of sending verification email after registration
+	/**
+	 * Redirect to confirm page of sending verification email after registration
+	 */
 	@RequestMapping(value="/confirm_mail", method = RequestMethod.POST)
 	public String confirmMailPage(@ModelAttribute("registerForm") RegisterForm form, ModelMap model){
 		String email = form.getEmail();
 		
 		model.addAttribute("email", email);
-		// TODO: hard-code
-		model.put("mailDomain", "http://mail.google.com");
+		model.addAttribute("mailDomain", WebUtil.resolveMailDomainFromEmail(email));
+		
 		return "user/confirmEmail";
 	}
 	
-	// Re-send verification email page
-	@RequestMapping(value="/send_mail", method = RequestMethod.GET)
-	public String sendMailPage(@RequestParam(value = "email") String email, ModelMap model){
-		model.put("email", email);
+	/**
+	 *  Re-send verification email page
+	 */
+	@RequestMapping(value="/send_mail", method = RequestMethod.POST)
+	public String sendMailPage(@ModelAttribute("registerForm") RegisterForm registerForm, ModelMap model){
+		String email = registerForm.getEmail();
+		model.addAttribute("email", email);
+		
 		return "user/sendEmail";
 	}
 	
 	@RequestMapping(value="/send_mail.json", method = RequestMethod.POST)
-	public ResponseEntity<RestMessage> sendEmail(@RequestBody RegisterForm registerForm){
-		userService.validateSendEmailForm(registerForm);
-		verifyTokenService.insertVerifyToken(registerForm.getEmail(), VerifyTokenType.VERIFICATION_EMAIL);
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("email", registerForm.getEmail());
-		// TODO: hard-code
-		data.put("mailDomain", "http://mail.google.com");
+	@ResponseBody
+	@ResponseStatus(HttpStatus.OK)
+	public RestMessage<Map<String, Object>> sendEmail(@RequestBody RegisterForm registerForm){
 		
-		return new ResponseEntity<RestMessage>(RestMessage.getSuccessMessage(null), HttpStatus.OK);
+		userService.validateSendEmailForm(registerForm);
+		
+		verifyTokenService.insertVerifyToken(registerForm.getEmail(), VerifyTokenType.VERIFICATION_EMAIL);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("email", registerForm.getEmail());
+		map.put("mailDomain", WebUtil.resolveMailDomainFromEmail(registerForm.getEmail()));
+		
+		return new RestMessage<Map<String, Object>>().getSuccessMessage(map);
 		
 	}
 	
@@ -117,16 +128,19 @@ public class RegisterController extends BaseController {
 	}
 	
 	@RequestMapping(value="/forget_password.json", method = RequestMethod.POST)
-	public ResponseEntity<RestMessage> forgetPasswordSubmit(@RequestBody RegisterForm registerForm){
+	@ResponseBody
+	@ResponseStatus(HttpStatus.OK)
+	public RestMessage<Map<String, Object>> forgetPasswordSubmit(@RequestBody RegisterForm registerForm){
 		
 		userService.validateSendEmailForm(registerForm);
 		
 		verifyTokenService.insertVerifyToken(registerForm.getEmail(), VerifyTokenType.LOST_PASSWORD_EMAIL);
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("email", registerForm.getEmail());
-		// TODO: hard-code
-		data.put("mailDomain", "http://mail.google.com");
-		return new ResponseEntity<RestMessage>(RestMessage.getSuccessMessage(null), HttpStatus.OK);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("email", registerForm.getEmail());
+		map.put("mailDomain", WebUtil.resolveMailDomainFromEmail(registerForm.getEmail()));
+		
+		return new RestMessage<Map<String, Object>>().getSuccessMessage(map);
 		
 	}
 	
@@ -145,7 +159,10 @@ public class RegisterController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/reset_password.json", method = RequestMethod.POST)
-	public ResponseEntity<RestMessage> resetPasswordSubmit(@RequestBody UpdatePasswordForm resetPasswordForm) {
+	@ResponseBody
+	@ResponseStatus(HttpStatus.OK)
+	public RestSuccessMessage resetPasswordSubmit(@RequestBody UpdatePasswordForm resetPasswordForm) {
+		
 		userService.validateResetPasswordForm(resetPasswordForm);
 		
 		User user = userService.getUserByEmail(resetPasswordForm.getEmail());
@@ -153,7 +170,7 @@ public class RegisterController extends BaseController {
 		
 		log.info("Reset [{}] new password successfully", user.getEmail());
 			
-		return new ResponseEntity<RestMessage>(RestMessage.getSuccessMessage(null), HttpStatus.OK);
+		return RestSuccessMessage.getInstance();
 	}
 	
 	@RequestMapping(value = "/updatePassword", method = RequestMethod.GET)
@@ -168,14 +185,17 @@ public class RegisterController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/update_password.json", method = RequestMethod.POST)
-	public ResponseEntity<RestMessage> updatePassword(@RequestBody UpdatePasswordForm updatePasswordForm) {
+	@ResponseBody
+	@ResponseStatus(HttpStatus.OK)
+	public RestSuccessMessage updatePassword(@RequestBody UpdatePasswordForm updatePasswordForm) {
 		userService.validateUpdatePasswordForm(updatePasswordForm);
 		
 		User user = userService.getUserByEmail(updatePasswordForm.getEmail());
 		userService.updateUserPassword(user, updatePasswordForm.getNewPassword());
 		
 		log.info("Update [{}] new password successfully", user.getEmail());
-		return new ResponseEntity<RestMessage>(RestMessage.getSuccessMessage(null), HttpStatus.OK);
+		
+		return RestSuccessMessage.getInstance();
 	}
 	
 	

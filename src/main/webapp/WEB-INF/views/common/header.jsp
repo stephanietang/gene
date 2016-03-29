@@ -49,11 +49,6 @@
 	<c:set var="version"><%= java.util.UUID.randomUUID() %></c:set>
 	<link rel="stylesheet" href="${contextPath}/resources/css/main.css?v=${version}">
 	<script src="${contextPath}/resources/js/main.js?v=${version}"></script>
-	<script>
-		function logoutSubmit() {
-			document.getElementById("logoutForm").submit();
-		}
-	</script>
 </head>
 <body>
 	<a id="skippy" class="sr-only sr-only-focusable" href="#content"><div class="container"><span class="skiplink-text">Skip to main content</span></div></a>

@@ -21,7 +21,7 @@ import com.bolehunt.gene.service.UserService;
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
-    private final Log logger = LogFactory.getLog(this.getClass());
+    private final Log log = LogFactory.getLog(this.getClass());
     
     @Autowired
     private UserService userService;
@@ -29,7 +29,7 @@ public class MyUserDetailsService implements UserDetailsService {
     @Override
     @Transactional(readOnly=true)
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        logger.info("Load user by username " + username);
+    	log.info("Load user by username " + username);
         
         User user = userService.getUserByEmail(username);
 

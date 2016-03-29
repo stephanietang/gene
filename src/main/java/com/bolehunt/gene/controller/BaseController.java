@@ -22,9 +22,8 @@ public class BaseController {
 	protected UserService userService;
 	
 	protected User getUser() {
-		String userName = this.getPrincipal();
-		log.info("Principal:" + userName);
-		User user = new User();
+		String email = this.getPrincipal();
+		User user = userService.getUserByEmail(email);
 		return user;
 	}
 	

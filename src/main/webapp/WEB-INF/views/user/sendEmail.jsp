@@ -30,8 +30,8 @@
 				<h4 class="modal-title"><spring:message code="title.user.sendVerifyEmail" /></h4>
 	      	</div>
 			<div class="modal-body">
-				<p>我们已经将验证邮件发送至邮箱: <a id="mail-domain" href=""></a></p>
-				<p><a class="btn btn-lg btn-primary" href="" role="button">点击进入邮箱激活</a></p>
+				<p>我们已经将验证邮件发送至邮箱: <a id="mail-domain" href="" target="_blank"></a></p>
+				<p><a class="btn btn-lg btn-primary" href="" role="button" target="_blank">点击进入邮箱激活</a></p>
 			</div>
 			<div class="modal-footer">
 				
@@ -53,6 +53,8 @@ jQuery(document).ready(function() {
 			}
 		},
 		submitHandler:function(form){
+			csrfAjaxSetup();
+			
 			var email = $('#email').val();
 		    var json = JSON.stringify({email:email});
 		    $.ajax({
@@ -62,15 +64,14 @@ jQuery(document).ready(function() {
 		        dataType : 'json',
 		        data: json,
 		        success : function(result){
-		        	if(result.status == '200'){
+		        	if(result.status == 'success'){
 		        		var mailDomain = result.data.mailDomain;
 		        		var email = result.data.email;
 		        		$("#modal #mail-domain").attr("href", mailDomain).text(email);
 		        		$("#modal .btn").attr("href", mailDomain);
 		        		$('#modal').modal('show');
-		        		
-		        	}else{
-		        		$("#errorMessage").text(result.message).show();
+		        	}else if(result.status == 'error'){
+		        		displayErrorList(result);
 		        	}
 		        },
 		        error : function(){
@@ -81,7 +82,7 @@ jQuery(document).ready(function() {
 	});
 	
 	$("#email").focus(function() {
-		$('#errorMessage').text("").hide();
+		resetGlobalMessage();
 	});
 	
 });

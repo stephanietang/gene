@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bolehunt.gene.common.Status;
+import com.bolehunt.gene.common.ErrorStatus;
 import com.bolehunt.gene.domain.BasicInfo;
 import com.bolehunt.gene.domain.Education;
 import com.bolehunt.gene.domain.EducationExample;
@@ -56,7 +56,7 @@ public class ResumeServiceImpl implements ResumeService {
 	@Override
 	public void validateEducationForm(EducationForm educationForm){
 		if(educationForm == null){
-			throw new ApplicationException(Status.UNKNOWN_EXCEPTION);
+			throw new ApplicationException(ErrorStatus.UNKNOWN_EXCEPTION);
 		}
 	}
 	
@@ -94,9 +94,9 @@ public class ResumeServiceImpl implements ResumeService {
 		Education education = educationMapper.selectByPrimaryKey(educationForm.getEducationId());
 		
 		if(education == null){
-			throw new ApplicationException(Status.UNKNOWN_EXCEPTION);
+			throw new ApplicationException(ErrorStatus.UNKNOWN_EXCEPTION);
 		}else if(! education.getUserId().equals(user.getId())){
-			throw new ApplicationException(Status.USER_FORBIDDEN_ACCESS);
+			throw new ApplicationException(ErrorStatus.USER_FORBIDDEN_ACCESS);
 		}
 		
 		education.setSchoolName(educationForm.getSchoolName());
@@ -112,9 +112,9 @@ public class ResumeServiceImpl implements ResumeService {
 		Education education = educationMapper.selectByPrimaryKey(educationForm.getEducationId());
 		
 		if(education == null){
-			throw new ApplicationException(Status.UNKNOWN_EXCEPTION);
+			throw new ApplicationException(ErrorStatus.UNKNOWN_EXCEPTION);
 		}else if(! education.getUserId().equals(user.getId())){
-			throw new ApplicationException(Status.USER_FORBIDDEN_ACCESS);
+			throw new ApplicationException(ErrorStatus.USER_FORBIDDEN_ACCESS);
 		}
 		
 		educationMapper.deleteByPrimaryKey(educationForm.getEducationId());

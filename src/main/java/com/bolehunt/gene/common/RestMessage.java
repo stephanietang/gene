@@ -1,37 +1,30 @@
 package com.bolehunt.gene.common;
 
-import java.util.List;
 
-public final class RestMessage {
+public final class RestMessage<T> {
 	
 	private final static String STATUS_SUCCESS = "success";
 	private final static String STATUS_ERROR = "error";
 
 	private String status;
-	private List<Object> data;
-	private List<String> error;
+	
+	private T data;
+	private T error;
 	
 	public RestMessage() {
+		
 	}
 	
-	public RestMessage(List<Object> data) {
+	public RestMessage<T> getErrorMessage(T error) {
+		this.status = STATUS_ERROR;
+		this.error = error;
+		return this;
+	}
+	
+	public RestMessage<T> getSuccessMessage(T data) {
 		this.status = STATUS_SUCCESS;
 		this.data = data;
-	}
-
-	
-	public static RestMessage getErrorMessage(final List<String> error) {
-		RestMessage  errorMsg = new RestMessage();
-		errorMsg.setStatus(STATUS_ERROR);
-		errorMsg.setError(error);
-		return errorMsg;
-	}
-
-	public static RestMessage getSuccessMessage(final List<Object> data) {
-		RestMessage  errorMsg = new RestMessage();
-		errorMsg.setStatus(STATUS_SUCCESS);
-		errorMsg.setData(data);
-		return errorMsg;
+		return this;
 	}
 	
 	public String getStatus() {
@@ -42,19 +35,19 @@ public final class RestMessage {
 		this.status = status;
 	}
 
-	public List<Object> getData() {
+	public T getData() {
 		return data;
 	}
 
-	public void setData(List<Object> data) {
+	public void setData(T data) {
 		this.data = data;
 	}
 
-	public List<String> getError() {
+	public T getError() {
 		return error;
 	}
 
-	public void setError(List<String> error) {
+	public void setError(T error) {
 		this.error = error;
 	}
 

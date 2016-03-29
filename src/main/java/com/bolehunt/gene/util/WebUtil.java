@@ -1,9 +1,8 @@
 package com.bolehunt.gene.util;
 
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +10,9 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
-import com.bolehunt.gene.common.JsonResponse;
-import com.bolehunt.gene.common.JsonResponse.Errors;
-import com.bolehunt.gene.common.Status;
+import com.bolehunt.gene.common.AppBeans;
+import com.bolehunt.gene.common.CommonMessage;
+import com.bolehunt.gene.common.ErrorStatus;
 
 
 /**
@@ -70,30 +69,32 @@ public final class WebUtil {
 	    return (atleastOneUpper && atleastOneLower && atleastOneDigit);
 	}
 	
-	public static String formatErrorMessage(Status status) {
-		Locale locale = LocaleContextHolder.getLocale();
-		String message = messageSource.getMessage(status.getMessage(), null, locale);
-		return message;
+	public static String resolveMailDomainFromEmail(String email){
+		String[] temp;
+		String delimiter = "@";
+
+		temp = email.split(delimiter);
+		String domain = AppBeans.getDomainMap().get(temp[1]);
+		if(StringUtils.isBlank(domain)){
+			return "http://"+temp[1];
+		}
+
+		return domain;
 	}
 	
-	public static JsonResponse formatJsonResponse(Status status){
+	public static String formatErrorMessage(ErrorStatus error){
 		Locale locale = LocaleContextHolder.getLocale();
-		String message = messageSource.getMessage(status.getMessage(), null, locale);
-		return new JsonResponse(status.getStatus(), message);
+		String errorMessage = messageSource.getMessage(error.getMessage(), null, locale);
+		
+		return errorMessage;
 	}
 	
-	public static JsonResponse formatJsonResponse(Status status, Map<String, Object> data){
+	public static String formatMessage(CommonMessage message){
 		Locale locale = LocaleContextHolder.getLocale();
-		String message = messageSource.getMessage(status.getMessage(), null, locale);
-		return new JsonResponse(status.getStatus(), message, data);
+		String msg = messageSource.getMessage(message.getMessage(), null, locale);
+		
+		return msg;
 	}
 	
-	public static JsonResponse addError(JsonResponse jsonResponse, String field, Status status){
-		Locale locale = LocaleContextHolder.getLocale();
-		String message = messageSource.getMessage(status.getMessage(), null, locale);
-		List<Errors> errorsList = jsonResponse.getErrors();
-		errorsList.add(new Errors(field, message));
-		return jsonResponse;
-	}
 	
 }

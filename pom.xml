@@ -12,7 +12,6 @@
 	<properties>
         <springframework.version>4.1.6.RELEASE</springframework.version>
         <springsecurity.version>4.0.1.RELEASE</springsecurity.version>
-        <springframework.integration.version>3.0.7.RELEASE</springframework.integration.version>
         <java.version>1.7</java.version>
         <org.slf4j-version>1.5.10</org.slf4j-version>
     </properties> 
@@ -50,12 +49,6 @@
     		<groupId>org.springframework</groupId>
     		<artifactId>spring-test</artifactId>
     		<version>${springframework.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework.integration</groupId>
-			<artifactId>spring-integration-core</artifactId>
-			<version>${springframework.integration.version}</version>
 		</dependency>
 		
 		<dependency>
@@ -166,13 +159,6 @@
 				</exclusion>
 			</exclusions>
 			<scope>runtime</scope>
-		</dependency>
-		
-		<!-- Velocity -->
-		<dependency>
-			<groupId>org.apache.velocity</groupId>
-			<artifactId>velocity</artifactId>
-			<version>1.7</version>
 		</dependency>
 		
 		<!-- commons -->

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bolehunt.gene.common.ErrorStatus;
 import com.bolehunt.gene.common.RestMessage;
 import com.bolehunt.gene.exception.ApplicationException;
 import com.bolehunt.gene.exception.UnknownResourceException;
@@ -40,17 +41,31 @@ public class ExceptionHandlerController {
 	@ExceptionHandler(ApplicationException.class)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
-	public RestMessage handleCustomException(ApplicationException ex) {
+	public RestMessage<List<String>> handleCustomException(ApplicationException ex) {
  
-		log.debug("handleCustomException status = {}, message = {}", ex.getStatus().getStatus(), ex.getStatus().getMessage());
+		log.debug("handleCustomException errorList = {}, error = {}", ex.getErrorList(), ex.getError());
 		
-		Locale locale = LocaleContextHolder.getLocale();
-		String message = messageSource.getMessage(ex.getStatus().getMessage(), null, locale);
 		List<String> errorList = new ArrayList<String>();
-		errorList.add(message);
 		
-		RestMessage restError = RestMessage.getErrorMessage(errorList);
+		if(ex.getErrorList() != null || ex.getErrorList().size() > 0) {
+			
+			for (ErrorStatus error: ex.getErrorList()) {
+				Locale locale = LocaleContextHolder.getLocale();
+				String message = messageSource.getMessage(error.getMessage(), null, locale);
+				
+				errorList.add(message);
+			}
+			
+		}else if(ex.getError() != null){
+			Locale locale = LocaleContextHolder.getLocale();
+			String message = messageSource.getMessage(ex.getError().getMessage(), null, locale);
+			
+			errorList.add(message);
+		}
+		
+		RestMessage<List<String>> restError = new RestMessage<List<String>>().getErrorMessage(errorList);
         return restError; 
+		
 	}
 	
 	// ignore path for static resources
@@ -63,7 +78,7 @@ public class ExceptionHandlerController {
 		throw new UnknownResourceException("There is no resource for path " + uri);
  
 	}
- 
+	
 	@ExceptionHandler(Exception.class)
 	public ModelAndView handleAllException(Exception ex) {
  

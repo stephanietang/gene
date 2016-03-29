@@ -1,7 +1,5 @@
 package com.bolehunt.gene.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -10,7 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.bolehunt.gene.common.CommonMessage;
+import com.bolehunt.gene.common.ErrorStatus;
 import com.bolehunt.gene.form.LoginForm;
+import com.bolehunt.gene.util.WebUtil;
 
 @Controller
 public class LoginController extends BaseController {
@@ -20,17 +21,16 @@ public class LoginController extends BaseController {
 	@RequestMapping(value="/login", method = RequestMethod.GET)
 	 public String login(ModelMap model, 
 			 @RequestParam(value = "error", required = false) String error,
-			 @RequestParam(value = "logout", required = false) String logout,
-			 HttpServletRequest request) {
+			 @RequestParam(value = "logout", required = false) String logout) {
 		
 		model.addAttribute("loginForm", new LoginForm());
 		
 		if (error != null) {
-			model.addAttribute("errorMessage", "Invalid username and password!");
+			model.addAttribute("errorMessage", WebUtil.formatErrorMessage(ErrorStatus.USER_EMAIL_OR_PASSWORD_INCORRECT));
 		}
 
 		if (logout != null) {
-			model.addAttribute("msg", "You've been logged out successfully.");
+			model.addAttribute("msg", WebUtil.formatMessage(CommonMessage.USER_LOGOUT_SUCCESS));
 		}
 		
 		return "user/login";
