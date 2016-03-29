@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.bolehunt.gene.common.ErrorStatus;
 import com.bolehunt.gene.domain.BasicInfo;
+import com.bolehunt.gene.domain.BasicInfoExample;
 import com.bolehunt.gene.domain.Education;
 import com.bolehunt.gene.domain.EducationExample;
 import com.bolehunt.gene.domain.User;
@@ -29,19 +30,31 @@ public class ResumeServiceImpl implements ResumeService {
 	@Override
 	public ResumeForm retrieveResume(User user){
 		ResumeForm form = new ResumeForm();
-		BasicInfo basicInfo = basicInfoMapper.selectByPrimaryKey(user.getId());
-		form.setBasicInfo(basicInfo);
+		form.setUserId(user.getId());
+		BasicInfoExample ex = new BasicInfoExample();
+		ex.createCriteria().andUserIdEqualTo(user.getId());
+		List<BasicInfo> basicInfoList = basicInfoMapper.selectByExample(ex);
 		
-		List<Education> educationList = retrieveEducationList(user.getId());
-		form.setEducationList(educationList);
+		if(basicInfoList != null && basicInfoList.size() > 0 ){
+			BasicInfo basicInfo = basicInfoList.get(0);
+			form.setBasicInfo(basicInfo);
+			List<Education> educationList = retrieveEducationList(basicInfo.getId());
+			form.setEducationList(educationList);
+		}
 		
 		return form;
 	}
 	
 	@Override
-	public List<Education> retrieveEducationList(int userId) {
+	public BasicInfo retrieveBasicInfo(User user) {
+		BasicInfo basicInfo = basicInfoMapper.selectByPrimaryKey(user.getId());
+		return basicInfo;
+	}
+	
+	@Override
+	public List<Education> retrieveEducationList(int basicInfoId) {
 		EducationExample eduEx = new EducationExample();
-		eduEx.createCriteria().andUserIdEqualTo(userId);
+		eduEx.createCriteria().andBasicInfoIdEqualTo(basicInfoId);
 		eduEx.setOrderByClause("start_year desc, end_year desc");
 		return educationMapper.selectByExample(eduEx);
 	}
@@ -49,8 +62,12 @@ public class ResumeServiceImpl implements ResumeService {
 	@Override
 	public void saveResume(ResumeForm resumeForm){
 		BasicInfo basicInfo = resumeForm.getBasicInfo();
-		basicInfoMapper.updateByPrimaryKey(basicInfo);
-		
+		if(basicInfo.getId() != null){
+			basicInfoMapper.updateByPrimaryKeySelective(basicInfo);
+		} else {
+			basicInfo.setUserId(resumeForm.getUserId());
+			basicInfoMapper.insertSelective(basicInfo);
+		}
 	}
 	
 	@Override
@@ -62,25 +79,26 @@ public class ResumeServiceImpl implements ResumeService {
 	
 	@Override
 	public void proceedEducationForm(EducationForm educationForm, User user){
+		BasicInfo basicInfo = retrieveBasicInfo(user);
 		if("add".equals(educationForm.getAction())){
 			
-			addEducation(educationForm, user);
+			addEducation(educationForm, basicInfo);
 		
 		} else if("save".equals(educationForm.getAction())){
 			
-			updateEducation(educationForm, user);
+			updateEducation(educationForm, basicInfo);
 			
 		}else if("delete".equals(educationForm.getAction())){
 			
-			deleteEducation(educationForm, user);
+			deleteEducation(educationForm, basicInfo);
 		
 		}
 	}
 	
-	private void addEducation(EducationForm educationForm, User user){
+	private void addEducation(EducationForm educationForm, BasicInfo basicInfo){
 		
 		Education education = new Education();
-		education.setUserId(user.getId());
+		education.setBasicInfoId(basicInfo.getId());
 		education.setSchoolName(educationForm.getSchoolName());
 		education.setDegree(educationForm.getDegree());
 		education.setStartYear(educationForm.getStartYear());
@@ -90,12 +108,12 @@ public class ResumeServiceImpl implements ResumeService {
 		
 	}
 	
-	private void updateEducation(EducationForm educationForm, User user){
+	private void updateEducation(EducationForm educationForm, BasicInfo basicInfo){
 		Education education = educationMapper.selectByPrimaryKey(educationForm.getEducationId());
 		
 		if(education == null){
 			throw new ApplicationException(ErrorStatus.UNKNOWN_EXCEPTION);
-		}else if(! education.getUserId().equals(user.getId())){
+		}else if(! education.getBasicInfoId().equals(basicInfo.getId())){
 			throw new ApplicationException(ErrorStatus.USER_FORBIDDEN_ACCESS);
 		}
 		
@@ -108,12 +126,12 @@ public class ResumeServiceImpl implements ResumeService {
 		
 	}
 	
-	private void deleteEducation(EducationForm educationForm, User user){
+	private void deleteEducation(EducationForm educationForm, BasicInfo basicInfo){
 		Education education = educationMapper.selectByPrimaryKey(educationForm.getEducationId());
 		
 		if(education == null){
 			throw new ApplicationException(ErrorStatus.UNKNOWN_EXCEPTION);
-		}else if(! education.getUserId().equals(user.getId())){
+		}else if(! education.getBasicInfoId().equals(basicInfo.getId())){
 			throw new ApplicationException(ErrorStatus.USER_FORBIDDEN_ACCESS);
 		}
 		

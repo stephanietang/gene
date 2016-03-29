@@ -5,10 +5,11 @@ import java.util.Locale;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.bolehunt.gene.common.AppBeans;
 import com.bolehunt.gene.common.CommonMessage;
@@ -19,16 +20,9 @@ import com.bolehunt.gene.common.ErrorStatus;
 * Static convenience methods for common web-related tasks.
 */
 @Component
-public final class WebUtil {
+public class WebUtil {
 	
 	private static final Logger log = LoggerFactory.getLogger(WebUtil.class);
-	
-	private static MessageSource messageSource;
-	
-	@Autowired
-	public WebUtil(MessageSource messageSource) {
-		WebUtil.messageSource = messageSource;
-	}
 	
 	public static boolean isValidEmailAddress(String email) {
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
@@ -83,6 +77,8 @@ public final class WebUtil {
 	}
 	
 	public static String formatErrorMessage(ErrorStatus error){
+		WebApplicationContext webAppContext = ContextLoader.getCurrentWebApplicationContext();
+		MessageSource messageSource = (MessageSource) webAppContext.getBean("messageSource");
 		Locale locale = LocaleContextHolder.getLocale();
 		String errorMessage = messageSource.getMessage(error.getMessage(), null, locale);
 		
@@ -90,6 +86,8 @@ public final class WebUtil {
 	}
 	
 	public static String formatMessage(CommonMessage message){
+		WebApplicationContext webAppContext = ContextLoader.getCurrentWebApplicationContext();
+		MessageSource messageSource = (MessageSource) webAppContext.getBean("messageSource");
 		Locale locale = LocaleContextHolder.getLocale();
 		String msg = messageSource.getMessage(message.getMessage(), null, locale);
 		

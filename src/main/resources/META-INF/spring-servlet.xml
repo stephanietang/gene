@@ -23,7 +23,7 @@
 	
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 	
-	<!-- defined in root-context.xml -->
+	<!-- defined in root-context.xml-->
 	<!-- 	
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
     	<property name="basename" value="classpath:messages"/>

@@ -37,7 +37,13 @@ public class ResumeController extends BaseController {
 	private FileService fileService;
 	
 	@RequestMapping(value = "/talent/profile", method = RequestMethod.GET)
-	public String viewResumePage(ModelMap model) {
+	public String viewResumePage(ModelMap model,  HttpServletRequest request) {
+		
+		if (super.isRememberMeAuthenticated()) { // requires authentication
+			super.setRememberMeTargetUrlToSession(request, "/talent/profile");
+			return "redirect:/login";
+		}
+		
 		ResumeForm resumeForm = resumeService.retrieveResume(getUser());
 		
 		model.put("resumeForm", resumeForm);
@@ -45,7 +51,7 @@ public class ResumeController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/talent/profile/edit", method = RequestMethod.GET)
-	public String editResumePage(@ModelAttribute ModelMap model, HttpServletRequest request) {
+	public String editResumePage(ModelMap model, HttpServletRequest request) {
 		
 		if (super.isRememberMeAuthenticated()) { // requires authentication
 			super.setRememberMeTargetUrlToSession(request, "/talent/profile/edit");
@@ -73,7 +79,7 @@ public class ResumeController extends BaseController {
 		
 		log.info("Save resume successfully [{}]", getUser().getEmail());
 		
-		return "redirect:/profile/edit";
+		return "redirect:/talent/profile/edit";
 		
 	}
 	

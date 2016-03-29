@@ -3,6 +3,9 @@ package com.bolehunt.gene.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +57,7 @@ public class RegisterController extends BaseController {
 	@RequestMapping(value = "/register.json", method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
-	public RestSuccessMessage registerSubmit(@RequestBody RegisterForm registerForm) {
+	public RestSuccessMessage registerSubmit(@RequestBody RegisterForm registerForm, ServletRequest request, ServletResponse response) {
 		
 		userService.validateRegisterForm(registerForm);
 		

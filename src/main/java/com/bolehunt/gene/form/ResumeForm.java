@@ -4,9 +4,11 @@ import java.util.List;
 
 import com.bolehunt.gene.domain.BasicInfo;
 import com.bolehunt.gene.domain.Education;
+import com.bolehunt.gene.domain.User;
 
 public class ResumeForm {
 
+	private Integer userId;
 	private BasicInfo basicInfo;
 	private List<Education> educationList;
 
@@ -25,7 +27,14 @@ public class ResumeForm {
 	public void setEducationList(List<Education> educationList) {
 		this.educationList = educationList;
 	}
-	
-	
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
 	
 }

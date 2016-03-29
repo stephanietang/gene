@@ -2,6 +2,7 @@ package com.bolehunt.gene.service;
 
 import java.util.List;
 
+import com.bolehunt.gene.domain.BasicInfo;
 import com.bolehunt.gene.domain.Education;
 import com.bolehunt.gene.domain.User;
 import com.bolehunt.gene.form.EducationForm;
@@ -12,6 +13,8 @@ public interface ResumeService {
 	public ResumeForm retrieveResume(User user);
 	
 	public void saveResume(ResumeForm resumeForm);
+	
+	public BasicInfo retrieveBasicInfo(User user);
 	
 	public List<Education> retrieveEducationList(int userId);
 	

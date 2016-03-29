@@ -19,16 +19,15 @@
 			</nav>
 		</div>
 		
-		<div>aaaa:${avatar}</div>
 		<div class="col-md-9" role="main">
 			<label class="control-label">Upload Image via ajax</label>
 	        <input id="avatar-upload" type="file" name="avatar">
-			<form:form id="resumeForm" class="form-horizontal" method="post" action="${contextPath}/profile/edit" commandName="resumeForm">
+			<form:form id="resumeForm" class="form-horizontal" method="post" action="${contextPath}/talent/profile/edit" commandName="resumeForm">
 			<div class="bs-docs-section">
-				<form:hidden path="basicInfo.userId" />
+				<form:hidden path="basicInfo.id" />
+				<form:hidden path="userId" />
 				<h1 class="page-header">${resumeForm.basicInfo.name}</h1>
 				<h2 id="basic-info" class="page-header"><a class="anchorjs-link " href="#basic-info" ></a>基本信息</h2>
-				<div>uuid======   ${avatarUuid} aaa</div>
 				<div class="form-group">
 					<div class="col-sm-6"><form:input path="basicInfo.name" class="form-control" placeholder="姓名" /></div>
 					<div class="col-sm-2"><ct:options list="${AppBeans.countryList}" name="basicInfo.country" key="${resumeForm.basicInfo.country}"/></div>

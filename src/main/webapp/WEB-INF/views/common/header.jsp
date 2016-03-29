@@ -63,12 +63,9 @@
 					<li class="active"><a href="${contextPath}/index"><spring:message code="menu.index" /></a></li>
 					<sec:authorize access="hasRole('ROLE_TALENT')">
 						<li><a href="${contextPath}/talent/profile"><spring:message code="menu.myResume" /></a></li>
-						<li><a href="${contextPath}/talent/profile/edit">修改简历</a></li>
+						<li><a href="${contextPath}/talent/profile/edit"><spring:message code="menu.editResume" /></a></li>
 					</sec:authorize>
-					<li><a href="#"><spring:message code="menu.postList" /></a></li>
-					<li><a href="#"><spring:message code="menu.myPost" /></a></li>
-					<li><a href="#"><spring:message code="menu.userManual" /></a></li>
-					<li><a href="http://v3.bootcss.com/css/#code-block">Bootstrap帮助</a></li>
+					<li><a href="http://v3.bootcss.com/css/#code-block">Bootstrap</a></li>
 					<c:choose><c:when test="${pageContext.request.userPrincipal.name != null}">
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><spring:message code="menu.accountSetting" /> <span class="caret"></span></a>

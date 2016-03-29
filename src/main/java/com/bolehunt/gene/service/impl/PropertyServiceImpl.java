@@ -2,10 +2,8 @@ package com.bolehunt.gene.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import com.bolehunt.gene.common.Label;
@@ -19,9 +17,6 @@ public class PropertyServiceImpl implements PropertyService {
 	
 	@Autowired
 	private SystemParamMapper systemParamMapper;
-	
-	@Autowired
-	private MessageSource messageSource;
 	
 	public List<Label> getCountryList(){
 		List<Label> labelList = new ArrayList<Label>();

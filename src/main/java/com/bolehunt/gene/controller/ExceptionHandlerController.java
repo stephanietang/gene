@@ -31,12 +31,8 @@ public class ExceptionHandlerController {
 	
 	private static final Logger log = LoggerFactory.getLogger(ExceptionHandlerController.class);
 	
-	private MessageSource messageSource;
-	
 	@Autowired
-	public ExceptionHandlerController(MessageSource messageSource) {
-		this.messageSource = messageSource;
-	}
+	private MessageSource messageSource;
 	
 	@ExceptionHandler(ApplicationException.class)
 	@ResponseBody
