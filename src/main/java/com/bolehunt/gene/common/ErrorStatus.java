@@ -20,14 +20,14 @@ public enum ErrorStatus {
 	
 	UPDATE_PASSWORD_ERROR("errMsg.updatePassword.error");
 	
-	private ErrorStatus(String message){
-		this.message = message;
+	private ErrorStatus(String value){
+		this.value = value;
 	}
 	
-	private String message;
+	private String value;
 	
-	public String getMessage() {
-		return message;
+	public String getValue() {
+		return value;
 	}
 	
 }

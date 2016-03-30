@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.bolehunt.gene.common.CommonMessage;
 import com.bolehunt.gene.common.ErrorStatus;
 import com.bolehunt.gene.form.LoginForm;
-import com.bolehunt.gene.util.WebUtil;
 
 @Controller
 public class LoginController extends BaseController {
@@ -26,11 +25,11 @@ public class LoginController extends BaseController {
 		model.addAttribute("loginForm", new LoginForm());
 		
 		if (error != null) {
-			model.addAttribute("errorMessage", WebUtil.formatErrorMessage(ErrorStatus.USER_EMAIL_OR_PASSWORD_INCORRECT));
+			model.addAttribute("errorMessage", getMessage(ErrorStatus.USER_EMAIL_OR_PASSWORD_INCORRECT.getValue()));
 		}
 
 		if (logout != null) {
-			model.addAttribute("msg", WebUtil.formatMessage(CommonMessage.USER_LOGOUT_SUCCESS));
+			model.addAttribute("msg", getMessage(CommonMessage.USER_LOGOUT_SUCCESS.getValue()));
 		}
 		
 		return "user/login";

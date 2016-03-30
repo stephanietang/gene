@@ -2,15 +2,11 @@ package com.bolehunt.gene.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -27,12 +23,9 @@ import com.bolehunt.gene.exception.UnknownResourceException;
 
 @ControllerAdvice
 @Controller
-public class ExceptionHandlerController {
+public class ExceptionHandlerController extends BaseController {
 	
 	private static final Logger log = LoggerFactory.getLogger(ExceptionHandlerController.class);
-	
-	@Autowired
-	private MessageSource messageSource;
 	
 	@ExceptionHandler(ApplicationException.class)
 	@ResponseBody
@@ -46,15 +39,13 @@ public class ExceptionHandlerController {
 		if(ex.getErrorList() != null || ex.getErrorList().size() > 0) {
 			
 			for (ErrorStatus error: ex.getErrorList()) {
-				Locale locale = LocaleContextHolder.getLocale();
-				String message = messageSource.getMessage(error.getMessage(), null, locale);
+				String message = getMessage(error.getValue());
 				
 				errorList.add(message);
 			}
 			
 		}else if(ex.getError() != null){
-			Locale locale = LocaleContextHolder.getLocale();
-			String message = messageSource.getMessage(ex.getError().getMessage(), null, locale);
+			String message = getMessage(ex.getError().getValue());
 			
 			errorList.add(message);
 		}

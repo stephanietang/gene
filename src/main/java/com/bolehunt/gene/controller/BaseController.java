@@ -1,11 +1,15 @@
 package com.bolehunt.gene.controller;
 
+import java.util.Locale;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +24,9 @@ public class BaseController {
 	
 	@Autowired
 	protected UserService userService;
+	
+	@Autowired
+	private MessageSource messageSource;
 	
 	protected User getUser() {
 		String email = this.getPrincipal();
@@ -61,5 +68,10 @@ public class BaseController {
 		if(session!=null){
 			session.setAttribute("targetUrl", targetUrl);
 		}
-	}	
+	}
+	
+	protected String getMessage(String key) {
+        Locale locale = LocaleContextHolder.getLocale();                        
+        return messageSource.getMessage(key, new Object[0], locale);
+    }
 }

@@ -7,17 +7,11 @@
     
     <!-- Data Configuration --> 
     <import resource="data-context.xml" />
-	
+    
 	<!-- Detects annotations like @Component, @Service, @Controller, @Repository, @Configuration -->
 	<context:component-scan base-package="com.bolehunt.gene.service" />
 	<context:component-scan base-package="com.bolehunt.gene.validator" />
 	<context:component-scan base-package="com.bolehunt.gene.common" />
-	<context:component-scan base-package="com.bolehunt.gene.util" />
 	<context:component-scan base-package="com.bolehunt.gene.security" />
-	
-	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-    	<property name="basename" value="classpath:messages"/>
-    	<property name="defaultEncoding" value="UTF-8" />
-	</bean>
 	
 </beans>

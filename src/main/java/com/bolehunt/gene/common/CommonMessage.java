@@ -4,15 +4,14 @@ public enum CommonMessage {
 	
 	USER_LOGOUT_SUCCESS("msg.user.logout.success");
 	
-	
-	private CommonMessage(String message){
-		this.message = message;
+	private CommonMessage(String value){
+		this.value = value;
 	}
 	
-	private String message;
+	private String value;
 	
-	public String getMessage() {
-		return message;
+	public String getValue() {
+		return value;
 	}
 
 }
