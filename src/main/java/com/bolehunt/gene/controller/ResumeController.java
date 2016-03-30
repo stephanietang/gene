@@ -47,6 +47,7 @@ public class ResumeController extends BaseController {
 		ResumeForm resumeForm = resumeService.retrieveResume(getUser());
 		
 		model.put("resumeForm", resumeForm);
+		
 		return "resume/viewResume";
 	}
 	
@@ -88,11 +89,13 @@ public class ResumeController extends BaseController {
 	@ResponseStatus(HttpStatus.OK)
 	public RestMessage<List<Education>> educationCrudAction(@RequestBody EducationForm educationForm) {
 		
+		log.info("Start to proceed education form user = {}, action = {} ", getUser().getEmail(), educationForm.getAction());
+		
 		resumeService.validateEducationForm(educationForm);
 		
 		resumeService.proceedEducationForm(educationForm, getUser());
 		
-		log.info("Proceed education form successfully [{}]", getUser().getEmail());
+		log.info("Proceed education form successfully, user = {}", getUser().getEmail());
 		
 		List<Education> educationList = resumeService.retrieveEducationList(getUser().getId());
 		

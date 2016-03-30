@@ -8,13 +8,13 @@
 		<div class="col-md-3" role="complementary">
 			<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
 				<ul class="nav bs-docs-sidenav">
-					<li><a href="#basic-info">基本信息</a></li>
-					<li><a href="#education">教育经历</a></li>
-					<li><a href="#work-experience">工作经历</a></li>
-					<li><a href="#self-intro">自我描述</a></li>
-					<li><a href="#works">作品展示</a></li>
+					<li><a href="#basic-info"><spring:message code="label.resume.basicInfo" /></a></li>
+					<li><a href="#education"><spring:message code="label.resume.educationExperience" /></a></li>
+					<li><a href="#work-experience"><spring:message code="label.resume.workExperience" /></a></li>
+					<li><a href="#self-intro"><spring:message code="label.resume.selfIntro" /></a></li>
+					<li><a href="#works"><spring:message code="label.resume.works" /></a></li>
 				</ul>
-				<a class="back-to-top" href="#top">回到顶部</a>
+				<a class="back-to-top" href="#top"><spring:message code="label.common.goToTop" /></a>
             
 			</nav>
 		</div>
@@ -27,18 +27,22 @@
 				<form:hidden path="basicInfo.id" />
 				<form:hidden path="userId" />
 				<h1 class="page-header">${resumeForm.basicInfo.name}</h1>
-				<h2 id="basic-info" class="page-header"><a class="anchorjs-link " href="#basic-info" ></a>基本信息</h2>
+				<h2 id="basic-info" class="page-header"><a class="anchorjs-link " href="#basic-info" ></a><spring:message code="label.resume.basicInfo" /></h2>
 				<div class="form-group">
-					<div class="col-sm-6"><form:input path="basicInfo.name" class="form-control" placeholder="姓名" /></div>
-					<div class="col-sm-2"><ct:options list="${AppBeans.countryList}" name="basicInfo.country" key="${resumeForm.basicInfo.country}"/></div>
-					<div class="col-sm-4"><form:input path="basicInfo.telNo" class="form-control" placeholder="手机号码" /></div>
+					<div class="col-sm-6"><form:input path="basicInfo.name" class="form-control" placeholder="" /></div>
+					<div class="col-sm-2">
+						<form:select path="basicInfo.country" class="form-control">
+							<form:options items="${AppBeans.countryList}" itemValue="labelKey" itemLabel="labelName" />
+						</form:select>
+					</div>
+					<div class="col-sm-4"><form:input path="basicInfo.telNo" class="form-control" placeholder="" /></div>
 				</div>
 				<div class="form-group">
-					<div class="col-sm-6"><ct:options list="${AppBeans.experienceList}" name="basicInfo.experience" key="${resumeForm.basicInfo.experience}" /></div>
-					<div class="col-sm-6"><ct:options list="${AppBeans.degreeList}" name="basicInfo.degree" key="${resumeForm.basicInfo.degree}" /></div>
+					<div class="col-sm-6"><ct:options list="${AppBeans.experienceList}" name="basicInfo.experience" /></div>
+					<div class="col-sm-6"><ct:options list="${AppBeans.degreeList}" name="basicInfo.degree" /></div>
 				</div>
 				<div class="form-group">
-					<div class="col-sm-6"><ct:options list="${AppBeans.sexList}" name="basicInfo.sex" key="${resumeForm.basicInfo.sex}" /></div>
+					<div class="col-sm-6"><ct:options list="${AppBeans.sexList}" name="basicInfo.sex" /></div>
 				<div class="form-group">
 					<div class="col-sm-6">
 						<div class="input-group date year-date">
@@ -48,7 +52,7 @@
 				</div>
 				</div>
 				<div class="form-group">
-					<div class="col-sm-6"><form:input path="basicInfo.city" class="form-control" placeholder="所在城市" /></div>
+					<div class="col-sm-6"><form:input path="basicInfo.city" class="form-control" placeholder="" /></div>
 					<div class="col-sm-6"><input class="form-control" value="${user.email}" disabled/></div>
 				</div>
 				<div class="form-group">
@@ -60,69 +64,36 @@
 			</div>
 			</form:form>
 			
-			<div class="bs-docs-section">
-				<h1 id="expected-work" class="page-header"><a class="anchorjs-link " href="#expected-work"></a>期望工作</h1>
-				<h2>您期望的工作地点是?</h2>
-				<div id="expected-location">
-					<div class="form-group">
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" class="check" id="checkAll"> 深圳
-							</label>
-						</div>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" class="check"> 宝安区
-							</label>
-						</div>
-					    <div class="checkbox">
-							<label>
-								<input type="checkbox" class="check"> 福田区
-							</label>
-						</div>
-					    
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" class="check"> 罗湖区
-							</label>
-						</div>
-					</div>
-				</div>
-				<h2>您的职业方向是?</h2>
-				<div id="expected-profession">
-				</div>
-			</div>
-			
 			<div id="education-section" class="bs-docs-section" >
-				<h1 class="page-header"><a class="anchorjs-link " href="#education" ></a>教育经历</h1>
-				<form id="eduAddForm" class="form-horizontal">
+				<h1 class="page-header"><a class="anchorjs-link " href="#education" ></a><spring:message code="label.resume.educationExperience" /></h1>
+				<form:form id="eduAddForm" class="form-horizontal" commandName="educationForm">
 					<div class="form-group">
-						<label for="schoolName" class="col-sm-2 control-label">学校名称</label>
-						<div class="col-sm-10"><input name="schoolName" class="form-control" placeholder="请填写学校" /></div>
+						<label for="schoolName" class="col-sm-2 control-label"><spring:message code="label.resume.school" /></label>
+						<div class="col-sm-10"><input name="schoolName" class="form-control" placeholder="<spring:message code="label.resume.school.placeholder" />" /></div>
 					</div>
 					<div class="form-group">
-						<label for="schoolName" class="col-sm-2 control-label">学历</label>
+						<label for="schoolName" class="col-sm-2 control-label"><spring:message code="label.resume.degree" /></label>
 						<div class="col-sm-10"><ct:options list="${AppBeans.degreeList}" name="degree" /></div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-2 control-label">就读时间</label>
+						<label class="col-sm-2 control-label"><spring:message code="label.resume.timeRange" /></label>
 						<div class="col-sm-10">
 							<div class="input-daterange">
 								<input type="text" name="startYear" class="input-small year-date" readonly />
-						    	<span class="add-on">至</span>
+						    	<span class="add-on"><spring:message code="label.resume.timeRangeTo" /></span>
 						    	<input type="text" name="endYear" class="input-small year-date" readonly />
 							</div>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="department" class="col-sm-2 control-label">专业</label>
-						<div class="col-sm-10"><input name="department" class="form-control" placeholder="请填写专业" /></div>
+						<label for="department" class="col-sm-2 control-label"><spring:message code="label.resume.department" /></label>
+						<div class="col-sm-10"><input name="department" class="form-control" placeholder="<spring:message code="label.resume.department.placeholder" />" /></div>
 					</div>
 					<div class="form-group">
 						<spring:message code="button.user.add" var="addButton"/>
 						<div class="btn btn-primary edu-add" >${addButton}</div>
 					</div>
-				</form>
+				</form:form>
 				
 				<div id="education-items-container">
 				<c:forEach var="education" items="${resumeForm.educationList}" varStatus="item"> 
@@ -142,53 +113,39 @@
 				</div>
 				
 				<div id="edu-hidden-template" class="hide">
-					<form class="form-horizontal" >
-						<input type="hidden" id="eduId" name="eduId" value="" />
+					<form class="form-horizontal">
 						<div class="form-group">
-							<label for="schoolName" class="col-sm-2 control-label">学校名称</label>
-							<div class="col-sm-10"><input name="schoolName" class="form-control" placeholder="请填写学校" /></div>
+							<label for="schoolName" class="col-sm-2 control-label"><spring:message code="label.resume.school" /></label>
+							<div class="col-sm-10"><input name="schoolName" class="form-control" placeholder="<spring:message code="label.resume.school.placeholder" />" /></div>
 						</div>
 						<div class="form-group">
-							<label for="schoolName" class="col-sm-2 control-label">学历</label>
-							<div class="col-sm-10"><ct:options list="${AppBeans.degreeList}" name="degree" /></div>
+							<label for="schoolName" class="col-sm-2 control-label"><spring:message code="label.resume.degree" /></label>
+							<div class="col-sm-10"><%-- <ct:options list="${AppBeans.degreeList}" name="basicInfo.degree" /> --%></div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-2 control-label">就读时间</label>
+							<label class="col-sm-2 control-label"><spring:message code="label.resume.timeRange" /></label>
 							<div class="col-sm-10">
-							    <div class="input-daterange">
+								<div class="input-daterange">
 									<input type="text" name="startYear" class="input-small year-date" readonly />
-							    	<span class="add-on">至</span>
+							    	<span class="add-on"><spring:message code="label.resume.timeRangeTo" /></span>
 							    	<input type="text" name="endYear" class="input-small year-date" readonly />
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="department" class="col-sm-2 control-label">专业</label>
-							<div class="col-sm-10"><input name="department" class="form-control" placeholder="请填写专业" /></div>
+							<label for="department" class="col-sm-2 control-label"><spring:message code="label.resume.department" /></label>
+							<div class="col-sm-10"><input name="department" class="form-control" placeholder="<spring:message code="label.resume.department.placeholder" />" /></div>
 						</div>
-						<button type="button" class="btn btn-primary edu-save">Save</button>
-						<button type="button" class="btn btn-primary edu-edit-cancel">Cancel</button>
+						<div class="form-group">
+							<spring:message code="button.user.add" var="addButton"/>
+							<div class="btn btn-primary edu-add" >${addButton}</div>
+						</div>
 					</form>
 				</div>
 			</div>
 
 			<div class="bs-docs-section">
-				<h1 id="work-experience" class="page-header"><a class="anchorjs-link " href="#work-experience"></a>工作经验</h1>
-				
-				<div class="bs-callout bs-callout-info">
-					<h2>百度</h2>
-					<p class="text-left">Java工程师</p>
-					<p class="text-left">2013~2014</p>
-				</div>
-				<div class="bs-callout bs-callout-info">
-					<h2>谷歌</h2>
-					<p class="text-left">Java工程师</p>
-					<p class="text-left">2009~2013</p>
-				</div>
-			</div>
-			
-			<div class="bs-docs-section">
-				<h1 id="self-intro" class="page-header"><a class="anchorjs-link " href="#self-intro"></a>自我描述</h1>
+				<h1 id="self-intro" class="page-header"><a class="anchorjs-link " href="#self-intro"></a><spring:message code="label.resume.selfIntro" /></h1>
 				
 				<form id="selfIntroForm">
 					<input name="title" type="text" placeholder="Title?" />
@@ -203,7 +160,7 @@
 			</div>
 			
 			<div class="bs-docs-section">
-				<h1 id="works" class="page-header"><a class="anchorjs-link " href="#works"></a>作品展示</h1>
+				<h1 id="works" class="page-header"><a class="anchorjs-link " href="#works"></a><spring:message code="label.resume.works" /></h1>
 				
 	            <label class="control-label">Upload Works</label>
 				<input id="works-upload" type="file" name="files" multiple>
@@ -220,13 +177,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">确认删除</h4>
+				<h4 class="modal-title"><spring:message code="title.resume.confirmDelete" /></h4>
 	      	</div>
 			<div class="modal-body">
 				<input type="hidden" id="modal-item-id" >
 				<input type="hidden" id="modal-refer-item-id" >
-				<button type="button" class="btn btn-default delete-ok" data-dismiss="modal">确认删除</button>
-				<button type="button" class="btn btn-default delete-cancel" data-dismiss="modal">取消</button>
+				<button type="button" class="btn btn-default delete-ok" data-dismiss="modal"><spring:message code="button.confirmDelete" /></button>
+				<button type="button" class="btn btn-default delete-cancel" data-dismiss="modal"><spring:message code="button.cancel" /></button>
 			</div>
 			<div class="modal-footer">
 				
@@ -369,6 +326,8 @@ $(document).on('ready', function() {
 			return ;
 		}
 		
+		csrfAjaxSetup();
+		
 		var json;
 		
 		json = JSON.stringify({
@@ -381,13 +340,13 @@ $(document).on('ready', function() {
 			});
 		
 		jQuery.ajax({
-			url: ctx + "/profile/educationCrudAction.json",
+			url: ctx + "/talent/profile/educationCrudAction.json",
 			type: "POST",
 			contentType: "application/json; charset=utf-8",
 			dataType : "json",
 			data: json,
 			success:function(result){
-				if(result.status == '200'){
+				if(result.status == 'success'){
 					// clear add form
 					$(":input","#eduAddForm")
 					  .removeAttr("checked")
@@ -395,10 +354,10 @@ $(document).on('ready', function() {
 					  .not(":button, :submit, :reset, :hidden, :radio, :checkbox")
 					  .val("");
 					
-					var educationItems = result.data.educations;
+					var educationItems = result.data;
 					initEducationList(educationItems);
-				}else{
-					alert(result.message);
+				}else if(result.status == 'error'){
+					displayErrorList(result);
 				}
 			},
 			error:function (){
@@ -417,6 +376,8 @@ $(document).on('ready', function() {
 			return ;
 		}
 		
+		csrfAjaxSetup();
+		
 		var json;
 		
 		json = JSON.stringify({
@@ -430,17 +391,17 @@ $(document).on('ready', function() {
 			});
 		
 		jQuery.ajax({
-			url: ctx + "/profile/educationCrudAction.json",
+			url: ctx + "/talent/profile/educationCrudAction.json",
 			type: "POST",
 			contentType: "application/json; charset=utf-8",
 			dataType : "json",
 			data: json,
 			success:function(result){
-				if(result.status == '200'){
-					var eduItems = result.data.educations;
+				if(result.status == 'success'){
+					var eduItems = result.data;
 					initEducationList(eduItems);
-				}else{
-					alert(result.message);
+				}else if(result.status == 'error'){
+					displayErrorList(result);
 				}
 			},
 			error:function (){
@@ -460,6 +421,7 @@ $(document).on('ready', function() {
 	});
 	
 	$(document).on("click",".delete-ok",function(){
+		csrfAjaxSetup();
 		var referId = $("#modal-refer-item-id").val();
 		var referItem = $("#"+referId);
 		var json = JSON.stringify({
@@ -467,16 +429,16 @@ $(document).on('ready', function() {
 			educationId : $("#modal-item-id").val()
 			});
 		jQuery.ajax({
-			url: ctx + "/profile/educationCrudAction.json",
+			url: ctx + "/talent/profile/educationCrudAction.json",
 			type: "POST",
 			contentType: "application/json; charset=utf-8",
 			dataType : "json",
 			data: json,
 			success:function(result){
-				if(result.status == '200'){
+				if(result.status == 'success'){
 					$(referItem).remove();
-				}else{
-					alert(result.message);
+				}else if(result.status == 'error'){
+					displayErrorList(result);
 				}
 			},
 			error:function (){
@@ -532,7 +494,7 @@ function initEducationList(eduItems){
 		html +=			'<p>'+department+'</p>';
 		html +=			'<p>'+getDegreeTxt(degree)+'</p>';
 		html +=			'<p>'+startYear+'~'+endYear+'</p>';
-		html +=			'<div class="btn btn-primary edu-edit" data-eduid="'+educationId+'" data-schoolname="'+schoolName+'" data-degree="'+degree+'" data-department="'+department+'" data-startyear="'+startYear+'" data-endyear="'+endYear+'"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</div>';
+		html +=			'<div class="btn btn-primary edu-edit" data-eduid="'+educationId+'" data-schoolname="'+schoolName+'" data-degree="'+degree+'" data-department="'+department+'" data-startyear="'+startYear+'" data-endyear="'+endYear+'"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</div>&nbsp;';
 		html +=			'<div class="btn btn-primary edu-delete" data-eduid="'+educationId+'" data-toggle="modal" data-target="#modal" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</div>';
 		html +=		'</div>';
 		html +=	'</div>';
