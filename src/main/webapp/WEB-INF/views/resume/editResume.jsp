@@ -32,17 +32,17 @@
 					<div class="col-sm-6"><form:input path="basicInfo.name" class="form-control" placeholder="" /></div>
 					<div class="col-sm-2">
 						<form:select path="basicInfo.country" class="form-control">
-							<form:options items="${AppBeans.countryList}" itemValue="labelKey" itemLabel="labelName" />
+							<form:options items="${countryList}" itemValue="labelKey" itemLabel="labelName" />
 						</form:select>
 					</div>
 					<div class="col-sm-4"><form:input path="basicInfo.telNo" class="form-control" placeholder="" /></div>
 				</div>
 				<div class="form-group">
-					<div class="col-sm-6"><ct:options list="${AppBeans.experienceList}" name="basicInfo.experience" /></div>
-					<div class="col-sm-6"><ct:options list="${AppBeans.degreeList}" name="basicInfo.degree" /></div>
+					<div class="col-sm-6"><ct:options list="${workExpList}" name="basicInfo.experience" /></div>
+					<div class="col-sm-6"><ct:options list="${degreeList}" name="basicInfo.degree" /></div>
 				</div>
 				<div class="form-group">
-					<div class="col-sm-6"><ct:options list="${AppBeans.sexList}" name="basicInfo.sex" /></div>
+					<div class="col-sm-6"><ct:options list="${sexList}" name="basicInfo.sex" /></div>
 				<div class="form-group">
 					<div class="col-sm-6">
 						<div class="input-group date year-date">
@@ -73,7 +73,7 @@
 					</div>
 					<div class="form-group">
 						<label for="schoolName" class="col-sm-2 control-label"><spring:message code="label.resume.degree" /></label>
-						<div class="col-sm-10"><ct:options list="${AppBeans.degreeList}" name="degree" /></div>
+						<div class="col-sm-10"><ct:options list="${degreeList}" name="degree" /></div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label"><spring:message code="label.resume.timeRange" /></label>
@@ -101,7 +101,7 @@
 						<div class="bs-callout bs-callout-info text-container">
 							<h2>${education.schoolName}</h2>
 							<p>${education.department}</p>
-							<p><ct:label list="${AppBeans.degreeList}" key="${education.degree}"/></p>
+							<p><ct:label list="${degreeList}" key="${education.degree}"/></p>
 							<p>${education.startYear}~${education.endYear}</p>
 							<div class="btn btn-primary edu-edit" data-eduid="${education.id}" data-schoolname="${education.schoolName}" data-degree="${education.degree}" data-department="${education.department}" data-startyear="${education.startYear}" data-endyear="${education.endYear}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</div>
 							<div class="btn btn-primary edu-delete" data-toggle="modal" data-target="#modal" data-eduid="${education.id}">
@@ -113,14 +113,14 @@
 				</div>
 				
 				<div id="edu-hidden-template" class="hide">
-					<form class="form-horizontal">
+					<form:form class="form-horizontal">
 						<div class="form-group">
 							<label for="schoolName" class="col-sm-2 control-label"><spring:message code="label.resume.school" /></label>
 							<div class="col-sm-10"><input name="schoolName" class="form-control" placeholder="<spring:message code="label.resume.school.placeholder" />" /></div>
 						</div>
 						<div class="form-group">
 							<label for="schoolName" class="col-sm-2 control-label"><spring:message code="label.resume.degree" /></label>
-							<div class="col-sm-10"><%-- <ct:options list="${AppBeans.degreeList}" name="basicInfo.degree" /> --%></div>
+							<div class="col-sm-10"></div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label"><spring:message code="label.resume.timeRange" /></label>
@@ -140,7 +140,7 @@
 							<spring:message code="button.user.add" var="addButton"/>
 							<div class="btn btn-primary edu-add" >${addButton}</div>
 						</div>
-					</form>
+					</form:form>
 				</div>
 			</div>
 

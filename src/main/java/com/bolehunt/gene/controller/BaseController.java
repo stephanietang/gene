@@ -15,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.bolehunt.gene.common.Label;
+import com.bolehunt.gene.common.LabelEnum;
 import com.bolehunt.gene.domain.User;
 import com.bolehunt.gene.service.UserService;
 
@@ -74,4 +76,9 @@ public class BaseController {
         Locale locale = LocaleContextHolder.getLocale();                        
         return messageSource.getMessage(key, new Object[0], locale);
     }
+	
+	protected Label getLabel(LabelEnum labelEnum) {
+		Label label = new Label(labelEnum.getValue(), getMessage(labelEnum.getKey()));
+		return label;
+	}
 }

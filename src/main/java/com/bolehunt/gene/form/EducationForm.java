@@ -4,19 +4,29 @@ package com.bolehunt.gene.form;
 public class EducationForm {
 	
 	private String action;
-	private int educationId;
-	private int degree;
+	private Integer educationId;
+	private Integer degree;
 	private String schoolName;
-	private int startYear;
-	private int endYear;
+	private Integer startYear;
+	private Integer endYear;
 	private String department;
 	private String token; 
 	
-	public int getDegree() {
+	
+	public Integer getDegree() {
 		return degree;
 	}
-	public void setDegree(int degree) {
+	public void setDegree(Integer degree) {
 		this.degree = degree;
+	}
+	public void setEducationId(Integer educationId) {
+		this.educationId = educationId;
+	}
+	public void setStartYear(Integer startYear) {
+		this.startYear = startYear;
+	}
+	public void setEndYear(Integer endYear) {
+		this.endYear = endYear;
 	}
 	public String getSchoolName() {
 		return schoolName;

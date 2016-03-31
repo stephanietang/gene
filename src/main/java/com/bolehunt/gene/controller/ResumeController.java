@@ -1,5 +1,6 @@
 package com.bolehunt.gene.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.bolehunt.gene.common.Label;
+import com.bolehunt.gene.common.LabelEnum;
 import com.bolehunt.gene.common.RestMessage;
 import com.bolehunt.gene.domain.Avatar;
 import com.bolehunt.gene.domain.Education;
@@ -65,6 +68,11 @@ public class ResumeController extends BaseController {
 		EducationForm educationForm = new EducationForm();
 		model.put("educationForm", educationForm);
 		
+		model.put("countryList", getCountryList());
+		model.put("sexList", getSexList());
+		model.put("degreeList", getDegreeList());
+		model.put("workExpList", getWorkExpList());
+		
 		Avatar avatar = fileService.getAvatarByUserId(getUser().getId());
 		if(avatar != null){
 			model.put("avatar", avatar.getUuid());
@@ -100,5 +108,37 @@ public class ResumeController extends BaseController {
 		List<Education> educationList = resumeService.retrieveEducationList(getUser().getId());
 		
 		return new RestMessage<List<Education>>().getSuccessMessage(educationList);
+	}
+	
+	private List<Label> getCountryList(){
+		List<Label> list = new ArrayList<Label>();
+		list.add(getLabel(LabelEnum.COUNTRY_CHINA));
+		list.add(getLabel(LabelEnum.COUNTRY_US));
+		return list;
+	}
+	
+	private List<Label> getSexList(){
+		List<Label> list = new ArrayList<Label>();
+		list.add(getLabel(LabelEnum.SEX_MALE));
+		list.add(getLabel(LabelEnum.SEX_FEMALE));
+		return list;
+	}
+	
+	private List<Label> getDegreeList(){
+		List<Label> list = new ArrayList<Label>();
+		list.add(getLabel(LabelEnum.DEGREE_BACHELOR));
+		list.add(getLabel(LabelEnum.DEGREE_MASTER));
+		list.add(getLabel(LabelEnum.DEGREE_PHD));
+		list.add(getLabel(LabelEnum.DEGREE_ASSOCIATE));
+		return list;
+	}
+	
+	private List<Label> getWorkExpList(){
+		List<Label> list = new ArrayList<Label>();
+		list.add(getLabel(LabelEnum.WORK_EXP_GRADUATE));
+		list.add(getLabel(LabelEnum.WORK_EXP_ABOVE_ONE_YEAR));
+		list.add(getLabel(LabelEnum.WORK_EXP_ABOVE_THREE_YEAR));
+		list.add(getLabel(LabelEnum.WORK_EXP_ABOVE_FIVE_YEAR));
+		return list;
 	}
 }
