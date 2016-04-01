@@ -31,12 +31,10 @@ public class ResumeServiceImpl implements ResumeService {
 	public ResumeForm retrieveResume(User user){
 		ResumeForm form = new ResumeForm();
 		form.setUserId(user.getId());
-		BasicInfoExample ex = new BasicInfoExample();
-		ex.createCriteria().andUserIdEqualTo(user.getId());
-		List<BasicInfo> basicInfoList = basicInfoMapper.selectByExample(ex);
 		
-		if(basicInfoList != null && basicInfoList.size() > 0 ){
-			BasicInfo basicInfo = basicInfoList.get(0);
+		BasicInfo basicInfo = retrieveBasicInfo(user);
+		
+		if(basicInfo != null){
 			form.setBasicInfo(basicInfo);
 			List<Education> educationList = retrieveEducationList(basicInfo.getId());
 			form.setEducationList(educationList);
@@ -47,12 +45,22 @@ public class ResumeServiceImpl implements ResumeService {
 	
 	@Override
 	public BasicInfo retrieveBasicInfo(User user) {
-		BasicInfo basicInfo = basicInfoMapper.selectByPrimaryKey(user.getId());
+		
+		BasicInfo basicInfo = null;
+		BasicInfoExample ex = new BasicInfoExample();
+		ex.createCriteria().andUserIdEqualTo(user.getId());
+		List<BasicInfo> basicInfoList = basicInfoMapper.selectByExample(ex);
+		
+		if(basicInfoList != null && basicInfoList.size() > 0 ){
+			basicInfo = basicInfoList.get(0);
+		}
+		
 		return basicInfo;
 	}
 	
 	@Override
 	public List<Education> retrieveEducationList(int basicInfoId) {
+		
 		EducationExample eduEx = new EducationExample();
 		eduEx.createCriteria().andBasicInfoIdEqualTo(basicInfoId);
 		eduEx.setOrderByClause("start_year desc, end_year desc");

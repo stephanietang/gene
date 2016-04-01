@@ -16,7 +16,7 @@ public interface ResumeService {
 	
 	public BasicInfo retrieveBasicInfo(User user);
 	
-	public List<Education> retrieveEducationList(int userId);
+	public List<Education> retrieveEducationList(int basicInfoId);
 	
 	public void validateEducationForm(EducationForm educationForm);
 	

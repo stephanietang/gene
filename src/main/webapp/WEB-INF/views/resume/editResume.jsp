@@ -113,14 +113,21 @@
 				</div>
 				
 				<div id="edu-hidden-template" class="hide">
-					<form:form class="form-horizontal">
+					<form class="form-horizontal">
+						<input type="hidden" id="eduId" name="eduId" value="" />
 						<div class="form-group">
 							<label for="schoolName" class="col-sm-2 control-label"><spring:message code="label.resume.school" /></label>
 							<div class="col-sm-10"><input name="schoolName" class="form-control" placeholder="<spring:message code="label.resume.school.placeholder" />" /></div>
 						</div>
 						<div class="form-group">
 							<label for="schoolName" class="col-sm-2 control-label"><spring:message code="label.resume.degree" /></label>
-							<div class="col-sm-10"></div>
+							<div class="col-sm-10">
+								<select name="degree" class="form-control">
+									<c:forEach items="${degreeList}" var="d">
+										<option value="${d.labelKey}">${d.labelName}</option>
+									</c:forEach>
+								</select>
+							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label"><spring:message code="label.resume.timeRange" /></label>
@@ -137,10 +144,12 @@
 							<div class="col-sm-10"><input name="department" class="form-control" placeholder="<spring:message code="label.resume.department.placeholder" />" /></div>
 						</div>
 						<div class="form-group">
-							<spring:message code="button.user.add" var="addButton"/>
-							<div class="btn btn-primary edu-add" >${addButton}</div>
+							<spring:message code="button.user.save" var="saveButton"/>
+							<spring:message code="button.cancel" var="cancelButton"/>
+							<div class="btn btn-primary edu-save" >${saveButton}</div>
+							<div class="btn btn-primary edu-edit-cancel" >${cancelButton}</div>
 						</div>
-					</form:form>
+					</form>
 				</div>
 			</div>
 
@@ -342,7 +351,7 @@ $(document).on('ready', function() {
 		jQuery.ajax({
 			url: ctx + "/talent/profile/educationCrudAction.json",
 			type: "POST",
-			contentType: "application/json; charset=utf-8",
+			contentType: "application/json; charset=UTF-8",
 			dataType : "json",
 			data: json,
 			success:function(result){

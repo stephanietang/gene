@@ -22,6 +22,7 @@ import com.bolehunt.gene.common.Label;
 import com.bolehunt.gene.common.LabelEnum;
 import com.bolehunt.gene.common.RestMessage;
 import com.bolehunt.gene.domain.Avatar;
+import com.bolehunt.gene.domain.BasicInfo;
 import com.bolehunt.gene.domain.Education;
 import com.bolehunt.gene.form.EducationForm;
 import com.bolehunt.gene.form.ResumeForm;
@@ -105,7 +106,9 @@ public class ResumeController extends BaseController {
 		
 		log.info("Proceed education form successfully, user = {}", getUser().getEmail());
 		
-		List<Education> educationList = resumeService.retrieveEducationList(getUser().getId());
+		BasicInfo basicInfo = resumeService.retrieveBasicInfo(getUser());
+		
+		List<Education> educationList = resumeService.retrieveEducationList(basicInfo.getId());
 		
 		return new RestMessage<List<Education>>().getSuccessMessage(educationList);
 	}
