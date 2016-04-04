@@ -7,6 +7,7 @@
     
     <!-- Data Configuration --> 
     <import resource="data-context.xml" />
+    <import resource="multipart-context.xml" />
     
 	<!-- Detects annotations like @Component, @Service, @Controller, @Repository, @Configuration -->
 	<context:component-scan base-package="com.bolehunt.gene.service" />

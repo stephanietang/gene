@@ -18,7 +18,11 @@ public enum ErrorStatus {
 	TOKEN_ALREADY_EXPIRED("errMsg.token.already.expired"),
 	TOKEN_NOT_FOUND("errMsg.token.notFound"),
 	
-	UPDATE_PASSWORD_ERROR("errMsg.updatePassword.error");
+	UPDATE_PASSWORD_ERROR("errMsg.updatePassword.error"),
+	
+	UPLOAD_EXCEED_MAX_SIZE("errMsg.upload.exceed.max.size"),
+	UPLOAD_FILE_EMPTY("errMsg.upload.file.empty"),
+	UPLOAD_FILE_EXCEPTION("errMsg.upload.error");
 	
 	private ErrorStatus(String value){
 		this.value = value;

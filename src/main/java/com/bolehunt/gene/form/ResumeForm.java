@@ -2,15 +2,16 @@ package com.bolehunt.gene.form;
 
 import java.util.List;
 
+import com.bolehunt.gene.domain.Avatar;
 import com.bolehunt.gene.domain.BasicInfo;
 import com.bolehunt.gene.domain.Education;
-import com.bolehunt.gene.domain.User;
 
 public class ResumeForm {
 
 	private Integer userId;
 	private BasicInfo basicInfo;
 	private List<Education> educationList;
+	private Avatar avatar;
 
 	public BasicInfo getBasicInfo() {
 		return basicInfo;
@@ -36,5 +37,12 @@ public class ResumeForm {
 		this.userId = userId;
 	}
 
-	
+	public Avatar getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(Avatar avatar) {
+		this.avatar = avatar;
+	}
+
 }

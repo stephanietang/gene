@@ -9,8 +9,10 @@ import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bolehunt.gene.common.ErrorStatus;
 import com.bolehunt.gene.domain.Avatar;
 import com.bolehunt.gene.domain.AvatarExample;
+import com.bolehunt.gene.exception.ApplicationException;
 import com.bolehunt.gene.persistence.AvatarMapper;
 import com.bolehunt.gene.service.FileService;
 
@@ -23,17 +25,6 @@ public class FileServiceImpl implements FileService {
 	public Avatar getAvatarByUUID(String uuid){
 		AvatarExample ex = new AvatarExample();
 		ex.createCriteria().andUuidEqualTo(uuid);
-		List<Avatar> avatarList = avatarMapper.selectByExample(ex);
-		if(avatarList != null && avatarList.size() > 0){
-			return avatarList.get(0);
-		}
-		
-		return null;
-	}
-	
-	public Avatar getAvatarByUserId(int userId) {
-		AvatarExample ex = new AvatarExample();
-		ex.createCriteria().andUserIdEqualTo(userId);
 		List<Avatar> avatarList = avatarMapper.selectByExample(ex);
 		if(avatarList != null && avatarList.size() > 0){
 			return avatarList.get(0);
@@ -63,5 +54,5 @@ public class FileServiceImpl implements FileService {
         avatar.setUserId(userId);
 		avatarMapper.insert(avatar);
 	}
-
+	
 }

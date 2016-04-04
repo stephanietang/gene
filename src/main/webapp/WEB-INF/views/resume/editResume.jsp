@@ -20,8 +20,16 @@
 		</div>
 		
 		<div class="col-md-9" role="main">
-			<label class="control-label">Upload Image via ajax</label>
-	        <input id="avatar-upload" type="file" name="avatar">
+			<c:if test="${not empty resumeForm.avatar}">
+				<img src="${contextPath}/image/${resumeForm.avatar.uuid}"/>
+			</c:if>
+			<form id="uploadAvatarForm" method="post" action="${contextPath}/uploadAvatar" enctype="multipart/form-data">   
+				<input name="avatar" id="avatar-upload" type="file" />
+				<input type="submit"  />
+				<input type="hidden" name="userId" value="${resumeForm.userId}">
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			</form>
+			
 			<form:form id="resumeForm" class="form-horizontal" method="post" action="${contextPath}/talent/profile/edit" commandName="resumeForm">
 			<div class="bs-docs-section">
 				<form:hidden path="basicInfo.id" />
@@ -204,38 +212,36 @@
 <script>
 $(document).on('ready', function() {
 	
-	$("#avatar-upload").fileinput({
-		language: 'zh',
-		showUpload: true,
-		showCaption: false,
-		type: 'POST',
-		cache: false,
-        allowedFileExtensions: ['jpg', 'png', 'gif'],
-        allowedFileTypes: ['image'],
-        maxFileSize: 2000,
-        enctype: 'multipart/form-data',
-	    uploadUrl: ctx + "/uploadAvatar",
-	    initialPreviewShowDelete: true,
-	    overwriteInitial: true,
-	    initialPreview: [
-			"<img src='"+ctx+"/image/" + ${avatarUuid} + "' class='file-preview-image' alt='Avatar' title='Avatar'>"
-		],
+	/* $.validator.setDefaults({
+		  debug: true,
+		  success: "valid"
+		}); */
+	
+	$("#uploadAvatarForm").validate({
+		rules: {
+			avatar: {
+				required: true,
+				accept: "image/*"
+			}
+		},
+		submitHandler:function(form){
+			var formData = new FormData($(this)[0]);
+			alert('aaaa');
+			 $.ajax({
+			        url: $(this).attr("action"),
+			        type: "POST",
+			        data: formData,
+			        async: false,
+			        cache: false,
+			        contentType: false,
+			        proccessData: false,
+			        success: function() {
+			        	alert('bbb');
+			        }
+			});
+		}
 	});
 	
-	$("#works-upload").fileinput({
-		language: 'zh',
-		showUpload: true,
-		showCaption: false,
-		type: 'POST',
-		cache: false,
-        allowedFileExtensions: ['jpg', 'png', 'gif'],
-        allowedFileTypes: ['image'],
-        maxFileSize: 2000,
-        enctype: 'multipart/form-data',
-	    uploadUrl: ctx + "/uploadWorks",
-	    uploadAsync: true,
-	    maxFileCount: 5
-	});
 	
 	$("#checkAll").click(function () {
 	    $(".check").prop('checked', $(this).prop('checked'));
@@ -348,7 +354,7 @@ $(document).on('ready', function() {
 			department : $('input[name="department"]',oForm).val()
 			});
 		
-		jQuery.ajax({
+		$.ajax({
 			url: ctx + "/talent/profile/educationCrudAction.json",
 			type: "POST",
 			contentType: "application/json; charset=UTF-8",
@@ -399,7 +405,7 @@ $(document).on('ready', function() {
 			department : $('input[name="department"]',oForm).val()
 			});
 		
-		jQuery.ajax({
+		$.ajax({
 			url: ctx + "/talent/profile/educationCrudAction.json",
 			type: "POST",
 			contentType: "application/json; charset=utf-8",

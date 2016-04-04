@@ -3,7 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="ct" tagdir="/WEB-INF/tags" %>
 <%@ page import="com.bolehunt.gene.common.AppBeans" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
@@ -27,6 +27,7 @@
 	
 	<script src="${contextPath}/resources/js/jquery-1.11.3.min.js"></script>
 	<script src="${contextPath}/resources/js/jquery.validate-1.14.0.min.js"></script>
+	<script src="${contextPath}/resources/js/additional-methods-1.14.0.min.js"></script>
 	<script src="${contextPath}/resources/js/bootstrap-3.3.5.min.js"></script>
 	<script src="${contextPath}/resources/js/docs.min.js"></script>
 	<script src="${contextPath}/resources/js/additional-methods.js"></script>
@@ -35,8 +36,6 @@
 	<script src="${contextPath}/resources/js/bootstrap-markdown.js"></script>
 	<script src="${contextPath}/resources/js/markdown.js"></script>
 	<script src="${contextPath}/resources/js/to-markdown.js"></script>
-	<script src="${contextPath}/resources/js/fileinput.js"></script>
-	<script src="${contextPath}/resources/js/fileinput_locale_zh.js"></script>
 	<!-- <script src="${contextPath}/resources/js/main.js"></script>-->
 	<script>var ctx = "${contextPath}"</script>
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->

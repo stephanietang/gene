@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bolehunt.gene.common.ErrorStatus;
+import com.bolehunt.gene.domain.Avatar;
+import com.bolehunt.gene.domain.AvatarExample;
 import com.bolehunt.gene.domain.BasicInfo;
 import com.bolehunt.gene.domain.BasicInfoExample;
 import com.bolehunt.gene.domain.Education;
@@ -14,12 +16,16 @@ import com.bolehunt.gene.domain.User;
 import com.bolehunt.gene.exception.ApplicationException;
 import com.bolehunt.gene.form.EducationForm;
 import com.bolehunt.gene.form.ResumeForm;
+import com.bolehunt.gene.persistence.AvatarMapper;
 import com.bolehunt.gene.persistence.BasicInfoMapper;
 import com.bolehunt.gene.persistence.EducationMapper;
 import com.bolehunt.gene.service.ResumeService;
 
 @Service
 public class ResumeServiceImpl implements ResumeService {
+	
+	@Autowired
+	private AvatarMapper avatarMapper;
 	
 	@Autowired
 	private BasicInfoMapper basicInfoMapper;
@@ -31,6 +37,9 @@ public class ResumeServiceImpl implements ResumeService {
 	public ResumeForm retrieveResume(User user){
 		ResumeForm form = new ResumeForm();
 		form.setUserId(user.getId());
+		
+		Avatar avatar = retrieveAvatar(user);
+		form.setAvatar(avatar);
 		
 		BasicInfo basicInfo = retrieveBasicInfo(user);
 		
@@ -56,6 +65,20 @@ public class ResumeServiceImpl implements ResumeService {
 		}
 		
 		return basicInfo;
+	}
+	
+	@Override
+	public Avatar retrieveAvatar(User user) {
+		Avatar avatar = null;
+		AvatarExample ex = new AvatarExample();
+		ex.createCriteria().andUserIdEqualTo(user.getId());
+		List<Avatar> list = avatarMapper.selectByExample(ex);
+		
+		if(list != null && list.size() > 0) {
+			avatar = list.get(0);
+		}
+		
+		return avatar;
 	}
 	
 	@Override

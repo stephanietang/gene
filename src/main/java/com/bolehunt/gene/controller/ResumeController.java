@@ -21,12 +21,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.bolehunt.gene.common.Label;
 import com.bolehunt.gene.common.LabelEnum;
 import com.bolehunt.gene.common.RestMessage;
-import com.bolehunt.gene.domain.Avatar;
 import com.bolehunt.gene.domain.BasicInfo;
 import com.bolehunt.gene.domain.Education;
 import com.bolehunt.gene.form.EducationForm;
 import com.bolehunt.gene.form.ResumeForm;
-import com.bolehunt.gene.service.FileService;
 import com.bolehunt.gene.service.ResumeService;
 
 @Controller
@@ -36,9 +34,6 @@ public class ResumeController extends BaseController {
 	
 	@Autowired
 	private ResumeService resumeService;
-	
-	@Autowired
-	private FileService fileService;
 	
 	@RequestMapping(value = "/talent/profile", method = RequestMethod.GET)
 	public String viewResumePage(ModelMap model,  HttpServletRequest request) {
@@ -73,11 +68,6 @@ public class ResumeController extends BaseController {
 		model.put("sexList", getSexList());
 		model.put("degreeList", getDegreeList());
 		model.put("workExpList", getWorkExpList());
-		
-		Avatar avatar = fileService.getAvatarByUserId(getUser().getId());
-		if(avatar != null){
-			model.put("avatar", avatar.getUuid());
-		}
 		
 		return "resume/editResume";
 	}

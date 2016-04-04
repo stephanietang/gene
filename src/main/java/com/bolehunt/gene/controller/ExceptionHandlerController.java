@@ -36,7 +36,7 @@ public class ExceptionHandlerController extends BaseController {
 		
 		List<String> errorList = new ArrayList<String>();
 		
-		if(ex.getErrorList() != null || ex.getErrorList().size() > 0) {
+		if(ex.getErrorList() != null && ex.getErrorList().size() > 0) {
 			
 			for (ErrorStatus error: ex.getErrorList()) {
 				String message = getMessage(error.getValue());
