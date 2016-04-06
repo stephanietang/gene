@@ -7,24 +7,34 @@
 <%@ taglib prefix="ct" tagdir="/WEB-INF/tags" %>
 <%@ page import="com.bolehunt.gene.common.AppBeans" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<!-- Development version: Force the browser the retrieve new version of css and js-->
+<c:set var="version"><%= java.util.UUID.randomUUID() %></c:set>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
 	<title></title>
+	
 	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-3.3.5.css">
 	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-theme-3.3.5.css">
 	<link rel="stylesheet" href="${contextPath}/resources/css/docs.min.css" />
 	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-datepicker3.standalone.min.css" />
 	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-markdown.min.css" />
 	<link rel="stylesheet" href="${contextPath}/resources/css/fileinput.css" />
-	<!-- <link rel="stylesheet" href="${contextPath}/resources/css/main.css"> -->
+	<link rel="stylesheet" href="${contextPath}/resources/css/jquery.fileupload-9.12.1.css" />
+	<link rel="stylesheet" href="${contextPath}/resources/css/main.css?v=${version}">
 	
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	<script>var ctx = "${contextPath}"</script>
 	<script src="${contextPath}/resources/js/jquery-1.11.3.min.js"></script>
 	<script src="${contextPath}/resources/js/jquery.validate-1.14.0.min.js"></script>
 	<script src="${contextPath}/resources/js/additional-methods-1.14.0.min.js"></script>
@@ -36,17 +46,30 @@
 	<script src="${contextPath}/resources/js/bootstrap-markdown.js"></script>
 	<script src="${contextPath}/resources/js/markdown.js"></script>
 	<script src="${contextPath}/resources/js/to-markdown.js"></script>
-	<!-- <script src="${contextPath}/resources/js/main.js"></script>-->
-	<script>var ctx = "${contextPath}"</script>
-	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!--[if lt IE 9]>
-	<script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-	<script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-	<![endif]-->
-
-	<!-- Development version: Force the browser the retrieve new version of css and js-->
-	<c:set var="version"><%= java.util.UUID.randomUUID() %></c:set>
-	<link rel="stylesheet" href="${contextPath}/resources/css/main.css?v=${version}">
+	
+	<!-- jquery file upload support -->
+	<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+	<script src="${contextPath}/resources/js/jquery-file-upload-9.12.1/vendor/jquery.ui.widget.js"></script>
+	<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+	<script src="//blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
+	<!-- The Canvas to Blob plugin is included for image resizing functionality -->
+	<script src="//blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
+	<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+	<script src="${contextPath}/resources/js/jquery-file-upload-9.12.1/jquery.iframe-transport.js"></script>
+	<!-- The basic File Upload plugin -->
+	<script src="${contextPath}/resources/js/jquery-file-upload-9.12.1/jquery.fileupload.js"></script>
+	<!-- The File Upload processing plugin -->
+	<script src="${contextPath}/resources/js/jquery-file-upload-9.12.1/jquery.fileupload-process.js"></script>
+	<!-- The File Upload image preview & resize plugin -->
+	<script src="${contextPath}/resources/js/jquery-file-upload-9.12.1/jquery.fileupload-image.js"></script>
+	<!-- The File Upload audio preview plugin -->
+	<script src="${contextPath}/resources/js/jquery-file-upload-9.12.1/jquery.fileupload-audio.js"></script>
+	<!-- The File Upload video preview plugin -->
+	<script src="${contextPath}/resources/js/jquery-file-upload-9.12.1/jquery.fileupload-video.js"></script>
+	<!-- The File Upload validation plugin -->
+	<script src="${contextPath}/resources/js/jquery-file-upload-9.12.1/jquery.fileupload-validate.js"></script>
+	
+	
 	<script src="${contextPath}/resources/js/main.js?v=${version}"></script>
 </head>
 <body>

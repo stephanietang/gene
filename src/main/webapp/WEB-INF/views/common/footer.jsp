@@ -12,6 +12,5 @@
 		<%=new Date()%>
 	</div>
 </footer>
-
 </body>
 </html>
