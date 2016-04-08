@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 @Component(value = "mySimpleUrlAuthenticationSuccessHandler")
-public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public final class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private final Log log = LogFactory.getLog(this.getClass());
 

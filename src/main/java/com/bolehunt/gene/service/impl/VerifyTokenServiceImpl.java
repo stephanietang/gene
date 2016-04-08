@@ -23,7 +23,7 @@ import com.bolehunt.gene.service.UserService;
 import com.bolehunt.gene.service.VerifyTokenService;
 
 @Service
-public class VerifyTokenServiceImpl implements VerifyTokenService {
+public final class VerifyTokenServiceImpl implements VerifyTokenService {
 	
 	private static Logger log = LoggerFactory.getLogger(VerifyTokenServiceImpl.class);
 	

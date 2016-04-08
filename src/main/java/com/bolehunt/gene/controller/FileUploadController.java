@@ -31,7 +31,7 @@ import com.bolehunt.gene.exception.ApplicationException;
 import com.bolehunt.gene.service.FileService;
 
 @Controller
-public class FileUploadController {
+public final class FileUploadController {
 	
 	private static final Logger log = LoggerFactory.getLogger(FileUploadController.class);
 
@@ -67,7 +67,6 @@ public class FileUploadController {
                 fileService.insertAvatar(userId, uuid, relativePath);
                 
                 Map<String, Object> map = new HashMap<String, Object>();
-                map.put("append", false);
                 map.put("path", "/gene/image/"+uuid);
                 
                 return new RestMessage<Map<String, Object>>().getSuccessMessage(map);

@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 // see the post on stackoverflow
 // https://stackoverflow.com/questions/23856254/how-to-nicely-handle-file-upload-maxuploadsizeexceededexception-with-spring-secu/23957580#23957580
-public class MultipartExceptionHandler extends OncePerRequestFilter {
+public final class MultipartExceptionHandler extends OncePerRequestFilter {
 	
 	@Override
     protected void doFilterInternal(HttpServletRequest request,

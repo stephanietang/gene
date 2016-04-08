@@ -13,7 +13,7 @@ import com.bolehunt.gene.persistence.SystemParamMapper;
 import com.bolehunt.gene.service.PropertyService;
 
 @Service
-public class PropertyServiceImpl implements PropertyService {
+public final class PropertyServiceImpl implements PropertyService {
 	
 	@Autowired
 	private SystemParamMapper systemParamMapper;

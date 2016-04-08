@@ -13,7 +13,7 @@ import com.bolehunt.gene.common.ErrorStatus;
 import com.bolehunt.gene.form.LoginForm;
 
 @Controller
-public class LoginController extends BaseController {
+public final class LoginController extends BaseController {
 	
 	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 	

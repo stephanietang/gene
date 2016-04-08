@@ -9,7 +9,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <!-- Development version: Force the browser the retrieve new version of css and js-->
 <c:set var="version"><%= java.util.UUID.randomUUID() %></c:set>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html>
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -18,7 +18,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
-	<title></title>
+	<title>BoleHunt</title>
 	
 	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-3.3.5.css">
 	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-theme-3.3.5.css">
@@ -50,22 +50,19 @@
 	<!-- jquery file upload support -->
 	<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
 	<script src="${contextPath}/resources/js/jquery-file-upload-9.12.1/vendor/jquery.ui.widget.js"></script>
-	<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-	<script src="//blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
-	<!-- The Canvas to Blob plugin is included for image resizing functionality -->
-	<script src="//blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
 	<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
 	<script src="${contextPath}/resources/js/jquery-file-upload-9.12.1/jquery.iframe-transport.js"></script>
 	<!-- The basic File Upload plugin -->
 	<script src="${contextPath}/resources/js/jquery-file-upload-9.12.1/jquery.fileupload.js"></script>
+	
+	<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+	<script src="${contextPath}/resources/js/jquery-file-upload-9.12.1/load-image.all.min.js"></script>
+	<!-- The Canvas to Blob plugin is included for image resizing functionality -->
+	<script src="${contextPath}/resources/js/jquery-file-upload-9.12.1/canvas-to-blob.min.js"></script>
 	<!-- The File Upload processing plugin -->
 	<script src="${contextPath}/resources/js/jquery-file-upload-9.12.1/jquery.fileupload-process.js"></script>
 	<!-- The File Upload image preview & resize plugin -->
 	<script src="${contextPath}/resources/js/jquery-file-upload-9.12.1/jquery.fileupload-image.js"></script>
-	<!-- The File Upload audio preview plugin -->
-	<script src="${contextPath}/resources/js/jquery-file-upload-9.12.1/jquery.fileupload-audio.js"></script>
-	<!-- The File Upload video preview plugin -->
-	<script src="${contextPath}/resources/js/jquery-file-upload-9.12.1/jquery.fileupload-video.js"></script>
 	<!-- The File Upload validation plugin -->
 	<script src="${contextPath}/resources/js/jquery-file-upload-9.12.1/jquery.fileupload-validate.js"></script>
 	

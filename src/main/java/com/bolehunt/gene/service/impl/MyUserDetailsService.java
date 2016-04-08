@@ -19,7 +19,7 @@ import com.bolehunt.gene.domain.User;
 import com.bolehunt.gene.service.UserService;
 
 @Service
-public class MyUserDetailsService implements UserDetailsService {
+public final class MyUserDetailsService implements UserDetailsService {
 
     private final Log log = LogFactory.getLog(this.getClass());
     

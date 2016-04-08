@@ -28,7 +28,7 @@ import com.bolehunt.gene.form.ResumeForm;
 import com.bolehunt.gene.service.ResumeService;
 
 @Controller
-public class ResumeController extends BaseController {
+public final class ResumeController extends BaseController {
 	
 	private static final Logger log = LoggerFactory.getLogger(ResumeController.class);
 	

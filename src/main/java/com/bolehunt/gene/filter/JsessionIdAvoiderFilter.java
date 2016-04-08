@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bolehunt.gene.controller.RegisterController;
 
-public class JsessionIdAvoiderFilter implements Filter {
+public final class JsessionIdAvoiderFilter implements Filter {
 	
 	private static final Logger log = LoggerFactory.getLogger(RegisterController.class);
 	

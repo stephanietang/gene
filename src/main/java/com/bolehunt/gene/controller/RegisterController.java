@@ -32,7 +32,7 @@ import com.bolehunt.gene.service.VerifyTokenService;
 import com.bolehunt.gene.util.WebUtil;
 
 @Controller
-public class RegisterController extends BaseController {
+public final class RegisterController extends BaseController {
 	
 	private static final Logger log = LoggerFactory.getLogger(RegisterController.class);
 	

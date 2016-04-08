@@ -22,7 +22,7 @@ import com.bolehunt.gene.domain.Avatar;
 import com.bolehunt.gene.service.FileService;
 
 @Controller
-public class ImageResolverController {
+public final class ImageResolverController {
 	
 	private static final Logger log = LoggerFactory.getLogger(ImageResolverController.class);
 	

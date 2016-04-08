@@ -9,15 +9,13 @@ import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bolehunt.gene.common.ErrorStatus;
 import com.bolehunt.gene.domain.Avatar;
 import com.bolehunt.gene.domain.AvatarExample;
-import com.bolehunt.gene.exception.ApplicationException;
 import com.bolehunt.gene.persistence.AvatarMapper;
 import com.bolehunt.gene.service.FileService;
 
 @Service
-public class FileServiceImpl implements FileService {
+public final class FileServiceImpl implements FileService {
 	
 	@Autowired
 	AvatarMapper avatarMapper;

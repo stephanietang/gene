@@ -9,7 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-public class CharsetEncodingFilter implements Filter {
+public final class CharsetEncodingFilter implements Filter {
 
     private String encoding;
     

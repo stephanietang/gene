@@ -22,7 +22,7 @@ import com.bolehunt.gene.persistence.EducationMapper;
 import com.bolehunt.gene.service.ResumeService;
 
 @Service
-public class ResumeServiceImpl implements ResumeService {
+public final class ResumeServiceImpl implements ResumeService {
 	
 	@Autowired
 	private AvatarMapper avatarMapper;

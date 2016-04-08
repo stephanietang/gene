@@ -31,7 +31,7 @@ import com.bolehunt.gene.service.UserService;
 import com.bolehunt.gene.service.VerifyTokenService;
 
 @Service
-public class UserServiceImpl implements UserService {
+public final class UserServiceImpl implements UserService {
 	
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 	

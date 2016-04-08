@@ -14,7 +14,7 @@ import com.bolehunt.gene.common.ErrorStatus;
 import com.bolehunt.gene.exception.ApplicationException;
 
 @Controller
-public class HomeController extends BaseController {
+public final class HomeController extends BaseController {
 	
 	private static final Logger log = LoggerFactory.getLogger(HomeController.class);
 	
