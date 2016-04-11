@@ -11,7 +11,7 @@
 		</div>
 		<div class="form-group">
 	    	<div class="col-sm-offset-2 col-sm-10">
-	    		<spring:message code="button.user.resetPassword" var="forgetPassword"/>
+	    		<spring:message code="button.resetPassword" var="forgetPassword"/>
 				<input type="submit" class="btn btn-primary" value="${forgetPassword}"></input>
 			</div>
 		</div>

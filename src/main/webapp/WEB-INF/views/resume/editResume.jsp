@@ -1,46 +1,50 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../common/header.jsp" %>
+<script src="${contextPath}/resources/js/fileupload.js"></script>
 
 <!-- Docs page layout -->
 <div class="container bs-docs-container">
 
 	<div class="row">
-		<div class="col-md-3" role="complementary">
+		<%-- <div class="col-md-3" role="complementary">
 			<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
 				<ul class="nav bs-docs-sidenav">
 					<li><a href="#basic-info"><spring:message code="label.resume.basicInfo" /></a></li>
 					<li><a href="#education"><spring:message code="label.resume.educationExperience" /></a></li>
-					<li><a href="#work-experience"><spring:message code="label.resume.workExperience" /></a></li>
-					<li><a href="#self-intro"><spring:message code="label.resume.selfIntro" /></a></li>
-					<li><a href="#works"><spring:message code="label.resume.works" /></a></li>
 				</ul>
 				<a class="back-to-top" href="#top"><spring:message code="label.common.goToTop" /></a>
             
 			</nav>
-		</div>
+		</div> --%>
 		
-		
-		<div class="col-md-9" role="main">
-			<c:if test="${not empty resumeForm.avatar}">
-				<!--  <img src="${contextPath}/image/${resumeForm.avatar.uuid}"/>-->
-			</c:if>
-			
-			<input id="fileupload" type="file" name="avatar" >
-			<!-- The global progress bar -->
-			<div id="progress" class="progress">
-			    <div class="progress-bar progress-bar-success"></div>
+		<div class="col-md-12" role="main">
+			<div class="avatar-container">
+				<c:choose>
+				<c:when test="${not empty resumeForm.avatar}">
+					<img id="avatar-img" src="${contextPath}/image/${resumeForm.avatar.uuid}"/>
+				</c:when>
+				<c:otherwise>
+					<img id="avatar-img" src="${contextPath}/resources/img/defaultAvatar.png"/>
+				</c:otherwise>
+				</c:choose>
+				<div class="avatar-shadow"><img src="${contextPath}/resources/img/shadow.png"></div>
+				<input id="fileupload" type="file" name="avatar" >
 			</div>
-			<!-- The container for the uploaded files -->
-    		<div id="files" class="files"></div>
-			<!-- The container for the uploaded avatar image -->
-			<img id="avatarImg" style="max-width:100px" src="${contextPath}/image/${resumeForm.avatar.uuid}"/>
 			
-			<form:form id="resumeForm" class="form-horizontal" method="post" action="${contextPath}/talent/profile/edit" commandName="resumeForm">
 			<div class="bs-docs-section">
+				<h2 id="basic-info" class="page-header"><a class="anchorjs-link " href="#basic-info" ></a><spring:message code="label.resume.basicInfo" /></h2>
+				<h3 class="page-header">${resumeForm.basicInfo.name}</h3>
+				<div>
+					<ct:label list="${sexList}" key="${resumeForm.basicInfo.sex}"/> | 
+        			<ct:label list="${countryList}" key="${resumeForm.basicInfo.country}"/> |
+        			<ct:label list="${degreeList}" key="${resumeForm.basicInfo.degree}"/> | 
+        			<ct:label list="${experienceList}" key="${resumeForm.basicInfo.experience}"/> | 
+        			${user.email} 
+				</div>
+			
+			<form:form id="resumeForm" class="form-horizontal hidden" method="post" action="${contextPath}/talent/profile/edit" commandName="resumeForm">
 				<form:hidden path="basicInfo.id" />
 				<form:hidden id="hiddenUserId" path="userId" />
-				<h1 class="page-header">${resumeForm.basicInfo.name}</h1>
-				<h2 id="basic-info" class="page-header"><a class="anchorjs-link " href="#basic-info" ></a><spring:message code="label.resume.basicInfo" /></h2>
 				<div class="form-group">
 					<div class="col-sm-6"><form:input path="basicInfo.name" class="form-control" placeholder="" /></div>
 					<div class="col-sm-2">
@@ -70,15 +74,15 @@
 				</div>
 				<div class="form-group">
 			    	<div class="col-sm-10">
-			    		<spring:message code="button.user.save" var="saveButton"/>
+			    		<spring:message code="button.save" var="saveButton"/>
 						<input type="submit" class="btn btn-primary" value="${saveButton}"></input>
 					</div>
 				</div>
-			</div>
 			</form:form>
+			</div>
 			
 			<div id="education-section" class="bs-docs-section" >
-				<h1 class="page-header"><a class="anchorjs-link " href="#education" ></a><spring:message code="label.resume.educationExperience" /></h1>
+				<h1 class="page-header"><a class="anchorjs-link" href="#education" ></a><spring:message code="label.resume.educationExperience" /></h1>
 				<form:form id="eduAddForm" class="form-horizontal" commandName="educationForm">
 					<div class="form-group">
 						<label for="schoolName" class="col-sm-2 control-label"><spring:message code="label.resume.school" /></label>
@@ -103,7 +107,7 @@
 						<div class="col-sm-10"><input name="department" class="form-control" placeholder="<spring:message code="label.resume.department.placeholder" />" /></div>
 					</div>
 					<div class="form-group">
-						<spring:message code="button.user.add" var="addButton"/>
+						<spring:message code="button.add" var="addButton"/>
 						<div class="btn btn-primary edu-add" >${addButton}</div>
 					</div>
 				</form:form>
@@ -157,36 +161,13 @@
 							<div class="col-sm-10"><input name="department" class="form-control" placeholder="<spring:message code="label.resume.department.placeholder" />" /></div>
 						</div>
 						<div class="form-group">
-							<spring:message code="button.user.save" var="saveButton"/>
+							<spring:message code="button.save" var="saveButton"/>
 							<spring:message code="button.cancel" var="cancelButton"/>
 							<div class="btn btn-primary edu-save" >${saveButton}</div>
 							<div class="btn btn-primary edu-edit-cancel" >${cancelButton}</div>
 						</div>
 					</form>
 				</div>
-			</div>
-
-			<div class="bs-docs-section">
-				<h1 id="self-intro" class="page-header"><a class="anchorjs-link " href="#self-intro"></a><spring:message code="label.resume.selfIntro" /></h1>
-				
-				<form id="selfIntroForm">
-					<input name="title" type="text" placeholder="Title?" />
-					<textarea name="content" data-provide="markdown" rows="10"></textarea>
-					<label class="checkbox">
-						<input name="publish" type="checkbox"> Publish
-					</label>
-			    	<hr/>
-			    	<button type="submit" class="btn">Submit</button>
-			  	</form> 
-			  	
-			</div>
-			
-			<div class="bs-docs-section">
-				<h1 id="works" class="page-header"><a class="anchorjs-link " href="#works"></a><spring:message code="label.resume.works" /></h1>
-				
-	            <label class="control-label">Upload Works</label>
-				<input id="works-upload" type="file" name="files" multiple>
-				
 			</div>
 		</div>
 
@@ -213,63 +194,58 @@
 		</div>
 	</div>
 </div>
+
+<div id="avatar-modal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title"><spring:message code="title.upload.avatar" /></h4>
+	      	</div>
+			<div class="modal-body">
+				<div id="avatar-container"></div>
+				<button type="button" class="btn btn-default upload-ok" data-dismiss="modal"><spring:message code="button.upload" /></button>
+				<button type="button" class="btn btn-default upload-cancel" data-dismiss="modal"><spring:message code="button.cancel" /></button>
+			</div>
+			<div class="modal-footer">
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="avatar-error-modal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title"><spring:message code="title.error" /></h4>
+	      	</div>
+			<div class="modal-body">
+				<spring:message code="errMsg.upload.avatar.notSupport" />
+			</div>
+			<div class="modal-footer">
+				
+			</div>
+		</div>
+	</div>
+</div>
 	
 <script>
+var jsonObj;
 $(function() {
 	
 	'use strict';
-	$('#fileupload').fileupload({
-		url: ctx+'/uploadAvatar',
-        dataType: 'json',
-        //acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i, // only accept images
-        //maxFileSize: 2097152, // 2M
-        formData: {
-        	_csrf: $('meta[name="_csrf"]').attr('content'),
-        	userId: $('#hiddenUserId').val()
-        },
-     	// Enable image resizing, except for Android and Opera,
-        // which actually support image resizing, but fail to
-        // send Blob objects via XHR requests:
-        disableImageResize: /Android(?!.*Chrome)|Opera/
-            .test(window.navigator && navigator.userAgent),
-		imageMaxWidth: 800,
-		imageMaxHeight: 800,
-		imageCrop: true,
-		previewMaxWidth: 100,
-		previewMaxHeight: 100,
-		previewCrop: true,
-		add: function(e, data) {
-            var uploadErrors = [];
-            var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i; // only accept images
-            var maxFileSize = 2097152; // 2M
-            if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
-                uploadErrors.push('Not an accepted file type');
-            }
-            if(data.originalFiles[0]['size'] > maxFileSize) {
-            	uploadErrors.push('Filesize is too big');
-            }
-            if(uploadErrors.length > 0) {
-                alert(uploadErrors.join("\n"));
-            } else {
-                data.submit();
-            }
-		},
-		processalways: function (e, data) {
-			// TODO, add preview and error
-		},
-		progressall: function (e, data) {
-	        var progress = parseInt(data.loaded / data.total * 100, 10);
-	        $('#progress .progress-bar').css(
-	            'width',
-	            progress + '%'
-	        );
-	    },
-        done: function (e, data) {
-        	var imagePath = data.result.data.path;
-        	$('#avatarImg').prop('src', imagePath);
-        }
+    $.getJSON(ctx+"/talent/profile/displayArray.json",function(result){
+    	jsonObj = result.data;              
     });
 	
+	$('.upload-ok').on('click', function() {
+		var data = $(this).data();
+		data.submit();
+	});
 	
 	$("#checkAll").click(function () {
 	    $(".check").prop('checked', $(this).prop('checked'));
@@ -534,7 +510,7 @@ function initEducationList(eduItems){
 		html +=		'<div class="bs-callout bs-callout-info text-container">';
 		html +=			'<h2>'+schoolName+'</h2>';
 		html +=			'<p>'+department+'</p>';
-		html +=			'<p>'+getDegreeTxt(degree)+'</p>';
+		html +=			'<p>'+getListLabel(degree, 'degrees')+'</p>';
 		html +=			'<p>'+startYear+'~'+endYear+'</p>';
 		html +=			'<div class="btn btn-primary edu-edit" data-eduid="'+educationId+'" data-schoolname="'+schoolName+'" data-degree="'+degree+'" data-department="'+department+'" data-startyear="'+startYear+'" data-endyear="'+endYear+'"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</div>&nbsp;';
 		html +=			'<div class="btn btn-primary edu-delete" data-eduid="'+educationId+'" data-toggle="modal" data-target="#modal" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</div>';
@@ -544,19 +520,20 @@ function initEducationList(eduItems){
 	$("#education-items-container").append(html);
 }
 
-
-function getDegreeTxt(degree){
-	var degreeTxt = "";
-	if(degree == 1){
-		degreeTxt = "本科";
-	}else if(degree == 2){
-		degreeTxt = "硕士";
-	}else if(degree == 3){
-		degreeTxt = "博士";
-	}else if(degree == 4){
-		degreeTxt = "大专";
-	}
-	return degreeTxt;
+function getListLabel(key, listName){
+	var labelText = "";
+	$.each(jsonObj, function (index, array) {
+		if(index == listName) {
+			$.each(array, function(i, element){
+				if(element.labelKey == key) {
+					labelText = element.labelName;
+					return false;
+				}
+			});
+			return false;
+		}
+	});
+	return labelText;
 }
 
 </script>

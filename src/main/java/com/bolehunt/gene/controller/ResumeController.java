@@ -1,7 +1,9 @@
 package com.bolehunt.gene.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -101,6 +103,18 @@ public final class ResumeController extends BaseController {
 		List<Education> educationList = resumeService.retrieveEducationList(basicInfo.getId());
 		
 		return new RestMessage<List<Education>>().getSuccessMessage(educationList);
+	}
+	
+	@RequestMapping(value = "/talent/profile/displayArray.json", method = RequestMethod.GET)
+	@ResponseBody
+	@ResponseStatus(HttpStatus.OK)
+	public RestMessage<Map<String, List<Label>>> displayArray() {
+		Map<String, List<Label>> map = new HashMap<String, List<Label>>();
+		map.put("countrys", getDegreeList());
+		map.put("sexs", getSexList());
+		map.put("degrees", getDegreeList());
+		map.put("workExps", getWorkExpList());
+		return new RestMessage<Map<String, List<Label>>>().getSuccessMessage(map);
 	}
 	
 	private List<Label> getCountryList(){

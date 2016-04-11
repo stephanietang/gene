@@ -33,7 +33,7 @@ public final class ImageResolverController {
 	private FileService fileService;
 	
 	@RequestMapping(value="/image/{uuid}", method = RequestMethod.GET)
-	 public void showImage(@PathVariable("uuid") String uuid, HttpServletRequest request, HttpServletResponse response){
+	public void showImage(@PathVariable("uuid") String uuid, HttpServletRequest request, HttpServletResponse response){
 		ServletOutputStream stream = null;
 		BufferedInputStream bis = null;
 		try{
@@ -63,5 +63,6 @@ public final class ImageResolverController {
 			}
 		}
 	}
+	
 
 }

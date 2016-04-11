@@ -23,7 +23,7 @@
 	</div>
 	<div class="form-group">
     	<div class="col-sm-offset-2 col-sm-10">
-    		<spring:message code="button.user.login" var="loginButton"/>
+    		<spring:message code="button.login" var="loginButton"/>
 			<input type="submit" class="btn btn-primary" id="loginButton" value="${loginButton}"></input>
 		</div>
 	</div>

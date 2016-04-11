@@ -11,7 +11,7 @@
 		</div>
 		<div class="form-group">
 	    	<div class="col-sm-offset-2 col-sm-10">
-	    		<spring:message code="button.user.sendVerifyEmail" var="sendVerifyEmail"/>
+	    		<spring:message code="button.sendVerifyEmail" var="sendVerifyEmail"/>
 				<input type="submit" class="btn btn-primary" value="${sendVerifyEmail}"></input>
 			</div>
 		</div>
