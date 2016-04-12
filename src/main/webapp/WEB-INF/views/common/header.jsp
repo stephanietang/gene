@@ -82,7 +82,6 @@
 					<li class="active"><a href="${contextPath}/index"><spring:message code="menu.index" /></a></li>
 					<sec:authorize access="hasRole('ROLE_TALENT')">
 						<li><a href="${contextPath}/talent/profile"><spring:message code="menu.myResume" /></a></li>
-						<li><a href="${contextPath}/talent/profile/edit"><spring:message code="menu.editResume" /></a></li>
 					</sec:authorize>
 					<li><a href="http://v3.bootcss.com/css/#code-block">Bootstrap</a></li>
 					<c:choose><c:when test="${pageContext.request.userPrincipal.name != null}">

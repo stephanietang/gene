@@ -24,6 +24,7 @@
 
 .avatar-container img {
     cursor: pointer;
+    width: 120px
 }
 
 .avatar-container .avatar-shadow {

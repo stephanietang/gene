@@ -19,12 +19,15 @@ $(function(){
         // send Blob objects via XHR requests:
         disableImageResize: /Android(?!.*Chrome)|Opera/
             .test(window.navigator && navigator.userAgent),
-		imageMaxWidth: 120,
-		imageMaxHeight: 120,
-		imageCrop: true,// crop size to 100X100
+		imageMaxWidth: 300,
+		imageMaxHeight: 300,
+		imageCrop: true,// crop size to 300*300
 		previewMaxWidth: 300,
 		previewMaxHeight: 300,
+		disableExifThumbnail: true,
 		previewCrop: true // crop preview size to 300X300
+		// for custom crop canvas, please refer to https://github.com/blueimp/JavaScript-Load-Image 
+		// and http://deepliquid.com/projects/Jcrop/
 	}).on('fileuploadadd', function(e, data) {
         $('.upload-ok').data(data);
 	}).on('fileuploadprocessalways', function (e, data) {

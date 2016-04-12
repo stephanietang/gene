@@ -42,7 +42,7 @@
         			${user.email} 
 				</div>
 			
-			<form:form id="resumeForm" class="form-horizontal hidden" method="post" action="${contextPath}/talent/profile/edit" commandName="resumeForm">
+			<form:form id="resumeForm" class="form-horizontal hidden" method="post" action="${contextPath}/talent/profile" commandName="resumeForm">
 				<form:hidden path="basicInfo.id" />
 				<form:hidden id="hiddenUserId" path="userId" />
 				<div class="form-group">
