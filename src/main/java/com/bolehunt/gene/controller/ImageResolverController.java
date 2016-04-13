@@ -4,7 +4,11 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,14 +42,21 @@ public final class ImageResolverController {
 		BufferedInputStream bis = null;
 		try{
 			stream = response.getOutputStream();
-			response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+			response.addHeader("Content-Disposition", "inline;"); // for display
 			//response.addHeader("Content-Disposition", "attachment; filename=" + "filename.jpg"); // for download
+			
 			Avatar avatar = fileService.getAvatarByUUID(uuid);
 			
 			if(avatar != null){
 				String fileRelativePath = avatar.getPath();
-				bis = new BufferedInputStream(new FileInputStream(new File(config.getFileUploadPath() + fileRelativePath)));
-			
+				Path path = Paths.get(config.getFileUploadPath() + fileRelativePath);
+				String contentType = Files.probeContentType(path);
+				
+				// Should investigate right content type,
+				// if setting wrong content type, IE would download the image instead of display it
+				response.setContentType(contentType);
+				
+				bis = new BufferedInputStream(new FileInputStream(path.toFile()));
 				int readBytes = 0;
 				while ((readBytes = bis.read()) != -1){
 					stream.write(readBytes);
