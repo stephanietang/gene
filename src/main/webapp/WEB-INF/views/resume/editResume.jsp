@@ -2,6 +2,9 @@
 <%@ include file="../common/header.jsp" %>
 <script src="${contextPath}/resources/js/fileupload.js"></script>
 
+<spring:message code="button.save" var="saveButton"/>
+<spring:message code="button.cancel" var="cancelButton"/>
+<spring:message code="button.edit"  var="editButton"/>
 <!-- Docs page layout -->
 <div class="container bs-docs-container">
 
@@ -17,7 +20,7 @@
 			</nav>
 		</div> --%>
 		
-		<div class="col-md-12" role="main">
+		<div class="col-md-6" role="main">
 			<div class="avatar-container">
 				<c:choose>
 				<c:when test="${not empty resumeForm.avatar}">
@@ -31,6 +34,24 @@
 				<input id="fileupload" type="file" name="avatar" >
 			</div>
 			
+			<div class="mr-b-name row">
+				<div class="col-md-8 col-md-offset-2"><p class="mr-name">${resumeForm.basicInfo.name}</p></div>
+  				<div class="mr-edit col-md-2"><em>${editButton}</em></div>
+			</div>
+			
+			<form:form id="name-form" class="form" commandName="resumeForm">
+				<div class="mr-name-edit hidden form-group">
+					<div class="col-md-8 col-md-offset-2">
+						<form:input path="basicInfo.name" class="form-control" placeholder="" autocomplete="off"/>
+					</div>
+					<div class="col-md-2">
+						<input type="submit" class="btn" value="${saveButton}">
+						<input type="submit" class="btn" value="${cancelButton}">
+					</div>
+
+				</div>
+			</form:form>
+			
 			<div class="bs-docs-section">
 				<h2 id="basic-info" class="page-header"><a class="anchorjs-link " href="#basic-info" ></a><spring:message code="label.resume.basicInfo" /></h2>
 				<h3 class="page-header">${resumeForm.basicInfo.name}</h3>
@@ -42,43 +63,42 @@
         			${user.email} 
 				</div>
 			
-			<form:form id="resumeForm" class="form-horizontal hidden" method="post" action="${contextPath}/talent/profile" commandName="resumeForm">
-				<form:hidden path="basicInfo.id" />
-				<form:hidden id="hiddenUserId" path="userId" />
-				<div class="form-group">
-					<div class="col-sm-6"><form:input path="basicInfo.name" class="form-control" placeholder="" /></div>
-					<div class="col-sm-2">
-						<form:select path="basicInfo.country" class="form-control">
-							<form:options items="${countryList}" itemValue="labelKey" itemLabel="labelName" />
-						</form:select>
+				<form:form id="resumeForm" class="form-horizontal hidden" method="post" action="${contextPath}/talent/profile" commandName="resumeForm">
+					<form:hidden path="basicInfo.id" />
+					<form:hidden id="hiddenUserId" path="userId" />
+					<div class="form-group">
+						<div class="col-sm-6"><form:input path="basicInfo.name" class="form-control" placeholder="" /></div>
+						<div class="col-sm-2">
+							<form:select path="basicInfo.country" class="form-control">
+								<form:options items="${countryList}" itemValue="labelKey" itemLabel="labelName" />
+							</form:select>
+						</div>
+						<div class="col-sm-4"><form:input path="basicInfo.telNo" class="form-control" placeholder="" /></div>
 					</div>
-					<div class="col-sm-4"><form:input path="basicInfo.telNo" class="form-control" placeholder="" /></div>
-				</div>
-				<div class="form-group">
-					<div class="col-sm-6"><ct:options list="${workExpList}" name="basicInfo.experience" /></div>
-					<div class="col-sm-6"><ct:options list="${degreeList}" name="basicInfo.degree" /></div>
-				</div>
-				<div class="form-group">
-					<div class="col-sm-6"><ct:options list="${sexList}" name="basicInfo.sex" /></div>
-				<div class="form-group">
-					<div class="col-sm-6">
-						<div class="input-group date year-date">
-							<form:input type="text" path="basicInfo.bornYear" class="form-control" readonly="true" /><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+					<div class="form-group">
+						<div class="col-sm-6"><ct:options list="${workExpList}" name="basicInfo.experience" /></div>
+						<div class="col-sm-6"><ct:options list="${degreeList}" name="basicInfo.degree" /></div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-6"><ct:options list="${sexList}" name="basicInfo.sex" /></div>
+					<div class="form-group">
+						<div class="col-sm-6">
+							<div class="input-group date year-date">
+								<form:input type="text" path="basicInfo.bornYear" class="form-control" readonly="true" /><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+							</div>
 						</div>
 					</div>
-				</div>
-				</div>
-				<div class="form-group">
-					<div class="col-sm-6"><form:input path="basicInfo.city" class="form-control" placeholder="" /></div>
-					<div class="col-sm-6"><input class="form-control" value="${user.email}" disabled/></div>
-				</div>
-				<div class="form-group">
-			    	<div class="col-sm-10">
-			    		<spring:message code="button.save" var="saveButton"/>
-						<input type="submit" class="btn btn-primary" value="${saveButton}"></input>
 					</div>
-				</div>
-			</form:form>
+					<div class="form-group">
+						<div class="col-sm-6"><form:input path="basicInfo.city" class="form-control" placeholder="" /></div>
+						<div class="col-sm-6"><input class="form-control" value="${user.email}" disabled/></div>
+					</div>
+					<div class="form-group">
+				    	<div class="col-sm-10">
+							<input type="submit" class="btn btn-primary" value="${saveButton}"></input>
+						</div>
+					</div>
+				</form:form>
 			</div>
 			
 			<div id="education-section" class="bs-docs-section" >
@@ -161,8 +181,6 @@
 							<div class="col-sm-10"><input name="department" class="form-control" placeholder="<spring:message code="label.resume.department.placeholder" />" /></div>
 						</div>
 						<div class="form-group">
-							<spring:message code="button.save" var="saveButton"/>
-							<spring:message code="button.cancel" var="cancelButton"/>
 							<div class="btn btn-primary edu-save" >${saveButton}</div>
 							<div class="btn btn-primary edu-edit-cancel" >${cancelButton}</div>
 						</div>
@@ -233,309 +251,6 @@
 	</div>
 </div>
 	
-<script>
-var jsonObj;
-$(function() {
-	
-	'use strict';
-    $.getJSON(ctx+"/talent/profile/displayArray.json",function(result){
-    	jsonObj = result.data;              
-    });
-	
-	$('.upload-ok').on('click', function() {
-		var data = $(this).data();
-		data.submit();
-	});
-	
-	$("#checkAll").click(function () {
-	    $(".check").prop('checked', $(this).prop('checked'));
-	});
-	
-	$(document).on("click", ".year-date", function() {
-		$(this).datepicker({
-			format: "yyyy",
-			startView: "years",
-			minViewMode: "years",
-			startDate: new Date('1950', '00', '01'),
-			endDate: "-0y",
-			autoclose: true
-		}).datepicker('show');
-	});
-	
-	$("#resumeForm").validate({
-		onfocusin: function(element) {
-	        $(element).valid();
-	    },
-		rules: {
-			"basicInfo.name": {
-				required: true
-			},
-			"basicInfo.telNo": {
-				required: true,
-				digits: true
-			},
-			"basicInfo.city": {
-				required: true
-			}
-		}
-	});
-	
-	$("#eduAddForm").validate({
-		rules: {
-			schoolName: {
-				required: true
-			},
-			degree : {
-				required: true
-			},
-			department: {
-				required: true
-			},
-			startYear: {
-				required: true,
-				digits: true
-			},
-			endYear: {
-				required: true,
-				digits: true
-			}
-		}
-	});
-	
-	$("#education-section").on("click",".edu-edit",function(){
-		var html = "";
-		html = $("#edu-hidden-template").html();
-		$(this).parents(".text-container").hide().after(html);
-		$(this).parents(".text-container").next().attr("id", "eduEditForm");
-		
-		var oForm = $("#eduEditForm");
-		$("#eduId",oForm).val($(this).data("eduid"));
-		$('input[name="schoolName"]',oForm).val($(this).data("schoolname"));
-		$('select[name="degree"]',oForm).val($(this).data("degree"));
-		$('input[name="startYear"]',oForm).val($(this).data("startyear"));
-		$('input[name="endYear"]',oForm).val($(this).data("endyear"));
-		$('input[name="department"]',oForm).val($(this).data("department"));
-		
-		$("#eduAddForm").addClass("disabled");
-		
-		$(".edu-edit").attr("disabled",true);
-		$(".edu-delete").attr("disabled",true);
-		
-		initValidationEducationForm(oForm);
-		
-	});
-	
-	$("#education-section").on("click",".edu-edit-cancel",function(){
-		$("#eduEditForm").prev().show();
-		$("#eduEditForm").remove();
-		
-		$("#eduAddForm").removeClass("disabled");
-		
-		$(".edu-edit").attr("disabled",false);
-		$(".edu-delete").attr("disabled",false);
-	});
-	
-	$("#education-section").on("click",".edu-add",function(){
-		var oForm = $("#eduAddForm");
-		
-		var valid = $(oForm).valid();
-		
-		if(! valid){
-			return ;
-		}
-		
-		csrfAjaxSetup();
-		
-		var json;
-		
-		json = JSON.stringify({
-			action : "add", 
-			schoolName : $('input[name="schoolName"]',oForm).val(),
-			degree : $('select[name="degree"]',oForm).val(),
-			startYear : $('input[name="startYear"]',oForm).val(),
-			endYear : $('input[name="endYear"]',oForm).val(),
-			department : $('input[name="department"]',oForm).val()
-			});
-		
-		$.ajax({
-			url: ctx + "/talent/profile/educationCrudAction.json",
-			type: "POST",
-			contentType: "application/json; charset=UTF-8",
-			dataType : "json",
-			data: json,
-			success:function(result){
-				if(result.status == 'success'){
-					// clear add form
-					$(":input","#eduAddForm")
-					  .removeAttr("checked")
-					  .removeAttr("selected")
-					  .not(":button, :submit, :reset, :hidden, :radio, :checkbox")
-					  .val("");
-					
-					var educationItems = result.data;
-					initEducationList(educationItems);
-				}else if(result.status == 'error'){
-					displayErrorList(result);
-				}
-			},
-			error:function (){
-				alert("Error!");
-			}
-		});
-	});
-	
-	$("#education-section").on("click",".edu-save",function(){
-		
-		var oForm = $("#eduEditForm");
-		
-		var valid = $(oForm).valid();
-		
-		if(! valid){
-			return ;
-		}
-		
-		csrfAjaxSetup();
-		
-		var json;
-		
-		json = JSON.stringify({
-			action : "save", 
-			educationId : $("#eduId",oForm).val(),
-			schoolName : $('input[name="schoolName"]',oForm).val(),
-			degree : $('select[name="degree"]',oForm).val(),
-			startYear : $('input[name="startYear"]',oForm).val(),
-			endYear : $('input[name="endYear"]',oForm).val(),
-			department : $('input[name="department"]',oForm).val()
-			});
-		
-		$.ajax({
-			url: ctx + "/talent/profile/educationCrudAction.json",
-			type: "POST",
-			contentType: "application/json; charset=utf-8",
-			dataType : "json",
-			data: json,
-			success:function(result){
-				if(result.status == 'success'){
-					var eduItems = result.data;
-					initEducationList(eduItems);
-				}else if(result.status == 'error'){
-					displayErrorList(result);
-				}
-			},
-			error:function (){
-				alert("Error!");
-			}
-		});
-		
-		$("#eduAddForm").removeClass("disabled");
-	});
-	
-	$("#education-section").on("click",".edu-delete",function(){
-		var deleteBtn = $(this);
-		var id = $(deleteBtn).data("eduid");
-		var referId = $(deleteBtn).parents(".education-item").attr("id");
-		$("#modal-item-id").val(id);
-		$("#modal-refer-item-id").val(referId);
-	});
-	
-	$(document).on("click",".delete-ok",function(){
-		csrfAjaxSetup();
-		var referId = $("#modal-refer-item-id").val();
-		var referItem = $("#"+referId);
-		var json = JSON.stringify({
-			action : "delete",
-			educationId : $("#modal-item-id").val()
-			});
-		jQuery.ajax({
-			url: ctx + "/talent/profile/educationCrudAction.json",
-			type: "POST",
-			contentType: "application/json; charset=utf-8",
-			dataType : "json",
-			data: json,
-			success:function(result){
-				if(result.status == 'success'){
-					$(referItem).remove();
-				}else if(result.status == 'error'){
-					displayErrorList(result);
-				}
-			},
-			error:function (){
-				alert("Error!");
-			}
-		});
-	});
-	
-});
-
-//validate on newly created form
-function initValidationEducationForm(oForm){
-	
-	$(oForm).validate({
-		onfocusin: function(element) { // validate immediately when focus on the input box
-	        $(element).valid();
-	    },
-		rules: {
-			schoolName: {
-				required: true
-			},
-			degree : {
-				required: true
-			},
-			department: {
-				required: true
-			},
-			startYear: {
-				required: true,
-				digits: true
-			},
-			endYear: {
-				required: true,
-				digits: true
-			}
-		}
-	});
-}
-
-function initEducationList(eduItems){
-	$("#education-items-container").empty();
-	var html = "";
-	for(var i = 0; i < eduItems.length; i++){
-		var educationId = eduItems[i].id;
-		var schoolName = eduItems[i].schoolName;
-		var degree = eduItems[i].degree;
-		var department = eduItems[i].department;
-		var startYear = eduItems[i].startYear;
-		var endYear = eduItems[i].endYear;
-		html += '<div class="education-item" id="education-item_'+i+'">';
-		html +=		'<div class="bs-callout bs-callout-info text-container">';
-		html +=			'<h2>'+schoolName+'</h2>';
-		html +=			'<p>'+department+'</p>';
-		html +=			'<p>'+getListLabel(degree, 'degrees')+'</p>';
-		html +=			'<p>'+startYear+'~'+endYear+'</p>';
-		html +=			'<div class="btn btn-primary edu-edit" data-eduid="'+educationId+'" data-schoolname="'+schoolName+'" data-degree="'+degree+'" data-department="'+department+'" data-startyear="'+startYear+'" data-endyear="'+endYear+'"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</div>&nbsp;';
-		html +=			'<div class="btn btn-primary edu-delete" data-eduid="'+educationId+'" data-toggle="modal" data-target="#modal" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</div>';
-		html +=		'</div>';
-		html +=	'</div>';
-	}
-	$("#education-items-container").append(html);
-}
-
-function getListLabel(key, listName){
-	var labelText = "";
-	$.each(jsonObj, function (index, array) {
-		if(index == listName) {
-			$.each(array, function(i, element){
-				if(element.labelKey == key) {
-					labelText = element.labelName;
-					return false;
-				}
-			});
-			return false;
-		}
-	});
-	return labelText;
-}
-
-</script>
+<script src="${contextPath}/resources/js/resume.js"></script>
 
 <%@ include file="../common/footer.jsp" %>
