@@ -5,6 +5,13 @@ public enum LabelEnum {
 	COUNTRY_CHINA("country.china", 1),
 	COUNTRY_US("country.us", 2),
 	
+	CITY_SHENZHEN("city.shenzhen", 1),
+	CITY_BEIJING("city.beijing", 2),
+	CITY_GUANGZHOU("city.guangzhou", 3),
+	CITY_HANGZHOU("city.hangzhou", 4),
+	CITY_HONGKONG("city.hongkong", 5),
+	CITY_TAIPEI("city.taipei", 6),
+	
 	DEGREE_BACHELOR("degree.bachelor", 1),
 	DEGREE_MASTER("degree.master", 2),
 	DEGREE_PHD("degree.phd", 3),

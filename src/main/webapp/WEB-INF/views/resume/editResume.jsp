@@ -20,97 +20,147 @@
 			</nav>
 		</div> --%>
 		
-		<div class="col-md-6" role="main">
-			<div class="avatar-container">
-				<c:choose>
-				<c:when test="${not empty resumeForm.avatar}">
-					<img id="avatar-img" src="${contextPath}/image/${resumeForm.avatar.uuid}"/>
-				</c:when>
-				<c:otherwise>
-					<img id="avatar-img" src="${contextPath}/resources/img/defaultAvatar.png"/>
-				</c:otherwise>
-				</c:choose>
-				<div class="avatar-shadow"><img src="${contextPath}/resources/img/shadow.png"></div>
-				<input id="fileupload" type="file" name="avatar" >
+		<input type="hidden" id="basicInfoId" value="${resumeForm.basicInfo.id}" />
+		<div class="col-md-8" role="main">
+			<div class="row">
+				<div class="avatar-container">
+					<c:choose>
+					<c:when test="${not empty resumeForm.avatar}">
+						<img id="avatar-img" src="${contextPath}/image/${resumeForm.avatar.uuid}"/>
+					</c:when>
+					<c:otherwise>
+						<img id="avatar-img" src="${contextPath}/resources/img/defaultAvatar.png"/>
+					</c:otherwise>
+					</c:choose>
+					<div class="avatar-shadow"><img src="${contextPath}/resources/img/shadow.png"></div>
+					<input id="fileupload" type="file" name="avatar" >
+				</div>
 			</div>
 			
-			<div class="mr-b-name row">
-				<div class="col-md-8 col-md-offset-2"><p class="mr-name">${resumeForm.basicInfo.name}</p></div>
-  				<div class="mr-edit col-md-2"><em>${editButton}</em></div>
+			<div class="row mr-blk-name">
+				<div class="col-md-8 col-md-offset-2">
+					<p class="mr-name">${resumeForm.basicInfo.name}</p>
+				</div>
+  				<div class="col-md-2 mr-button hidden">
+  					<input type="button" class="btn btn-default btn-xs edit" value="${editButton}" data-name="${resumeForm.basicInfo.name}">
+  				</div>
 			</div>
 			
-			<form:form id="name-form" class="form" commandName="resumeForm">
-				<div class="mr-name-edit hidden form-group">
+			<div class="row">
+				<form id="name-form" class="mr-edit-name hidden">
 					<div class="col-md-8 col-md-offset-2">
-						<form:input path="basicInfo.name" class="form-control" placeholder="" autocomplete="off"/>
+						<input class="form-control mr-name" name="name" placeholder="" autocomplete="off"/>
 					</div>
-					<div class="col-md-2">
-						<input type="submit" class="btn" value="${saveButton}">
-						<input type="submit" class="btn" value="${cancelButton}">
+					<div class="col-md-2 mr-button">
+						<input type="button" class="btn btn-default btn-xs save" value="${saveButton}">
+						<input type="button" class="btn btn-default btn-xs cancel" value="${cancelButton}">
 					</div>
-
-				</div>
-			</form:form>
+				</form>
+			</div>
 			
-			<div class="bs-docs-section">
-				<h2 id="basic-info" class="page-header"><a class="anchorjs-link " href="#basic-info" ></a><spring:message code="label.resume.basicInfo" /></h2>
-				<h3 class="page-header">${resumeForm.basicInfo.name}</h3>
-				<div>
-					<ct:label list="${sexList}" key="${resumeForm.basicInfo.sex}"/> | 
-        			<ct:label list="${countryList}" key="${resumeForm.basicInfo.country}"/> |
-        			<ct:label list="${degreeList}" key="${resumeForm.basicInfo.degree}"/> | 
-        			<ct:label list="${experienceList}" key="${resumeForm.basicInfo.experience}"/> | 
-        			${user.email} 
+			<div class="row mr-blk-info">
+				<div class="col-md-2"></div>
+				<div class="col-md-8">
+					<div class="mr-info">
+						<span><ct:label list="${sexList}" key="${resumeForm.basicInfo.sex}"/></span>
+						<span>${resumeForm.basicInfo.bornYear}</span>
+						<span><ct:label list="${degreeList}" key="${resumeForm.basicInfo.degree}"/></span>
+						<span><ct:label list="${workExpList}" key="${resumeForm.basicInfo.experience}"/></span>
+						<span><ct:label list="${cityList}" key="${resumeForm.basicInfo.city}"/></span>
+      				</div>
+      				<div class="mr-info">
+						<span>${resumeForm.basicInfo.telNo}</span>
+						<span>${user.email}</span>
+					</div>
 				</div>
+				<div class="col-md-2 mr-button">
+					<input type="button" class="btn btn-default btn-xs edit" value="${editButton}">
+				</div>
+			</div>
 			
-				<form:form id="resumeForm" class="form-horizontal hidden" method="post" action="${contextPath}/talent/profile" commandName="resumeForm">
-					<form:hidden path="basicInfo.id" />
-					<form:hidden id="hiddenUserId" path="userId" />
+			<div class="row">
+				<form id="resume-form" class="form-horizontal mr-edit-info hidden">
 					<div class="form-group">
-						<div class="col-sm-6"><form:input path="basicInfo.name" class="form-control" placeholder="" /></div>
-						<div class="col-sm-2">
-							<form:select path="basicInfo.country" class="form-control">
-								<form:options items="${countryList}" itemValue="labelKey" itemLabel="labelName" />
-							</form:select>
-						</div>
-						<div class="col-sm-4"><form:input path="basicInfo.telNo" class="form-control" placeholder="" /></div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-6"><ct:options list="${workExpList}" name="basicInfo.experience" /></div>
-						<div class="col-sm-6"><ct:options list="${degreeList}" name="basicInfo.degree" /></div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-6"><ct:options list="${sexList}" name="basicInfo.sex" /></div>
-					<div class="form-group">
-						<div class="col-sm-6">
-							<div class="input-group date year-date">
-								<form:input type="text" path="basicInfo.bornYear" class="form-control" readonly="true" /><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-							</div>
+						<div class="col-md-6">
+							<label for="sex">Sex</label>
+							<select class="form-control" id="sex">
+								<c:forEach var="l" items="${sexList}">
+									<option value="${l.labelKey}">${l.labelName}</option>
+								</c:forEach>
+							</select>
 						</div>
 					</div>
-					</div>
 					<div class="form-group">
-						<div class="col-sm-6"><form:input path="basicInfo.city" class="form-control" placeholder="" /></div>
-						<div class="col-sm-6"><input class="form-control" value="${user.email}" disabled/></div>
-					</div>
-					<div class="form-group">
-				    	<div class="col-sm-10">
-							<input type="submit" class="btn btn-primary" value="${saveButton}"></input>
+						<div class="col-md-6">
+							<label for="birthYear">Birth Year</label>
+							<select class="form-control" id="birthYear">
+								<c:forEach var="l" items="${sexList}">
+									<option value="${l.labelKey}">${l.labelName}</option>
+								</c:forEach>
+							</select>
 						</div>
 					</div>
-				</form:form>
+					<div class="form-group">
+						<div class="col-md-6">
+							<label for="degree">Degree</label>
+							<select class="form-control" id="degree">
+								<c:forEach var="l" items="${degreeList}">
+									<option value="${l.labelKey}">${l.labelName}</option>
+								</c:forEach>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-6">
+							<label for="workExp">Experience</label>
+							<select class="form-control" id="workExp">
+								<c:forEach var="l" items="${workExpList}">
+									<option value="${l.labelKey}">${l.labelName}</option>
+								</c:forEach>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-6">
+							<label for="city">City</label>
+							<select class="form-control" id="city">
+								<c:forEach var="l" items="${cityList}">
+									<option value="${l.labelKey}">${l.labelName}</option>
+								</c:forEach>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-6">
+							<label for="telNo">Telephone</label>
+							<input class="form-control" placeholder="" id="telNo" autocomplete="off"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-6">
+							<label for="email">Email</label>
+							<input class="form-control" id="email" value="${user.email}" disabled/>
+						</div>
+					</div>
+					<div class="form-group">
+				    	<div class="col-md-12">
+							<input type="button" class="btn btn-default btn-sm save" value="${saveButton}"></input>
+							<input type="button" class="btn btn-default btn-sm cancel" value="${cancelButton}"></input>
+						</div>
+					</div>
+				</form>
 			</div>
 			
 			<div id="education-section" class="bs-docs-section" >
-				<h1 class="page-header"><a class="anchorjs-link" href="#education" ></a><spring:message code="label.resume.educationExperience" /></h1>
-				<form:form id="eduAddForm" class="form-horizontal" commandName="educationForm">
+				<h4 class="page-header"><a class="anchorjs-link" href="#education" ></a><spring:message code="label.resume.educationExperience" /></h4>
+				<form:form id="eduAddForm" class="form-horizontal hidden" commandName="educationForm">
 					<div class="form-group">
 						<label for="schoolName" class="col-sm-2 control-label"><spring:message code="label.resume.school" /></label>
 						<div class="col-sm-10"><input name="schoolName" class="form-control" placeholder="<spring:message code="label.resume.school.placeholder" />" /></div>
 					</div>
 					<div class="form-group">
 						<label for="schoolName" class="col-sm-2 control-label"><spring:message code="label.resume.degree" /></label>
-						<div class="col-sm-10"><ct:options list="${degreeList}" name="degree" /></div>
+						<div class="col-sm-10"><%-- <ct:options list="${degreeList}" name="degree" /> --%></div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label"><spring:message code="label.resume.timeRange" /></label>
@@ -149,7 +199,7 @@
 				</c:forEach>
 				</div>
 				
-				<div id="edu-hidden-template" class="hide">
+				<div id="edu-hidden-template" class="hidden">
 					<form class="form-horizontal">
 						<input type="hidden" id="eduId" name="eduId" value="" />
 						<div class="form-group">

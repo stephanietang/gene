@@ -13,6 +13,8 @@ public interface ResumeService {
 	
 	public ResumeForm retrieveResume(User user);
 	
+	public BasicInfo saveName(ResumeForm resumeForm);
+	
 	public void saveResume(ResumeForm resumeForm);
 	
 	public Avatar retrieveAvatar(User user);

@@ -450,62 +450,52 @@ public class BasicInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andCityEqualTo(String value) {
+        public Criteria andCityEqualTo(Integer value) {
             addCriterion("city =", value, "city");
             return (Criteria) this;
         }
 
-        public Criteria andCityNotEqualTo(String value) {
+        public Criteria andCityNotEqualTo(Integer value) {
             addCriterion("city <>", value, "city");
             return (Criteria) this;
         }
 
-        public Criteria andCityGreaterThan(String value) {
+        public Criteria andCityGreaterThan(Integer value) {
             addCriterion("city >", value, "city");
             return (Criteria) this;
         }
 
-        public Criteria andCityGreaterThanOrEqualTo(String value) {
+        public Criteria andCityGreaterThanOrEqualTo(Integer value) {
             addCriterion("city >=", value, "city");
             return (Criteria) this;
         }
 
-        public Criteria andCityLessThan(String value) {
+        public Criteria andCityLessThan(Integer value) {
             addCriterion("city <", value, "city");
             return (Criteria) this;
         }
 
-        public Criteria andCityLessThanOrEqualTo(String value) {
+        public Criteria andCityLessThanOrEqualTo(Integer value) {
             addCriterion("city <=", value, "city");
             return (Criteria) this;
         }
 
-        public Criteria andCityLike(String value) {
-            addCriterion("city like", value, "city");
-            return (Criteria) this;
-        }
-
-        public Criteria andCityNotLike(String value) {
-            addCriterion("city not like", value, "city");
-            return (Criteria) this;
-        }
-
-        public Criteria andCityIn(List<String> values) {
+        public Criteria andCityIn(List<Integer> values) {
             addCriterion("city in", values, "city");
             return (Criteria) this;
         }
 
-        public Criteria andCityNotIn(List<String> values) {
+        public Criteria andCityNotIn(List<Integer> values) {
             addCriterion("city not in", values, "city");
             return (Criteria) this;
         }
 
-        public Criteria andCityBetween(String value1, String value2) {
+        public Criteria andCityBetween(Integer value1, Integer value2) {
             addCriterion("city between", value1, value2, "city");
             return (Criteria) this;
         }
 
-        public Criteria andCityNotBetween(String value1, String value2) {
+        public Criteria andCityNotBetween(Integer value1, Integer value2) {
             addCriterion("city not between", value1, value2, "city");
             return (Criteria) this;
         }

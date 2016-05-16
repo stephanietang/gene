@@ -11,22 +11,81 @@ $(function() {
 		data.submit();
 	});
     
-    /*$(".mr-b-name").hover(function() {
-        $(this).addClass("mr-active").find(".mr-edit").removeClass("hidden")
+    /**Update name**/
+    $(".mr-blk-name").hover(function() {
+        $(this).addClass("mr-active").find(".mr-button").removeClass("hidden")
     }, function() {
-        $(this).removeClass("mr-active").find(".mr-edit").addClass("hidden")
-    });*/
-    
-    $(".mr-b-name .mr-edit").bind("click", function() {
-        $(".mr-b-name").hide();
-        $(".mr-name-edit").removeClass("hidden");
+        $(this).removeClass("mr-active").find(".mr-button").addClass("hidden")
     });
     
-    $(".mr-name-edit .cancel").bind("click", function() {
-        $(".mr-b-name").show();
-        $(".mr-name-edit").addClass("hidden");
+    $(".mr-blk-name .edit").bind("click", function() {
+        $(".mr-blk-name").hide();
+        $(".mr-edit-name").removeClass("hidden");
+        var name = $(this).data("name");
+        $(".mr-edit-name").find(".mr-name").val(name);
     });
     
+    $(".mr-edit-name .cancel").bind("click", function() {
+        $(".mr-blk-name").show();
+        $(".mr-edit-name").addClass("hidden");
+    });
+    
+    $(".mr-edit-name .save").bind("click", function() {
+    	var oForm = $("#name-form");
+		var valid = $(oForm).valid();
+		if(! valid){
+			return ;
+		}
+		
+		csrfAjaxSetup();
+		
+		var json;
+		
+		json = JSON.stringify({
+			basicInfoId : $("#basicInfoId").val(),
+			name : $("input[name='name']",oForm).val()
+		});
+		
+		$.ajax({
+			url: ctx + "/talent/profile/saveNameAction.json",
+			type: "POST",
+			contentType: "application/json; charset=utf-8",
+			dataType : "json",
+			data: json,
+			success:function(result){
+				if(result.status == 'success'){
+					var name = result.data.name;
+					$(".mr-blk-name .edit").data("name", name);
+					$(".mr-blk-name .mr-name").text(name);
+					$(".mr-blk-name").show();
+			        $(".mr-edit-name").addClass("hidden");
+				}
+			},
+			error:function (){
+				alert("Error!");
+			}
+		});
+    });
+    
+    /**Update basic info**/
+    $(".mr-blk-info").hover(function() {
+        $(this).addClass("mr-active").find(".mr-button").removeClass("hidden")
+    }, function() {
+        $(this).removeClass("mr-active").find(".mr-button").addClass("hidden")
+    });
+    
+    $(".mr-blk-info .edit").bind("click", function() {
+        $(".mr-blk-info").hide();
+        $(".mr-edit-info").removeClass("hidden");
+        $("#mr_year").val($(this).data("birthYear"));
+    });
+    
+    $(".mr-edit-info .cancel").bind("click", function() {
+        $(".mr-blk-info").show();
+        $(".mr-edit-info").addClass("hidden");
+    });
+    
+	
 	$("#checkAll").click(function () {
 	    $(".check").prop('checked', $(this).prop('checked'));
 	});

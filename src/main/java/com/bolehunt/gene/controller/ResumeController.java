@@ -25,6 +25,7 @@ import com.bolehunt.gene.common.LabelEnum;
 import com.bolehunt.gene.common.RestMessage;
 import com.bolehunt.gene.domain.BasicInfo;
 import com.bolehunt.gene.domain.Education;
+import com.bolehunt.gene.domain.User;
 import com.bolehunt.gene.form.EducationForm;
 import com.bolehunt.gene.form.ResumeForm;
 import com.bolehunt.gene.service.ResumeService;
@@ -45,13 +46,17 @@ public final class ResumeController extends BaseController {
 			return "redirect:/login";
 		}
 
-		ResumeForm resumeForm = resumeService.retrieveResume(getUser());
+		User user = getUser();
+		model.put("user", user);
+		
+		ResumeForm resumeForm = resumeService.retrieveResume(user);
 		model.put("resumeForm", resumeForm);
 		
 		EducationForm educationForm = new EducationForm();
 		model.put("educationForm", educationForm);
 		
 		model.put("countryList", getCountryList());
+		model.put("cityList", getCityList());
 		model.put("sexList", getSexList());
 		model.put("degreeList", getDegreeList());
 		model.put("workExpList", getWorkExpList());
@@ -68,6 +73,17 @@ public final class ResumeController extends BaseController {
 		
 		return "redirect:/talent/profile/edit";
 		
+	}
+	
+	
+	@RequestMapping(value = "/talent/profile/saveNameAction.json", method = RequestMethod.POST)
+	@ResponseBody
+	@ResponseStatus(HttpStatus.OK)
+	public RestMessage<BasicInfo> saveNameSubmit(@RequestBody ResumeForm resumeForm) {
+		
+		BasicInfo basicInfo = resumeService.saveName(resumeForm);
+		
+		return new RestMessage<BasicInfo>().getSuccessMessage(basicInfo);
 	}
 	
 	@RequestMapping(value = "/talent/profile/educationCrudAction.json", method = RequestMethod.POST)
@@ -100,6 +116,17 @@ public final class ResumeController extends BaseController {
 		map.put("degrees", getDegreeList());
 		map.put("workExps", getWorkExpList());
 		return new RestMessage<Map<String, List<Label>>>().getSuccessMessage(map);
+	}
+	
+	private List<Label> getCityList(){
+		List<Label> list = new ArrayList<Label>();
+		list.add(getLabel(LabelEnum.CITY_SHENZHEN));
+		list.add(getLabel(LabelEnum.CITY_BEIJING));
+		list.add(getLabel(LabelEnum.CITY_GUANGZHOU));
+		list.add(getLabel(LabelEnum.CITY_HANGZHOU));
+		list.add(getLabel(LabelEnum.CITY_HONGKONG));
+		list.add(getLabel(LabelEnum.CITY_TAIPEI));
+		return list;
 	}
 	
 	private List<Label> getCountryList(){

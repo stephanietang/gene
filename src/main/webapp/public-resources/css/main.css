@@ -46,32 +46,33 @@
 
 
 /*Resume*/
-.mr-edit {
-	cursor: pointer;
-	float: right;
+.mr-blk-name {
+	height: 40px;
 }
 
-.mr-edit em{
-	font-size:16px;
-	color:#00b38a;
-	vertical-align: middle;
+.mr-button {
 	line-height: 40px;
 }
 
-
-em {
-	font-style: normal;
-}
-
-.mr-b-name {
-	height: 40px;
+.mr-button .edit, .mr-button .save, .mr-button .cancel{
+	vertical-align: middle;
 }
 
 .mr-name {
 	height: 40px;
     line-height: 40px;
     font-size: 30px;
-    color: #333;
     text-align: center;
 }
 
+.mr-info {
+	height: 24px;
+    line-height: 24px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.mr-info span {
+    margin-right: 6px;
+    height: 24px;
+}

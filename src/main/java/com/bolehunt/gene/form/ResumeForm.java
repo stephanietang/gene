@@ -12,6 +12,9 @@ public class ResumeForm {
 	private BasicInfo basicInfo;
 	private List<Education> educationList;
 	private Avatar avatar;
+	
+	private Integer basicInfoId;
+	private String name;
 
 	public BasicInfo getBasicInfo() {
 		return basicInfo;
@@ -45,4 +48,20 @@ public class ResumeForm {
 		this.avatar = avatar;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Integer getBasicInfoId() {
+		return basicInfoId;
+	}
+
+	public void setBasicInfoId(Integer basicInfoId) {
+		this.basicInfoId = basicInfoId;
+	}
+	
 }

@@ -46,7 +46,10 @@ public final class ResumeServiceImpl implements ResumeService {
 		if(basicInfo != null){
 			form.setBasicInfo(basicInfo);
 			List<Education> educationList = retrieveEducationList(basicInfo.getId());
-			form.setEducationList(educationList);
+			if(educationList != null) {
+				form.setEducationList(educationList);
+			}
+			
 		}
 		
 		return form;
@@ -88,6 +91,16 @@ public final class ResumeServiceImpl implements ResumeService {
 		eduEx.createCriteria().andBasicInfoIdEqualTo(basicInfoId);
 		eduEx.setOrderByClause("start_year desc, end_year desc");
 		return educationMapper.selectByExample(eduEx);
+	}
+	
+	@Override
+	public BasicInfo saveName(ResumeForm resumeForm){
+		BasicInfo basicInfo = basicInfoMapper.selectByPrimaryKey(resumeForm.getBasicInfoId());
+		if(basicInfo != null){
+			basicInfo.setName(resumeForm.getName());
+			basicInfoMapper.updateByPrimaryKeySelective(basicInfo);
+		}
+		return basicInfo;
 	}
 	
 	@Override
