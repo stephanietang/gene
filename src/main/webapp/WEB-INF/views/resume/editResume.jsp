@@ -75,7 +75,7 @@
 						<span>${user.email}</span>
 					</div>
 				</div>
-				<div class="col-md-2 mr-button">
+				<div class="col-md-2 mr-button hidden">
 					<input type="button" class="btn btn-default btn-xs edit" value="${editButton}" data-sex="${resumeForm.basicInfo.sex}" 
 					data-birthyear="${resumeForm.basicInfo.birthYear}" data-degree="${resumeForm.basicInfo.degree}"
 					data-workexp="${resumeForm.basicInfo.workExp}" data-city="${resumeForm.basicInfo.city}"
@@ -138,7 +138,7 @@
 					<div class="form-group">
 						<div class="col-md-6">
 							<label for="telNo">Telephone</label>
-							<input class="form-control" placeholder="" id="telNo" autocomplete="off"/>
+							<input class="form-control" placeholder="" id="telNo" autocomplete="off" name="telNo"/>
 						</div>
 					</div>
 					<div class="form-group">
@@ -167,11 +167,11 @@
 				</div>
 				<div class="mr-educations">
 					<c:forEach var="education" items="${resumeForm.educationList}" varStatus="item">
-						<div class="mr-education-item">
-							<div class="row mr-blk-education" id="edu-${item.index}">
+						<div class="mr-education-item" id="edu-${item.index}">
+							<div class="row mr-blk-education">
 								<div class="col-md-10">
 									<p><span class="glyphicon glyphicon-pushpin school-name" aria-hidden="true"> ${education.schoolName}</span></p>
-									<p><span class="department">${education.department}</span> · <span class="degree"><ct:label list="${degreeList}" key="${education.degree}"/></span> </p>
+									<p><span class="department">${education.department}</span> · <span class="degree"><ct:label list="${degreeList}" key="${education.degree}"/></span></p>
 									<p><span class="time-range">${education.startYear} - ${education.endYear}</span></p>
 								</div>
 								<div class="col-md-2" >
@@ -189,13 +189,13 @@
 				<div class="row">
 					<form id="education-template-form" class="form-horizontal hidden mr-edit-education">
 						<input type="hidden" class="edu-id" value="" />
-						<input type="hidden" class="edu-refer-id" value="" />
+						<input type="hidden" class="edu-ref-id" value="" />
 						<div class="form-group">
 							<label for="schoolName" class="col-md-2 control-label"><spring:message code="label.resume.school" /></label>
-							<div class="col-md-10"><input name="schoolName" class="form-control" placeholder="<spring:message code="label.resume.school.placeholder" />" /></div>
+							<div class="col-md-10"><input name="schoolName" class="form-control" autocomplete="off" placeholder="<spring:message code="label.resume.school.placeholder" />" /></div>
 						</div>
 						<div class="form-group">
-							<label for="schoolName" class="col-md-2 control-label"><spring:message code="label.resume.degree" /></label>
+							<label for="degree" class="col-md-2 control-label"><spring:message code="label.resume.degree" /></label>
 							<div class="col-md-10">
 								<select name="degree" class="form-control">
 									<c:forEach var="l" items="${degreeList}">
@@ -216,7 +216,7 @@
 						</div>
 						<div class="form-group">
 							<label for="department" class="col-md-2 control-label"><spring:message code="label.resume.department" /></label>
-							<div class="col-md-10"><input name="department" class="form-control" placeholder="<spring:message code="label.resume.department.placeholder" />" /></div>
+							<div class="col-md-10"><input name="department" class="form-control" autocomplete="off" placeholder="<spring:message code="label.resume.department.placeholder" />" /></div>
 						</div>
 						<div class="form-group">
 							<div class="col-md-10">
@@ -244,7 +244,7 @@
 	      	</div>
 			<div class="modal-body">
 				<input type="hidden" id="modal-item-id" >
-				<input type="hidden" id="modal-refer-item-id" >
+				<input type="hidden" id="modal-ref-item-id" >
 				<button type="button" class="btn btn-danger btn-sm delete-ok" data-dismiss="modal"><spring:message code="button.confirmDelete" /></button>
 				<button type="button" class="btn btn-default btn-sm delete-cancel" data-dismiss="modal"><spring:message code="button.cancel" /></button>
 			</div>

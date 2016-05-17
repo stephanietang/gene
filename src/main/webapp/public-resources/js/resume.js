@@ -192,6 +192,17 @@ $(function() {
 		}
 	});
 	
+	$(document).on("click",".mr-educations-container .add", function(){
+		$(this).parents(".mr-blk-education").hide();
+		var oForm = $("#education-template-form").clone().attr("id", "education-form").removeClass("hidden");
+		$(".delete", oForm).hide();
+		$(".mr-educations").prepend(oForm);
+		
+		$(".mr-educations-container .add").attr("disabled",true);
+		$(".mr-educations-container .edit").attr("disabled",true);
+		
+	});
+	
 	$(document).on("click",".mr-blk-education .edit", function(){
 		$(this).parents(".mr-blk-education").hide();
 		var oForm = $("#education-template-form").clone().attr("id", "education-form").removeClass("hidden");
@@ -268,19 +279,20 @@ $(function() {
 		var id = $(".edu-id", oForm).val();
 		var referId = $(".edu-ref-id", oForm).val();
 		$("#modal-item-id").val(id);
-		$("#modal-refer-item-id").val(referId);
+		$("#modal-ref-item-id").val(referId);
 		$('#modal').modal('show');
 	});
 	
 	$(".delete-ok").on("click",function(){
 		csrfAjaxSetup();
-		var referId = $("#modal-refer-item-id").val();
-		var referItem = $("#"+referId);
+		var itemId = $("#modal-item-id").val();
+		var referId = $("#modal-ref-item-id").val();
 		var json = JSON.stringify({
 			action : "delete",
-			educationId : $("#modal-item-id").val()
+			educationId : itemId
 		});
-		jQuery.ajax({
+		
+		$.ajax({
 			url: ctx + "/talent/profile/educationCrudAction.json",
 			type: "POST",
 			contentType: "application/json; charset=utf-8",
@@ -288,7 +300,9 @@ $(function() {
 			data: json,
 			success:function(result){
 				if(result.status == 'success'){
-					$(referItem).remove();
+					$("#"+referId).remove();
+					$(".mr-educations-container .add").attr("disabled",false);
+					$(".mr-educations-container .edit").attr("disabled",false);
 				}else if(result.status == 'error'){
 					displayErrorList(result);
 				}
@@ -312,13 +326,16 @@ function initEducationList(eduItems){
 		var department = eduItems[i].department;
 		var startYear = eduItems[i].startYear;
 		var endYear = eduItems[i].endYear;
-		html += '<div class="education-item" id="education-item_'+i+'">';
-		html +=		'<div class="bs-callout bs-callout-info text-container">';
-		html +=			'<h2>'+schoolName+'</h2>';
-		html +=			'<p>'+department+'</p>';
-		html +=			'<p>'+getListLabel(degree, 'degreeList')+'</p>';
-		html +=			'<p>'+startYear+' - '+endYear+'</p>';
-		html +=			'<div class="btn btn-primary edit" data-eduid="'+educationId+'" data-schoolname="'+schoolName+'" data-degree="'+degree+'" data-department="'+department+'" data-startyear="'+startYear+'" data-endyear="'+endYear+'"></div>&nbsp;';
+		html += '<div class="mr-education-item" id="edu-'+i+'">';
+		html += 	'<div class="row mr-blk-education">';
+		html +=			'<div class="col-md-10">';
+		html +=				'<p><span class="glyphicon glyphicon-pushpin school-name" aria-hidden="true"> '+schoolName+'</p>';
+		html +=				'<p><span class="department">'+department+'</span> · <span class="degree">'+ getListLabel(degree, 'degreeList') +'</span></p>';
+		html +=				'<p>'+startYear+' - '+endYear+'</p>';
+		html +=			'</div>';
+		html +=			'<div class="col-md-2">';
+		html +=				'<input type="button" class="btn btn-default btn-xs edit" value="Edit" data-eduid="'+educationId+'" data-schoolname="'+schoolName+'" data-degree="'+degree+'" data-department="'+department+'" data-startyear="'+startYear+'" data-endyear="'+endYear+'" data-refid="edu-'+i+'" />';
+		html +=			'</div>';
 		html +=		'</div>';
 		html +=	'</div>';
 	}

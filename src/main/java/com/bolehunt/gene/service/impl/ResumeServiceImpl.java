@@ -134,15 +134,14 @@ public final class ResumeServiceImpl implements ResumeService {
 	@Override
 	public void proceedEducationForm(EducationForm educationForm, User user){
 		BasicInfo basicInfo = retrieveBasicInfo(user);
-		if("add".equals(educationForm.getAction())){
+		if("save".equals(educationForm.getAction())){
+			if(educationForm.getEducationId() == null) {
+				addEducation(educationForm, basicInfo);
+			} else {
+				updateEducation(educationForm, basicInfo);
+			}
 			
-			addEducation(educationForm, basicInfo);
-		
-		} else if("save".equals(educationForm.getAction())){
-			
-			updateEducation(educationForm, basicInfo);
-			
-		}else if("delete".equals(educationForm.getAction())){
+		} else if("delete".equals(educationForm.getAction())){
 			
 			deleteEducation(educationForm, basicInfo);
 		
