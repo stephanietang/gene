@@ -5,6 +5,8 @@
 <spring:message code="button.save" var="saveButton"/>
 <spring:message code="button.cancel" var="cancelButton"/>
 <spring:message code="button.edit"  var="editButton"/>
+<spring:message code="button.delete"  var="deleteButton"/>
+<spring:message code="button.add"  var="addButton"/>
 <!-- Docs page layout -->
 <div class="container bs-docs-container">
 
@@ -62,24 +64,27 @@
 				<div class="col-md-2"></div>
 				<div class="col-md-8">
 					<div class="mr-info">
-						<span><ct:label list="${sexList}" key="${resumeForm.basicInfo.sex}"/></span>
-						<span>${resumeForm.basicInfo.bornYear}</span>
-						<span><ct:label list="${degreeList}" key="${resumeForm.basicInfo.degree}"/></span>
-						<span><ct:label list="${workExpList}" key="${resumeForm.basicInfo.experience}"/></span>
-						<span><ct:label list="${cityList}" key="${resumeForm.basicInfo.city}"/></span>
+						<span class="sex"><ct:label list="${sexList}" key="${resumeForm.basicInfo.sex}"/></span> · 
+						<span class="age">${resumeForm.ageStr}</span> · 
+						<span class="degree"><ct:label list="${degreeList}" key="${resumeForm.basicInfo.degree}"/></span> · 
+						<span class="workExp"><ct:label list="${workExpList}" key="${resumeForm.basicInfo.workExp}"/></span> · 
+						<span class="city"><ct:label list="${cityList}" key="${resumeForm.basicInfo.city}"/></span>
       				</div>
       				<div class="mr-info">
-						<span>${resumeForm.basicInfo.telNo}</span>
+						<span class="telNo" aria-hidden="true">${resumeForm.basicInfo.telNo}</span> · 
 						<span>${user.email}</span>
 					</div>
 				</div>
 				<div class="col-md-2 mr-button">
-					<input type="button" class="btn btn-default btn-xs edit" value="${editButton}">
+					<input type="button" class="btn btn-default btn-xs edit" value="${editButton}" data-sex="${resumeForm.basicInfo.sex}" 
+					data-birthyear="${resumeForm.basicInfo.birthYear}" data-degree="${resumeForm.basicInfo.degree}"
+					data-workexp="${resumeForm.basicInfo.workExp}" data-city="${resumeForm.basicInfo.city}"
+					data-telno="${resumeForm.basicInfo.telNo}">
 				</div>
 			</div>
 			
 			<div class="row">
-				<form id="resume-form" class="form-horizontal mr-edit-info hidden">
+				<form id="info-form" class="form-horizontal mr-edit-info hidden">
 					<div class="form-group">
 						<div class="col-md-6">
 							<label for="sex">Sex</label>
@@ -94,7 +99,7 @@
 						<div class="col-md-6">
 							<label for="birthYear">Birth Year</label>
 							<select class="form-control" id="birthYear">
-								<c:forEach var="l" items="${sexList}">
+								<c:forEach var="l" items="${birthYearList}">
 									<option value="${l.labelKey}">${l.labelName}</option>
 								</c:forEach>
 							</select>
@@ -151,74 +156,57 @@
 				</form>
 			</div>
 			
-			<div id="education-section" class="bs-docs-section" >
-				<h4 class="page-header"><a class="anchorjs-link" href="#education" ></a><spring:message code="label.resume.educationExperience" /></h4>
-				<form:form id="eduAddForm" class="form-horizontal hidden" commandName="educationForm">
-					<div class="form-group">
-						<label for="schoolName" class="col-sm-2 control-label"><spring:message code="label.resume.school" /></label>
-						<div class="col-sm-10"><input name="schoolName" class="form-control" placeholder="<spring:message code="label.resume.school.placeholder" />" /></div>
+			<div class="mr-educations-container">
+				<div class="row">
+					<div class="col-md-10">
+						<h4 class="page-header"><a class="anchorjs-link" href="#education" ></a><spring:message code="label.resume.educationExperience" /></h4>
 					</div>
-					<div class="form-group">
-						<label for="schoolName" class="col-sm-2 control-label"><spring:message code="label.resume.degree" /></label>
-						<div class="col-sm-10"><%-- <ct:options list="${degreeList}" name="degree" /> --%></div>
+					<div class="col-md-2 add-div">
+						<input type="button" class="btn btn-success btn-xs add" value="${addButton}"></input>
 					</div>
-					<div class="form-group">
-						<label class="col-sm-2 control-label"><spring:message code="label.resume.timeRange" /></label>
-						<div class="col-sm-10">
-							<div class="input-daterange">
-								<input type="text" name="startYear" class="input-small year-date" readonly />
-						    	<span class="add-on"><spring:message code="label.resume.timeRangeTo" /></span>
-						    	<input type="text" name="endYear" class="input-small year-date" readonly />
+				</div>
+				<div class="mr-educations">
+					<c:forEach var="education" items="${resumeForm.educationList}" varStatus="item">
+						<div class="mr-education-item">
+							<div class="row mr-blk-education" id="edu-${item.index}">
+								<div class="col-md-10">
+									<p><span class="glyphicon glyphicon-pushpin school-name" aria-hidden="true"> ${education.schoolName}</span></p>
+									<p><span class="department">${education.department}</span> · <span class="degree"><ct:label list="${degreeList}" key="${education.degree}"/></span> </p>
+									<p><span class="time-range">${education.startYear} - ${education.endYear}</span></p>
+								</div>
+								<div class="col-md-2" >
+									<input type="button" class="btn btn-default btn-xs edit" value="${editButton}" 
+									 data-eduid="${education.id}" data-schoolname="${education.schoolName}"
+									 data-degree="${education.degree}" data-department="${education.department}" 
+									 data-startyear="${education.startYear}" data-endyear="${education.endYear}" 
+									 data-refid="edu-${item.index}"/>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label for="department" class="col-sm-2 control-label"><spring:message code="label.resume.department" /></label>
-						<div class="col-sm-10"><input name="department" class="form-control" placeholder="<spring:message code="label.resume.department.placeholder" />" /></div>
-					</div>
-					<div class="form-group">
-						<spring:message code="button.add" var="addButton"/>
-						<div class="btn btn-primary edu-add" >${addButton}</div>
-					</div>
-				</form:form>
-				
-				<div id="education-items-container">
-				<c:forEach var="education" items="${resumeForm.educationList}" varStatus="item"> 
-					<div class="education-item" id="education-item_${item.index}">
-						<div class="bs-callout bs-callout-info text-container">
-							<h2>${education.schoolName}</h2>
-							<p>${education.department}</p>
-							<p><ct:label list="${degreeList}" key="${education.degree}"/></p>
-							<p>${education.startYear}~${education.endYear}</p>
-							<div class="btn btn-primary edu-edit" data-eduid="${education.id}" data-schoolname="${education.schoolName}" data-degree="${education.degree}" data-department="${education.department}" data-startyear="${education.startYear}" data-endyear="${education.endYear}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</div>
-							<div class="btn btn-primary edu-delete" data-toggle="modal" data-target="#modal" data-eduid="${education.id}">
-								<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
-							</div>
-						</div>
-					</div>
-				</c:forEach>
+					</c:forEach>
 				</div>
 				
-				<div id="edu-hidden-template" class="hidden">
-					<form class="form-horizontal">
-						<input type="hidden" id="eduId" name="eduId" value="" />
+				<div class="row">
+					<form id="education-template-form" class="form-horizontal hidden mr-edit-education">
+						<input type="hidden" class="edu-id" value="" />
+						<input type="hidden" class="edu-refer-id" value="" />
 						<div class="form-group">
-							<label for="schoolName" class="col-sm-2 control-label"><spring:message code="label.resume.school" /></label>
-							<div class="col-sm-10"><input name="schoolName" class="form-control" placeholder="<spring:message code="label.resume.school.placeholder" />" /></div>
+							<label for="schoolName" class="col-md-2 control-label"><spring:message code="label.resume.school" /></label>
+							<div class="col-md-10"><input name="schoolName" class="form-control" placeholder="<spring:message code="label.resume.school.placeholder" />" /></div>
 						</div>
 						<div class="form-group">
-							<label for="schoolName" class="col-sm-2 control-label"><spring:message code="label.resume.degree" /></label>
-							<div class="col-sm-10">
+							<label for="schoolName" class="col-md-2 control-label"><spring:message code="label.resume.degree" /></label>
+							<div class="col-md-10">
 								<select name="degree" class="form-control">
-									<c:forEach items="${degreeList}" var="d">
-										<option value="${d.labelKey}">${d.labelName}</option>
+									<c:forEach var="l" items="${degreeList}">
+										<option value="${l.labelKey}">${l.labelName}</option>
 									</c:forEach>
 								</select>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-2 control-label"><spring:message code="label.resume.timeRange" /></label>
-							<div class="col-sm-10">
+							<label class="col-md-2 control-label"><spring:message code="label.resume.timeRange" /></label>
+							<div class="col-md-10">
 								<div class="input-daterange">
 									<input type="text" name="startYear" class="input-small year-date" readonly />
 							    	<span class="add-on"><spring:message code="label.resume.timeRangeTo" /></span>
@@ -227,18 +215,22 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="department" class="col-sm-2 control-label"><spring:message code="label.resume.department" /></label>
-							<div class="col-sm-10"><input name="department" class="form-control" placeholder="<spring:message code="label.resume.department.placeholder" />" /></div>
+							<label for="department" class="col-md-2 control-label"><spring:message code="label.resume.department" /></label>
+							<div class="col-md-10"><input name="department" class="form-control" placeholder="<spring:message code="label.resume.department.placeholder" />" /></div>
 						</div>
 						<div class="form-group">
-							<div class="btn btn-primary edu-save" >${saveButton}</div>
-							<div class="btn btn-primary edu-edit-cancel" >${cancelButton}</div>
+							<div class="col-md-10">
+								<input type="button" class="btn btn-default btn-sm save" value="${saveButton}"></input>
+								<input type="button" class="btn btn-default btn-sm cancel" value="${cancelButton}"></input>
+							</div>
+							<div class="col-md-2">
+								<input type="button" class="btn btn-danger btn-sm delete" value="${deleteButton}"></input>
+							</div>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
-
 	</div>
 </div>
 
@@ -253,8 +245,8 @@
 			<div class="modal-body">
 				<input type="hidden" id="modal-item-id" >
 				<input type="hidden" id="modal-refer-item-id" >
-				<button type="button" class="btn btn-default delete-ok" data-dismiss="modal"><spring:message code="button.confirmDelete" /></button>
-				<button type="button" class="btn btn-default delete-cancel" data-dismiss="modal"><spring:message code="button.cancel" /></button>
+				<button type="button" class="btn btn-danger btn-sm delete-ok" data-dismiss="modal"><spring:message code="button.confirmDelete" /></button>
+				<button type="button" class="btn btn-default btn-sm delete-cancel" data-dismiss="modal"><spring:message code="button.cancel" /></button>
 			</div>
 			<div class="modal-footer">
 				
@@ -273,8 +265,8 @@
 	      	</div>
 			<div class="modal-body">
 				<div id="avatar-container"></div>
-				<button type="button" class="btn btn-default upload-ok" data-dismiss="modal"><spring:message code="button.upload" /></button>
-				<button type="button" class="btn btn-default upload-cancel" data-dismiss="modal"><spring:message code="button.cancel" /></button>
+				<button type="button" class="btn btn-default btn-sm upload-ok" data-dismiss="modal"><spring:message code="button.upload" /></button>
+				<button type="button" class="btn btn-default btn-sm upload-cancel" data-dismiss="modal"><spring:message code="button.cancel" /></button>
 			</div>
 			<div class="modal-footer">
 				

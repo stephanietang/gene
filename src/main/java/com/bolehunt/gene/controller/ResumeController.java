@@ -1,6 +1,5 @@
 package com.bolehunt.gene.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.bolehunt.gene.common.Label;
-import com.bolehunt.gene.common.LabelEnum;
 import com.bolehunt.gene.common.RestMessage;
 import com.bolehunt.gene.domain.BasicInfo;
 import com.bolehunt.gene.domain.Education;
@@ -55,35 +52,26 @@ public final class ResumeController extends BaseController {
 		EducationForm educationForm = new EducationForm();
 		model.put("educationForm", educationForm);
 		
-		model.put("countryList", getCountryList());
-		model.put("cityList", getCityList());
-		model.put("sexList", getSexList());
-		model.put("degreeList", getDegreeList());
-		model.put("workExpList", getWorkExpList());
+		model.put("countryList", resumeService.getCountryList());
+		model.put("cityList", resumeService.getCityList());
+		model.put("sexList", resumeService.getSexList());
+		model.put("degreeList", resumeService.getDegreeList());
+		model.put("workExpList", resumeService.getWorkExpList());
+		model.put("birthYearList", resumeService.getBirthYearList());
 		
 		return "resume/editResume";
 	}
 	
-	@RequestMapping(value = "/talent/profile", method = RequestMethod.POST)
-	public String editResumePageSubmit(@ModelAttribute("resumeForm") ResumeForm resumeForm) {
-		
-		resumeService.saveResume(resumeForm);
-		
-		log.info("Save resume successfully [{}]", getUser().getEmail());
-		
-		return "redirect:/talent/profile/edit";
-		
-	}
-	
-	
-	@RequestMapping(value = "/talent/profile/saveNameAction.json", method = RequestMethod.POST)
+	@RequestMapping(value = "/talent/profile/saveBasicInfoAction.json", method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
-	public RestMessage<BasicInfo> saveNameSubmit(@RequestBody ResumeForm resumeForm) {
+	public RestMessage<BasicInfo> saveBasicInfoSubmit(@RequestBody BasicInfo basicInfo) {
 		
-		BasicInfo basicInfo = resumeService.saveName(resumeForm);
+		BasicInfo rtn = resumeService.saveBasicInfo(basicInfo);
 		
-		return new RestMessage<BasicInfo>().getSuccessMessage(basicInfo);
+		log.info("Save basic info successfully [{}]", getUser().getEmail());
+		
+		return new RestMessage<BasicInfo>().getSuccessMessage(rtn);
 	}
 	
 	@RequestMapping(value = "/talent/profile/educationCrudAction.json", method = RequestMethod.POST)
@@ -111,53 +99,11 @@ public final class ResumeController extends BaseController {
 	@ResponseStatus(HttpStatus.OK)
 	public RestMessage<Map<String, List<Label>>> displayArray() {
 		Map<String, List<Label>> map = new HashMap<String, List<Label>>();
-		map.put("countrys", getDegreeList());
-		map.put("sexs", getSexList());
-		map.put("degrees", getDegreeList());
-		map.put("workExps", getWorkExpList());
+		map.put("degreeList", resumeService.getDegreeList());
+		map.put("sexList", resumeService.getSexList());
+		map.put("workExpList", resumeService.getWorkExpList());
+		map.put("cityList", resumeService.getCityList());
 		return new RestMessage<Map<String, List<Label>>>().getSuccessMessage(map);
 	}
 	
-	private List<Label> getCityList(){
-		List<Label> list = new ArrayList<Label>();
-		list.add(getLabel(LabelEnum.CITY_SHENZHEN));
-		list.add(getLabel(LabelEnum.CITY_BEIJING));
-		list.add(getLabel(LabelEnum.CITY_GUANGZHOU));
-		list.add(getLabel(LabelEnum.CITY_HANGZHOU));
-		list.add(getLabel(LabelEnum.CITY_HONGKONG));
-		list.add(getLabel(LabelEnum.CITY_TAIPEI));
-		return list;
-	}
-	
-	private List<Label> getCountryList(){
-		List<Label> list = new ArrayList<Label>();
-		list.add(getLabel(LabelEnum.COUNTRY_CHINA));
-		list.add(getLabel(LabelEnum.COUNTRY_US));
-		return list;
-	}
-	
-	private List<Label> getSexList(){
-		List<Label> list = new ArrayList<Label>();
-		list.add(getLabel(LabelEnum.SEX_MALE));
-		list.add(getLabel(LabelEnum.SEX_FEMALE));
-		return list;
-	}
-	
-	private List<Label> getDegreeList(){
-		List<Label> list = new ArrayList<Label>();
-		list.add(getLabel(LabelEnum.DEGREE_BACHELOR));
-		list.add(getLabel(LabelEnum.DEGREE_MASTER));
-		list.add(getLabel(LabelEnum.DEGREE_PHD));
-		list.add(getLabel(LabelEnum.DEGREE_ASSOCIATE));
-		return list;
-	}
-	
-	private List<Label> getWorkExpList(){
-		List<Label> list = new ArrayList<Label>();
-		list.add(getLabel(LabelEnum.WORK_EXP_GRADUATE));
-		list.add(getLabel(LabelEnum.WORK_EXP_ABOVE_ONE_YEAR));
-		list.add(getLabel(LabelEnum.WORK_EXP_ABOVE_THREE_YEAR));
-		list.add(getLabel(LabelEnum.WORK_EXP_ABOVE_FIVE_YEAR));
-		return list;
-	}
 }

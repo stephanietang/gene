@@ -570,63 +570,63 @@ public class BasicInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andExperienceIsNull() {
-            addCriterion("experience is null");
+        public Criteria andWorkExpIsNull() {
+            addCriterion("work_exp is null");
             return (Criteria) this;
         }
 
-        public Criteria andExperienceIsNotNull() {
-            addCriterion("experience is not null");
+        public Criteria andWorkExpIsNotNull() {
+            addCriterion("work_exp is not null");
             return (Criteria) this;
         }
 
-        public Criteria andExperienceEqualTo(Integer value) {
-            addCriterion("experience =", value, "experience");
+        public Criteria andWorkExpEqualTo(Integer value) {
+            addCriterion("work_exp =", value, "workExp");
             return (Criteria) this;
         }
 
-        public Criteria andExperienceNotEqualTo(Integer value) {
-            addCriterion("experience <>", value, "experience");
+        public Criteria andWorkExpNotEqualTo(Integer value) {
+            addCriterion("work_exp <>", value, "workExp");
             return (Criteria) this;
         }
 
-        public Criteria andExperienceGreaterThan(Integer value) {
-            addCriterion("experience >", value, "experience");
+        public Criteria andWorkExpGreaterThan(Integer value) {
+            addCriterion("work_exp >", value, "workExp");
             return (Criteria) this;
         }
 
-        public Criteria andExperienceGreaterThanOrEqualTo(Integer value) {
-            addCriterion("experience >=", value, "experience");
+        public Criteria andWorkExpGreaterThanOrEqualTo(Integer value) {
+            addCriterion("work_exp >=", value, "workExp");
             return (Criteria) this;
         }
 
-        public Criteria andExperienceLessThan(Integer value) {
-            addCriterion("experience <", value, "experience");
+        public Criteria andWorkExpLessThan(Integer value) {
+            addCriterion("work_exp <", value, "workExp");
             return (Criteria) this;
         }
 
-        public Criteria andExperienceLessThanOrEqualTo(Integer value) {
-            addCriterion("experience <=", value, "experience");
+        public Criteria andWorkExpLessThanOrEqualTo(Integer value) {
+            addCriterion("work_exp <=", value, "workExp");
             return (Criteria) this;
         }
 
-        public Criteria andExperienceIn(List<Integer> values) {
-            addCriterion("experience in", values, "experience");
+        public Criteria andWorkExpIn(List<Integer> values) {
+            addCriterion("work_exp in", values, "workExp");
             return (Criteria) this;
         }
 
-        public Criteria andExperienceNotIn(List<Integer> values) {
-            addCriterion("experience not in", values, "experience");
+        public Criteria andWorkExpNotIn(List<Integer> values) {
+            addCriterion("work_exp not in", values, "workExp");
             return (Criteria) this;
         }
 
-        public Criteria andExperienceBetween(Integer value1, Integer value2) {
-            addCriterion("experience between", value1, value2, "experience");
+        public Criteria andWorkExpBetween(Integer value1, Integer value2) {
+            addCriterion("work_exp between", value1, value2, "workExp");
             return (Criteria) this;
         }
 
-        public Criteria andExperienceNotBetween(Integer value1, Integer value2) {
-            addCriterion("experience not between", value1, value2, "experience");
+        public Criteria andWorkExpNotBetween(Integer value1, Integer value2) {
+            addCriterion("work_exp not between", value1, value2, "workExp");
             return (Criteria) this;
         }
 
@@ -750,63 +750,63 @@ public class BasicInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andBornYearIsNull() {
-            addCriterion("born_year is null");
+        public Criteria andBirthYearIsNull() {
+            addCriterion("birth_year is null");
             return (Criteria) this;
         }
 
-        public Criteria andBornYearIsNotNull() {
-            addCriterion("born_year is not null");
+        public Criteria andBirthYearIsNotNull() {
+            addCriterion("birth_year is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBornYearEqualTo(Integer value) {
-            addCriterion("born_year =", value, "bornYear");
+        public Criteria andBirthYearEqualTo(Integer value) {
+            addCriterion("birth_year =", value, "birthYear");
             return (Criteria) this;
         }
 
-        public Criteria andBornYearNotEqualTo(Integer value) {
-            addCriterion("born_year <>", value, "bornYear");
+        public Criteria andBirthYearNotEqualTo(Integer value) {
+            addCriterion("birth_year <>", value, "birthYear");
             return (Criteria) this;
         }
 
-        public Criteria andBornYearGreaterThan(Integer value) {
-            addCriterion("born_year >", value, "bornYear");
+        public Criteria andBirthYearGreaterThan(Integer value) {
+            addCriterion("birth_year >", value, "birthYear");
             return (Criteria) this;
         }
 
-        public Criteria andBornYearGreaterThanOrEqualTo(Integer value) {
-            addCriterion("born_year >=", value, "bornYear");
+        public Criteria andBirthYearGreaterThanOrEqualTo(Integer value) {
+            addCriterion("birth_year >=", value, "birthYear");
             return (Criteria) this;
         }
 
-        public Criteria andBornYearLessThan(Integer value) {
-            addCriterion("born_year <", value, "bornYear");
+        public Criteria andBirthYearLessThan(Integer value) {
+            addCriterion("birth_year <", value, "birthYear");
             return (Criteria) this;
         }
 
-        public Criteria andBornYearLessThanOrEqualTo(Integer value) {
-            addCriterion("born_year <=", value, "bornYear");
+        public Criteria andBirthYearLessThanOrEqualTo(Integer value) {
+            addCriterion("birth_year <=", value, "birthYear");
             return (Criteria) this;
         }
 
-        public Criteria andBornYearIn(List<Integer> values) {
-            addCriterion("born_year in", values, "bornYear");
+        public Criteria andBirthYearIn(List<Integer> values) {
+            addCriterion("birth_year in", values, "birthYear");
             return (Criteria) this;
         }
 
-        public Criteria andBornYearNotIn(List<Integer> values) {
-            addCriterion("born_year not in", values, "bornYear");
+        public Criteria andBirthYearNotIn(List<Integer> values) {
+            addCriterion("birth_year not in", values, "birthYear");
             return (Criteria) this;
         }
 
-        public Criteria andBornYearBetween(Integer value1, Integer value2) {
-            addCriterion("born_year between", value1, value2, "bornYear");
+        public Criteria andBirthYearBetween(Integer value1, Integer value2) {
+            addCriterion("birth_year between", value1, value2, "birthYear");
             return (Criteria) this;
         }
 
-        public Criteria andBornYearNotBetween(Integer value1, Integer value2) {
-            addCriterion("born_year not between", value1, value2, "bornYear");
+        public Criteria andBirthYearNotBetween(Integer value1, Integer value2) {
+            addCriterion("birth_year not between", value1, value2, "birthYear");
             return (Criteria) this;
         }
     }

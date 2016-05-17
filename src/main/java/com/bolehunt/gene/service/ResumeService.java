@@ -2,6 +2,7 @@ package com.bolehunt.gene.service;
 
 import java.util.List;
 
+import com.bolehunt.gene.common.Label;
 import com.bolehunt.gene.domain.Avatar;
 import com.bolehunt.gene.domain.BasicInfo;
 import com.bolehunt.gene.domain.Education;
@@ -13,9 +14,7 @@ public interface ResumeService {
 	
 	public ResumeForm retrieveResume(User user);
 	
-	public BasicInfo saveName(ResumeForm resumeForm);
-	
-	public void saveResume(ResumeForm resumeForm);
+	public BasicInfo saveBasicInfo(BasicInfo basicInfo);
 	
 	public Avatar retrieveAvatar(User user);
 	
@@ -26,5 +25,18 @@ public interface ResumeService {
 	public void validateEducationForm(EducationForm educationForm);
 	
 	public void proceedEducationForm(EducationForm educationForm, User user);
+	
+	public List<Label> getCityList();
+	
+	public List<Label> getCountryList();
+	
+	public List<Label> getSexList();
+	
+	public List<Label> getDegreeList();
+	
+	public List<Label> getWorkExpList();
+	
+	public List<Label> getBirthYearList();
+	
 
 }

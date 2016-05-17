@@ -1,11 +1,18 @@
 package com.bolehunt.gene.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.bolehunt.gene.common.ErrorStatus;
+import com.bolehunt.gene.common.Label;
+import com.bolehunt.gene.common.LabelEnum;
 import com.bolehunt.gene.domain.Avatar;
 import com.bolehunt.gene.domain.AvatarExample;
 import com.bolehunt.gene.domain.BasicInfo;
@@ -19,10 +26,14 @@ import com.bolehunt.gene.form.ResumeForm;
 import com.bolehunt.gene.persistence.AvatarMapper;
 import com.bolehunt.gene.persistence.BasicInfoMapper;
 import com.bolehunt.gene.persistence.EducationMapper;
+import com.bolehunt.gene.service.PropertyService;
 import com.bolehunt.gene.service.ResumeService;
 
 @Service
 public final class ResumeServiceImpl implements ResumeService {
+	
+	@Autowired
+	private MessageSource messageSource;
 	
 	@Autowired
 	private AvatarMapper avatarMapper;
@@ -32,6 +43,9 @@ public final class ResumeServiceImpl implements ResumeService {
 	
 	@Autowired
 	private EducationMapper educationMapper;
+	
+	@Autowired
+	private PropertyService propertyService;
 	
 	@Override
 	public ResumeForm retrieveResume(User user){
@@ -49,11 +63,28 @@ public final class ResumeServiceImpl implements ResumeService {
 			if(educationList != null) {
 				form.setEducationList(educationList);
 			}
-			
+			form.setAgeStr(this.getAgeStr(basicInfo.getBirthYear()));
 		}
 		
 		return form;
 	}
+	
+	private String getAgeStr(int birthYear) {
+		DateTime dt = new DateTime();
+		int age = dt.getYear() - birthYear;
+		
+		return age + getMessage("label.resume.yrOld");
+	}
+	
+	@Override
+	public BasicInfo saveBasicInfo(BasicInfo basicInfo){
+		if(basicInfo.getId() != null){
+			basicInfoMapper.updateByPrimaryKeySelective(basicInfo);
+		}
+		
+		return basicInfoMapper.selectByPrimaryKey(basicInfo.getId());
+	}
+	
 	
 	@Override
 	public BasicInfo retrieveBasicInfo(User user) {
@@ -91,27 +122,6 @@ public final class ResumeServiceImpl implements ResumeService {
 		eduEx.createCriteria().andBasicInfoIdEqualTo(basicInfoId);
 		eduEx.setOrderByClause("start_year desc, end_year desc");
 		return educationMapper.selectByExample(eduEx);
-	}
-	
-	@Override
-	public BasicInfo saveName(ResumeForm resumeForm){
-		BasicInfo basicInfo = basicInfoMapper.selectByPrimaryKey(resumeForm.getBasicInfoId());
-		if(basicInfo != null){
-			basicInfo.setName(resumeForm.getName());
-			basicInfoMapper.updateByPrimaryKeySelective(basicInfo);
-		}
-		return basicInfo;
-	}
-	
-	@Override
-	public void saveResume(ResumeForm resumeForm){
-		BasicInfo basicInfo = resumeForm.getBasicInfo();
-		if(basicInfo.getId() != null){
-			basicInfoMapper.updateByPrimaryKeySelective(basicInfo);
-		} else {
-			basicInfo.setUserId(resumeForm.getUserId());
-			basicInfoMapper.insertSelective(basicInfo);
-		}
 	}
 	
 	@Override
@@ -181,6 +191,79 @@ public final class ResumeServiceImpl implements ResumeService {
 		
 		educationMapper.deleteByPrimaryKey(educationForm.getEducationId());
 		
+	}
+	
+	
+
+	@Override
+	public List<Label> getCityList(){
+		List<Label> list = new ArrayList<Label>();
+		list.add(getLabel(LabelEnum.CITY_SHENZHEN));
+		list.add(getLabel(LabelEnum.CITY_BEIJING));
+		list.add(getLabel(LabelEnum.CITY_GUANGZHOU));
+		list.add(getLabel(LabelEnum.CITY_HANGZHOU));
+		list.add(getLabel(LabelEnum.CITY_HONGKONG));
+		list.add(getLabel(LabelEnum.CITY_TAIPEI));
+		return list;
+	}
+	
+	@Override
+	public List<Label> getCountryList(){
+		List<Label> list = new ArrayList<Label>();
+		list.add(getLabel(LabelEnum.COUNTRY_CHINA));
+		list.add(getLabel(LabelEnum.COUNTRY_US));
+		return list;
+	}
+	
+	@Override
+	public List<Label> getSexList(){
+		List<Label> list = new ArrayList<Label>();
+		list.add(getLabel(LabelEnum.SEX_MALE));
+		list.add(getLabel(LabelEnum.SEX_FEMALE));
+		return list;
+	}
+	
+	@Override
+	public List<Label> getDegreeList(){
+		List<Label> list = new ArrayList<Label>();
+		list.add(getLabel(LabelEnum.DEGREE_BACHELOR));
+		list.add(getLabel(LabelEnum.DEGREE_MASTER));
+		list.add(getLabel(LabelEnum.DEGREE_PHD));
+		list.add(getLabel(LabelEnum.DEGREE_ASSOCIATE));
+		return list;
+	}
+	
+	@Override
+	public List<Label> getWorkExpList(){
+		List<Label> list = new ArrayList<Label>();
+		list.add(getLabel(LabelEnum.WORK_EXP_GRADUATE));
+		list.add(getLabel(LabelEnum.WORK_EXP_ABOVE_ONE_YEAR));
+		list.add(getLabel(LabelEnum.WORK_EXP_ABOVE_THREE_YEAR));
+		list.add(getLabel(LabelEnum.WORK_EXP_ABOVE_FIVE_YEAR));
+		return list;
+	}
+	
+	@Override
+	public List<Label> getBirthYearList() {
+		List<Label> list = new ArrayList<Label>();
+		int lowerYear = propertyService.getLowerBirthYear();
+		DateTime dt = new DateTime();
+		int currentYear = dt.getYear();
+		for (int i = lowerYear ; i < currentYear; i ++) {
+			list.add(new Label(i, String.valueOf(i)));
+		}
+		
+		return list;
+	}
+	
+	protected String getMessage(String key) {
+        Locale locale = LocaleContextHolder.getLocale();                        
+        return messageSource.getMessage(key, new Object[0], locale);
+    }
+	
+	protected Label getLabel(LabelEnum labelEnum) {
+		Label label = new Label(labelEnum.getValue(), getMessage(labelEnum.getKey()));
+		return label;
 	}
 
 }

@@ -76,3 +76,11 @@
     margin-right: 6px;
     height: 24px;
 }
+
+.mr-educations-container .add-div {
+	line-height: 70px
+}
+
+.mr-educations-container .add {
+	vertical-align: bottom;
+}

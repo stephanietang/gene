@@ -13,8 +13,7 @@ public class ResumeForm {
 	private List<Education> educationList;
 	private Avatar avatar;
 	
-	private Integer basicInfoId;
-	private String name;
+	private String ageStr;
 
 	public BasicInfo getBasicInfo() {
 		return basicInfo;
@@ -48,20 +47,13 @@ public class ResumeForm {
 		this.avatar = avatar;
 	}
 
-	public String getName() {
-		return name;
+	public String getAgeStr() {
+		return ageStr;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setAgeStr(String ageStr) {
+		this.ageStr = ageStr;
 	}
-
-	public Integer getBasicInfoId() {
-		return basicInfoId;
-	}
-
-	public void setBasicInfoId(Integer basicInfoId) {
-		this.basicInfoId = basicInfoId;
-	}
+	
 	
 }
