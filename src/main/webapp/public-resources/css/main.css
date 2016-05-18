@@ -84,3 +84,7 @@
 .mr-educations-container .add {
 	vertical-align: bottom;
 }
+
+.input-daterange .date-readonly {
+	background-color: #FFF;
+}

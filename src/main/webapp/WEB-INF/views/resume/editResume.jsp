@@ -187,16 +187,16 @@
 				</div>
 				
 				<div class="row">
-					<form id="education-template-form" class="form-horizontal hidden mr-edit-education">
+					<form id="education-form-template" class="form-horizontal hidden mr-edit-education">
 						<input type="hidden" class="edu-id" value="" />
 						<input type="hidden" class="edu-ref-id" value="" />
 						<div class="form-group">
 							<label for="schoolName" class="col-md-2 control-label"><spring:message code="label.resume.school" /></label>
-							<div class="col-md-10"><input name="schoolName" class="form-control" autocomplete="off" placeholder="<spring:message code="label.resume.school.placeholder" />" /></div>
+							<div class="col-md-8"><input name="schoolName" class="form-control" autocomplete="off" placeholder="<spring:message code="label.resume.school.placeholder" />" /></div>
 						</div>
 						<div class="form-group">
 							<label for="degree" class="col-md-2 control-label"><spring:message code="label.resume.degree" /></label>
-							<div class="col-md-10">
+							<div class="col-md-8">
 								<select name="degree" class="form-control">
 									<c:forEach var="l" items="${degreeList}">
 										<option value="${l.labelKey}">${l.labelName}</option>
@@ -206,20 +206,20 @@
 						</div>
 						<div class="form-group">
 							<label class="col-md-2 control-label"><spring:message code="label.resume.timeRange" /></label>
-							<div class="col-md-10">
-								<div class="input-daterange">
-									<input type="text" name="startYear" class="input-small year-date" readonly />
-							    	<span class="add-on"><spring:message code="label.resume.timeRangeTo" /></span>
-							    	<input type="text" name="endYear" class="input-small year-date" readonly />
+							<div class="col-md-8">
+								<div class="input-group input-daterange">
+								    <input type="text" name="startYear" class="form-control date-readonly" readonly />
+								    <span class="input-group-addon"><spring:message code="label.resume.timeRangeTo" /></span>
+								    <input type="text" name="endYear" class="form-control date-readonly" readonly />
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="department" class="col-md-2 control-label"><spring:message code="label.resume.department" /></label>
-							<div class="col-md-10"><input name="department" class="form-control" autocomplete="off" placeholder="<spring:message code="label.resume.department.placeholder" />" /></div>
+							<div class="col-md-8"><input name="department" class="form-control" autocomplete="off" placeholder="<spring:message code="label.resume.department.placeholder" />" /></div>
 						</div>
 						<div class="form-group">
-							<div class="col-md-10">
+							<div class="col-md-8">
 								<input type="button" class="btn btn-default btn-sm save" value="${saveButton}"></input>
 								<input type="button" class="btn btn-default btn-sm cancel" value="${cancelButton}"></input>
 							</div>

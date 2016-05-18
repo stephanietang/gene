@@ -170,32 +170,38 @@ $(function() {
     });
     
     /**Update education**/
-	$("#education-form").validate({
-		rules: {
-			schoolName: {
-				required: true
-			},
-			degree : {
-				required: true
-			},
-			department: {
-				required: true
-			},
-			startYear: {
-				required: true,
-				digits: true
-			},
-			endYear: {
-				required: true,
-				digits: true
+	function validateEducationForm(oForm) {
+		$(oForm).validate({
+			onfocusin: function(element) {
+		        $(element).valid();
+		    },
+			rules: {
+				department: {
+					required: true
+				},
+				schoolName: {
+					required: true
+				}
 			}
-		}
+		});
+	}
+	
+	$(document).on("focus",".input-daterange input", function(){
+	    $(this).datepicker({
+	    	format: " yyyy",
+	    	viewMode: "years",
+	    	minViewMode: "years",
+	    	startDate: '-46y', // from 1970
+	        endDate: '+0y',
+	        autoclose: true
+	    });
 	});
 	
 	$(document).on("click",".mr-educations-container .add", function(){
 		$(this).parents(".mr-blk-education").hide();
-		var oForm = $("#education-template-form").clone().attr("id", "education-form").removeClass("hidden");
+		var oForm = $("#education-form-template").clone().attr("id", "education-form").removeClass("hidden");
 		$(".delete", oForm).hide();
+		validateEducationForm(oForm);
 		$(".mr-educations").prepend(oForm);
 		
 		$(".mr-educations-container .add").attr("disabled",true);
@@ -205,7 +211,8 @@ $(function() {
 	
 	$(document).on("click",".mr-blk-education .edit", function(){
 		$(this).parents(".mr-blk-education").hide();
-		var oForm = $("#education-template-form").clone().attr("id", "education-form").removeClass("hidden");
+		var oForm = $("#education-form-template").clone().attr("id", "education-form").removeClass("hidden");
+		validateEducationForm(oForm);
 		$(this).parents(".mr-education-item").append(oForm);
 		
 		$(".edu-id",oForm).val($(this).data("eduid"));
@@ -255,6 +262,7 @@ $(function() {
 				if(result.status == 'success'){
 					var eduItems = result.data;
 					initEducationList(eduItems);
+					$(".mr-educations-container .add").attr("disabled",false);
 				}else if(result.status == 'error'){
 					displayErrorList(result);
 				}
