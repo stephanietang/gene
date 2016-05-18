@@ -20,12 +20,16 @@ import com.bolehunt.gene.domain.BasicInfoExample;
 import com.bolehunt.gene.domain.Education;
 import com.bolehunt.gene.domain.EducationExample;
 import com.bolehunt.gene.domain.User;
+import com.bolehunt.gene.domain.WorkExperience;
+import com.bolehunt.gene.domain.WorkExperienceExample;
 import com.bolehunt.gene.exception.ApplicationException;
 import com.bolehunt.gene.form.EducationForm;
 import com.bolehunt.gene.form.ResumeForm;
+import com.bolehunt.gene.form.WorkExperienceForm;
 import com.bolehunt.gene.persistence.AvatarMapper;
 import com.bolehunt.gene.persistence.BasicInfoMapper;
 import com.bolehunt.gene.persistence.EducationMapper;
+import com.bolehunt.gene.persistence.WorkExperienceMapper;
 import com.bolehunt.gene.service.PropertyService;
 import com.bolehunt.gene.service.ResumeService;
 
@@ -45,6 +49,9 @@ public final class ResumeServiceImpl implements ResumeService {
 	private EducationMapper educationMapper;
 	
 	@Autowired
+	private WorkExperienceMapper workExperienceMapper;
+	
+	@Autowired
 	private PropertyService propertyService;
 	
 	@Override
@@ -62,6 +69,11 @@ public final class ResumeServiceImpl implements ResumeService {
 			List<Education> educationList = retrieveEducationList(basicInfo.getId());
 			if(educationList != null) {
 				form.setEducationList(educationList);
+			}
+			
+			List<WorkExperience> workExpList = retrieveWorkExpList(basicInfo.getId());
+			if(workExpList != null) {
+				form.setWorkExpList(workExpList);
 			}
 			form.setAgeStr(this.getAgeStr(basicInfo.getBirthYear()));
 		}
@@ -192,7 +204,75 @@ public final class ResumeServiceImpl implements ResumeService {
 		
 	}
 	
+	@Override
+	public List<WorkExperience> retrieveWorkExpList(int basicInfoId) {
+		
+		WorkExperienceExample workExpEx = new WorkExperienceExample();
+		workExpEx.createCriteria().andBasicInfoIdEqualTo(basicInfoId);
+		workExpEx.setOrderByClause("start_year desc, end_year desc");
+		return workExperienceMapper.selectByExample(workExpEx);
+	}
 	
+	@Override
+	public void proceedWorkExperienceForm(WorkExperienceForm workExperienceForm, User user) {
+		BasicInfo basicInfo = retrieveBasicInfo(user);
+		if("save".equals(workExperienceForm.getAction())){
+			if(workExperienceForm.getWorkExpId() == null) {
+				addWorkExperience(workExperienceForm, basicInfo);
+			} else {
+				updateWorkExperience(workExperienceForm, basicInfo);
+			}
+			
+		} else if("delete".equals(workExperienceForm.getAction())){
+			
+			deleteWorkExperience(workExperienceForm, basicInfo);
+		
+		}
+	}
+	
+	private void addWorkExperience(WorkExperienceForm workExperienceForm, BasicInfo basicInfo){
+		
+		WorkExperience workExp = new WorkExperience();
+		workExp.setBasicInfoId(basicInfo.getId());
+		workExp.setCompanyName(workExperienceForm.getCompanyName());
+		workExp.setPositionName(workExperienceForm.getPositionName());
+		workExp.setStartYear(workExperienceForm.getStartYear());
+		workExp.setEndYear(workExperienceForm.getEndYear());
+		workExp.setPositionDesc(workExperienceForm.getPositionDesc());
+		workExperienceMapper.insert(workExp);
+		
+	}
+	
+	private void updateWorkExperience(WorkExperienceForm workExperienceForm, BasicInfo basicInfo){
+		WorkExperience workExp = workExperienceMapper.selectByPrimaryKey(workExperienceForm.getWorkExpId());
+		
+		if(workExp == null){
+			throw new ApplicationException(ErrorStatus.UNKNOWN_EXCEPTION);
+		}else if(! workExp.getBasicInfoId().equals(basicInfo.getId())){
+			throw new ApplicationException(ErrorStatus.USER_FORBIDDEN_ACCESS);
+		}
+		
+		workExp.setBasicInfoId(basicInfo.getId());
+		workExp.setCompanyName(workExperienceForm.getCompanyName());
+		workExp.setPositionName(workExperienceForm.getPositionName());
+		workExp.setStartYear(workExperienceForm.getStartYear());
+		workExp.setEndYear(workExperienceForm.getEndYear());
+		workExp.setPositionDesc(workExperienceForm.getPositionDesc());
+		workExperienceMapper.updateByPrimaryKeySelective(workExp);
+	}
+	
+	private void deleteWorkExperience(WorkExperienceForm workExperienceForm, BasicInfo basicInfo){
+		WorkExperience workExp = workExperienceMapper.selectByPrimaryKey(workExperienceForm.getWorkExpId());
+		
+		if(workExp == null){
+			throw new ApplicationException(ErrorStatus.UNKNOWN_EXCEPTION);
+		}else if(! workExp.getBasicInfoId().equals(basicInfo.getId())){
+			throw new ApplicationException(ErrorStatus.USER_FORBIDDEN_ACCESS);
+		}
+		
+		workExperienceMapper.deleteByPrimaryKey(workExperienceForm.getWorkExpId());
+		
+	}
 
 	@Override
 	public List<Label> getCityList(){

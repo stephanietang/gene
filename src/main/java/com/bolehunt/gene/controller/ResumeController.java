@@ -23,8 +23,10 @@ import com.bolehunt.gene.common.RestMessage;
 import com.bolehunt.gene.domain.BasicInfo;
 import com.bolehunt.gene.domain.Education;
 import com.bolehunt.gene.domain.User;
+import com.bolehunt.gene.domain.WorkExperience;
 import com.bolehunt.gene.form.EducationForm;
 import com.bolehunt.gene.form.ResumeForm;
+import com.bolehunt.gene.form.WorkExperienceForm;
 import com.bolehunt.gene.service.ResumeService;
 
 @Controller
@@ -92,6 +94,24 @@ public final class ResumeController extends BaseController {
 		List<Education> educationList = resumeService.retrieveEducationList(basicInfo.getId());
 		
 		return new RestMessage<List<Education>>().getSuccessMessage(educationList);
+	}
+	
+	@RequestMapping(value = "/talent/profile/workExpCrudAction.json", method = RequestMethod.POST)
+	@ResponseBody
+	@ResponseStatus(HttpStatus.OK)
+	public RestMessage<List<WorkExperience>> workExpCrudAction(@RequestBody WorkExperienceForm workExperienceForm) {
+		
+		log.info("Start to proceed education form user = {}, action = {} ", getUser().getEmail(), workExperienceForm.getAction());
+		
+		resumeService.proceedWorkExperienceForm(workExperienceForm, getUser());
+		
+		log.info("Proceed work experience form successfully, user = {}", getUser().getEmail());
+		
+		BasicInfo basicInfo = resumeService.retrieveBasicInfo(getUser());
+		
+		List<WorkExperience> workExpList = resumeService.retrieveWorkExpList(basicInfo.getId());
+		
+		return new RestMessage<List<WorkExperience>>().getSuccessMessage(workExpList);
 	}
 	
 	@RequestMapping(value = "/talent/profile/displayArray.json", method = RequestMethod.GET)

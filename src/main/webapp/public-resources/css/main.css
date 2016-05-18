@@ -77,6 +77,14 @@
     height: 24px;
 }
 
+.mr-works-container .add-div {
+	line-height: 70px
+}
+
+.mr-works-container .add {
+	vertical-align: bottom;
+}
+
 .mr-educations-container .add-div {
 	line-height: 70px
 }

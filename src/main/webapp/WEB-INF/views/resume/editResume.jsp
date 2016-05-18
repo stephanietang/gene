@@ -156,6 +156,76 @@
 				</form>
 			</div>
 			
+			<div class="mr-works-container">
+				<div class="row">
+					<div class="col-md-10">
+						<h4 class="page-header"><a class="anchorjs-link" href="#work" ></a><spring:message code="label.resume.workExperience" /></h4>
+					</div>
+					<div class="col-md-2 add-div">
+						<input type="button" class="btn btn-success btn-xs add" value="${addButton}"></input>
+					</div>
+				</div>
+				<div class="mr-works">
+					<c:forEach var="work" items="${resumeForm.workExpList}" varStatus="item">
+						<div class="mr-work-item" id="work-${item.index}">
+							<div class="row mr-blk-work">
+								<div class="col-md-10">
+									<p><span class="glyphicon glyphicon-pushpin company-name" aria-hidden="true"> ${work.companyName}</span></p>
+									<p><span class="time-range">${work.startYear} - ${work.endYear}</span></p>
+									<p><span class="position-name">${work.positionName}</span></p>
+									<p><span class="position-desc">${work.positionDesc}</span></p>
+								</div>
+								<div class="col-md-2" >
+									<input type="button" class="btn btn-default btn-xs edit" value="${editButton}" 
+									 data-workexpid="${work.id}" data-companyname="${work.companyName}"
+									 data-positionname="${work.positionName}" data-positiondesc="${work.positionDesc}" 
+									 data-startyear="${work.startYear}" data-endyear="${work.endYear}" 
+									 data-refid="work-${item.index}"/>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
+				</div>
+				
+				<div class="row">
+					<form id="work-form-template" class="form-horizontal hidden mr-edit-work">
+						<input type="hidden" class="work-id" value="" />
+						<input type="hidden" class="work-ref-id" value="" />
+						<div class="form-group">
+							<label for="companyName" class="col-md-2 control-label"><spring:message code="label.resume.companyName" /></label>
+							<div class="col-md-8"><input name="companyName" class="form-control" autocomplete="off" /></div>
+						</div>
+						<div class="form-group">
+							<label for="positionName" class="col-md-2 control-label"><spring:message code="label.resume.positionName" /></label>
+							<div class="col-md-8"><input name="positionName" class="form-control" autocomplete="off" /></div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label"><spring:message code="label.resume.timeRange" /></label>
+							<div class="col-md-8">
+								<div class="input-group input-daterange">
+								    <input type="text" name="startYear" class="form-control date-readonly" readonly />
+								    <span class="input-group-addon"><spring:message code="label.resume.timeRangeTo" /></span>
+								    <input type="text" name="endYear" class="form-control date-readonly" readonly />
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="positionDesc" class="col-md-2 control-label"><spring:message code="label.resume.positionDesc" /></label>
+							<div class="col-md-8"><input name="positionDesc" class="form-control" autocomplete="off" /></div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-8">
+								<input type="button" class="btn btn-default btn-sm save" value="${saveButton}"></input>
+								<input type="button" class="btn btn-default btn-sm cancel" value="${cancelButton}"></input>
+							</div>
+							<div class="col-md-2">
+								<input type="button" class="btn btn-danger btn-sm delete" value="${deleteButton}"></input>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			
 			<div class="mr-educations-container">
 				<div class="row">
 					<div class="col-md-10">
@@ -243,9 +313,7 @@
 				<h4 class="modal-title"><spring:message code="title.resume.confirmDelete" /></h4>
 	      	</div>
 			<div class="modal-body">
-				<input type="hidden" id="modal-item-id" >
-				<input type="hidden" id="modal-ref-item-id" >
-				<button type="button" class="btn btn-danger btn-sm delete-ok" data-dismiss="modal"><spring:message code="button.confirmDelete" /></button>
+				<button type="button" class="btn btn-danger btn-sm delete-ok" data-dismiss="modal" data-mod="" data-refid="" data-itemid=""><spring:message code="button.confirmDelete" /></button>
 				<button type="button" class="btn btn-default btn-sm delete-cancel" data-dismiss="modal"><spring:message code="button.cancel" /></button>
 			</div>
 			<div class="modal-footer">

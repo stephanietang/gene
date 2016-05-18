@@ -5,12 +5,14 @@ import java.util.List;
 import com.bolehunt.gene.domain.Avatar;
 import com.bolehunt.gene.domain.BasicInfo;
 import com.bolehunt.gene.domain.Education;
+import com.bolehunt.gene.domain.WorkExperience;
 
 public class ResumeForm {
 
 	private Integer userId;
 	private BasicInfo basicInfo;
 	private List<Education> educationList;
+	private List<WorkExperience> workExpList;
 	private Avatar avatar;
 	
 	private String ageStr;
@@ -53,6 +55,14 @@ public class ResumeForm {
 
 	public void setAgeStr(String ageStr) {
 		this.ageStr = ageStr;
+	}
+
+	public List<WorkExperience> getWorkExpList() {
+		return workExpList;
+	}
+
+	public void setWorkExpList(List<WorkExperience> workExpList) {
+		this.workExpList = workExpList;
 	}
 	
 	

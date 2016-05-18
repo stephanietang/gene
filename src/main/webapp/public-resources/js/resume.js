@@ -169,6 +169,147 @@ $(function() {
 		});
     });
     
+    /**Update work experience **/
+    function validateWorkExpForm(oForm) {
+		$(oForm).validate({
+			onfocusin: function(element) {
+		        $(element).valid();
+		    },
+			rules: {
+				companyName: {
+					required: true
+				},
+				positionName: {
+					required: true
+				},
+				positionDesc: {
+					required: true
+				}
+			}
+		});
+	}
+    $(document).on("click",".mr-works-container .add", function(){
+		$(this).parents(".mr-blk-work").hide();
+		var oForm = $("#work-form-template").clone().attr("id", "work-form").removeClass("hidden");
+		$(".delete", oForm).hide();
+		validateWorkExpForm(oForm);
+		$(".mr-works").prepend(oForm);
+		
+		$(".mr-works-container .add").attr("disabled",true);
+		$(".mr-works-container .edit").attr("disabled",true);
+		
+	});
+    
+    $(document).on("click",".mr-blk-work .edit", function(){
+		$(this).parents(".mr-blk-work").hide();
+		var oForm = $("#work-form-template").clone().attr("id", "work-form").removeClass("hidden");
+		validateWorkExpForm(oForm);
+		$(this).parents(".mr-work-item").append(oForm);
+		
+		$(".work-id",oForm).val($(this).data("workexpid"));
+		$(".work-ref-id",oForm).val($(this).data("refid"));
+		$('input[name="companyName"]',oForm).val($(this).data("companyname"));
+		$('input[name="positionName"]',oForm).val($(this).data("positionname"));
+		$('input[name="startYear"]',oForm).val($(this).data("startyear"));
+		$('input[name="endYear"]',oForm).val($(this).data("endyear"));
+		$('input[name="positionDesc"]',oForm).val($(this).data("positiondesc"));
+		
+		$(".mr-works-container .add").attr("disabled",true);
+		$(".mr-works-container .edit").attr("disabled",true);
+		
+	});
+    
+    $(document).on("click", "#work-form .save", function(){
+		
+		var oForm = $("#work-form");
+		
+		var valid = $(oForm).valid();
+		
+		if(! valid){
+			return ;
+		}
+		
+		csrfAjaxSetup();
+		
+		var json;
+		
+		json = JSON.stringify({
+			action : "save", 
+			workExpId : $(".work-id",oForm).val(),
+			companyName : $('input[name="companyName"]',oForm).val(),
+			positionName : $('input[name="positionName"]',oForm).val(),
+			startYear : $('input[name="startYear"]',oForm).val(),
+			endYear : $('input[name="endYear"]',oForm).val(),
+			positionDesc : $('input[name="positionDesc"]',oForm).val()
+		});
+		
+		$.ajax({
+			url: ctx + "/talent/profile/workExpCrudAction.json",
+			type: "POST",
+			contentType: "application/json; charset=utf-8",
+			dataType : "json",
+			data: json,
+			success:function(result){
+				if(result.status == 'success'){
+					var workExpList = result.data;
+					initWorkExpList(workExpList);
+					$(".mr-works-container .add").attr("disabled",false);
+				}else if(result.status == 'error'){
+					displayErrorList(result);
+				}
+			},
+			error:function (){
+				alert("Error!");
+			}
+		});
+		
+	});
+	
+	$(document).on("click","#work-form .cancel", function(){
+		$("#work-form").prev().show();
+		$("#work-form").remove();
+		
+		$(".mr-works-container .add").attr("disabled",false);
+		$(".mr-works-container .edit").attr("disabled",false);
+	});
+	
+	$(document).on("click", "#work-form .delete", function(){
+		var oForm = $("#work-form");
+		var id = $(".work-id", oForm).val();
+		var referId = $(".work-ref-id", oForm).val();
+		$("#modal .delete-ok").data("mod", "work");
+		$("#modal .delete-ok").data("itemid", id);
+		$("#modal .delete-ok").data("refid", referId);
+		$('#modal').modal('show');
+	});
+	
+	function initWorkExpList(workExpList){
+		$(".mr-works").empty();
+		var html = "";
+		for(var i = 0; i < workExpList.length; i++){
+			var workExpId = workExpList[i].id;
+			var companyName = workExpList[i].companyName;
+			var positionName = workExpList[i].positionName;
+			var positionDesc = workExpList[i].positionDesc;
+			var startYear = workExpList[i].startYear;
+			var endYear = workExpList[i].endYear;
+			html += '<div class="mr-work-item" id="edu-'+i+'">';
+			html += 	'<div class="row mr-blk-work">';
+			html +=			'<div class="col-md-10">';
+			html +=				'<p><span class="glyphicon glyphicon-pushpin company-name" aria-hidden="true"> '+companyName+'</p>';
+			html +=				'<p>'+startYear+' - '+endYear+'</p>';
+			html +=				'<p><span class="position-name">'+positionName+'</span>';
+			html +=				'<p><span class="position-desc">'+positionDesc+'</span>';
+			html +=			'</div>';
+			html +=			'<div class="col-md-2">';
+			html +=				'<input type="button" class="btn btn-default btn-xs edit" value="Edit" data-workexpid="'+workExpId+'" data-companyname="'+companyName+'" data-positionname="'+positionName+'" data-positiondesc="'+positionDesc+'" data-startyear="'+startYear+'" data-endyear="'+endYear+'" data-refid="work-'+i+'" />';
+			html +=			'</div>';
+			html +=		'</div>';
+			html +=	'</div>';
+		}
+		$(".mr-works").append(html);
+	}
+    
     /**Update education**/
 	function validateEducationForm(oForm) {
 		$(oForm).validate({
@@ -286,39 +427,73 @@ $(function() {
 		var oForm = $("#education-form");
 		var id = $(".edu-id", oForm).val();
 		var referId = $(".edu-ref-id", oForm).val();
-		$("#modal-item-id").val(id);
-		$("#modal-ref-item-id").val(referId);
+		$("#modal .delete-ok").data("mod", "education");
+		$("#modal .delete-ok").data("itemid", id);
+		$("#modal .delete-ok").data("refid", referId);
 		$('#modal').modal('show');
 	});
 	
 	$(".delete-ok").on("click",function(){
 		csrfAjaxSetup();
-		var itemId = $("#modal-item-id").val();
-		var referId = $("#modal-ref-item-id").val();
-		var json = JSON.stringify({
-			action : "delete",
-			educationId : itemId
-		});
+		var mod = $("#modal .delete-ok").data("mod")
+		var itemId = $("#modal .delete-ok").data("itemid");
+		var referId = $("#modal .delete-ok").data("refid");
 		
-		$.ajax({
-			url: ctx + "/talent/profile/educationCrudAction.json",
-			type: "POST",
-			contentType: "application/json; charset=utf-8",
-			dataType : "json",
-			data: json,
-			success:function(result){
-				if(result.status == 'success'){
-					$("#"+referId).remove();
-					$(".mr-educations-container .add").attr("disabled",false);
-					$(".mr-educations-container .edit").attr("disabled",false);
-				}else if(result.status == 'error'){
-					displayErrorList(result);
+		switch (mod) {
+		case "education":
+			var json = JSON.stringify({
+				action : "delete",
+				educationId : itemId
+			});
+			
+			$.ajax({
+				url: ctx + "/talent/profile/educationCrudAction.json",
+				type: "POST",
+				contentType: "application/json; charset=utf-8",
+				dataType : "json",
+				data: json,
+				success:function(result){
+					if(result.status == 'success'){
+						$("#"+referId).remove();
+						$(".mr-educations-container .add").attr("disabled",false);
+						$(".mr-educations-container .edit").attr("disabled",false);
+					}else if(result.status == 'error'){
+						displayErrorList(result);
+					}
+				},
+				error:function (){
+					alert("Error!");
 				}
-			},
-			error:function (){
-				alert("Error!");
-			}
-		});
+			});
+			break;
+		case "work":
+			var json = JSON.stringify({
+				action : "delete",
+				workExpId : itemId
+			});
+			
+			$.ajax({
+				url: ctx + "/talent/profile/workExpCrudAction.json",
+				type: "POST",
+				contentType: "application/json; charset=utf-8",
+				dataType : "json",
+				data: json,
+				success:function(result){
+					if(result.status == 'success'){
+						$("#"+referId).remove();
+						$(".mr-works-container .add").attr("disabled",false);
+						$(".mr-works-container .edit").attr("disabled",false);
+					}else if(result.status == 'error'){
+						displayErrorList(result);
+					}
+				},
+				error:function (){
+					alert("Error!");
+				}
+			});
+			break;
+		}
+		
 	});
 	
 });

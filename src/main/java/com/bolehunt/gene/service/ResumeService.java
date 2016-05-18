@@ -7,8 +7,10 @@ import com.bolehunt.gene.domain.Avatar;
 import com.bolehunt.gene.domain.BasicInfo;
 import com.bolehunt.gene.domain.Education;
 import com.bolehunt.gene.domain.User;
+import com.bolehunt.gene.domain.WorkExperience;
 import com.bolehunt.gene.form.EducationForm;
 import com.bolehunt.gene.form.ResumeForm;
+import com.bolehunt.gene.form.WorkExperienceForm;
 
 public interface ResumeService {
 	
@@ -25,6 +27,10 @@ public interface ResumeService {
 	public void validateEducationForm(EducationForm educationForm);
 	
 	public void proceedEducationForm(EducationForm educationForm, User user);
+	
+	public List<WorkExperience> retrieveWorkExpList(int basicInfoId);
+	
+	public void proceedWorkExperienceForm(WorkExperienceForm workExperienceForm, User user);
 	
 	public List<Label> getCityList();
 	
