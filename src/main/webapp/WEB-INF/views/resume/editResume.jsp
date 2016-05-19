@@ -8,23 +8,13 @@
 <spring:message code="button.delete"  var="deleteButton"/>
 <spring:message code="button.add"  var="addButton"/>
 <!-- Docs page layout -->
-<div class="container bs-docs-container">
+<div class="container">
 
 	<div class="row">
-		<%-- <div class="col-md-3" role="complementary">
-			<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
-				<ul class="nav bs-docs-sidenav">
-					<li><a href="#basic-info"><spring:message code="label.resume.basicInfo" /></a></li>
-					<li><a href="#education"><spring:message code="label.resume.educationExperience" /></a></li>
-				</ul>
-				<a class="back-to-top" href="#top"><spring:message code="label.common.goToTop" /></a>
-            
-			</nav>
-		</div> --%>
-		
 		<input type="hidden" id="basicInfoId" value="${resumeForm.basicInfo.id}" />
+		<input type="hidden" id="userId" value="${resumeForm.userId}" />
 		<div class="col-md-8" role="main">
-			<div class="row">
+			<div class="row" id="basic-info">
 				<div class="avatar-container">
 					<c:choose>
 					<c:when test="${not empty resumeForm.avatar}">
@@ -156,7 +146,7 @@
 				</form>
 			</div>
 			
-			<div class="mr-works-container">
+			<div class="mr-works-container" id="work-exp">
 				<div class="row">
 					<div class="col-md-10">
 						<h4 class="page-header"><a class="anchorjs-link" href="#work" ></a><spring:message code="label.resume.workExperience" /></h4>
@@ -228,7 +218,7 @@
 				</div>
 			</div>
 			
-			<div class="mr-educations-container">
+			<div class="mr-educations-container" id="edu-exp">
 				<div class="row">
 					<div class="col-md-10">
 						<h4 class="page-header"><a class="anchorjs-link" href="#education" ></a><spring:message code="label.resume.educationExperience" /></h4>
@@ -302,6 +292,15 @@
 					</form>
 				</div>
 			</div>
+		</div>
+		
+		<!-- sidebar -->
+		<div class="col-md-4" role="complementary" id="sidebar">
+			<ul class="nav nav-tabs nav-stacked" data-spy="affix" data-offset-top="100">
+			    <li class="active"><a href="#basic-info"><spring:message code="label.resume.basicInfo" /></a></li>
+			    <li><a href="#work-exp"><spring:message code="label.resume.workExperience" /></a></li>
+				<li><a href="#edu-exp"><spring:message code="label.resume.educationExperience" /></a></li>
+			</ul>
 		</div>
 	</div>
 </div>

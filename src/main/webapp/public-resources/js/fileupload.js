@@ -1,5 +1,11 @@
 $(function(){
 	'use strict';
+	
+	$('.upload-ok').on('click', function() {
+		var data = $(this).data();
+		data.submit();
+	});
+	
 	$(".avatar-shadow").click(function () {
 	    $('#fileupload').trigger('click');
 	});
@@ -12,7 +18,7 @@ $(function(){
         maxFileSize: 2097152, // 2M
         formData: {
         	_csrf: $('meta[name="_csrf"]').attr('content'),
-        	userId: $('#hiddenUserId').val()
+        	userId: $('#userId').val()
         },
      	// Enable image resizing, except for Android and Opera,
         // which actually support image resizing, but fail to

@@ -6,11 +6,6 @@ $(function() {
     	jsonObj = result.data;              
     });
     
-    $('.upload-ok').on('click', function() {
-		var data = $(this).data();
-		data.submit();
-	});
-    
     /**Update name**/
     $("#name-form").validate({
 		onfocusin: function(element) {
@@ -198,6 +193,21 @@ $(function() {
 		
 		$(".mr-works-container .add").attr("disabled",true);
 		$(".mr-works-container .edit").attr("disabled",true);
+		
+		$("textarea[name='positionDesc']", oForm).wysihtml5({
+			  toolbar: {
+				  "blockquote": false, //Blockquote  
+				  "font-styles": false, //Font styling, e.g. h1, h2, etc. Default true
+				  "emphasis": false, //Italics, bold, etc. Default true
+				  "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+				  "html": false, //Button which allows you to edit the generated HTML. Default false
+				  "link": false, //Button to insert a link. Default true
+				  "image": false, //Button to insert an image. Default true,
+				  "color": false //Button to change color of font  
+			  }
+		});
+		$('a[data-wysihtml5-command=Outdent]').hide();
+		$('a[data-wysihtml5-command=Indent]').hide();
 		
 	});
     

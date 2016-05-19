@@ -22,7 +22,6 @@
 	
 	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-3.3.5.css">
 	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-theme-3.3.5.css">
-	<link rel="stylesheet" href="${contextPath}/resources/css/docs.min.css" />
 	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-datepicker3.standalone.min.css" />
 	<link rel="stylesheet" href="${contextPath}/resources/css/fileinput.css" />
 	<link rel="stylesheet" href="${contextPath}/resources/css/jquery.fileupload-9.12.1.css" />
@@ -39,7 +38,6 @@
 	<script src="${contextPath}/resources/js/jquery.validate-1.14.0.min.js"></script>
 	<script src="${contextPath}/resources/js/additional-methods-1.14.0.min.js"></script>
 	<script src="${contextPath}/resources/js/bootstrap-3.3.5.min.js"></script>
-	<script src="${contextPath}/resources/js/docs.min.js"></script>
 	<script src="${contextPath}/resources/js/additional-methods.js"></script>
 	<script src="${contextPath}/resources/js/message_zh.js"></script>
 	<script src="${contextPath}/resources/js/bootstrap-datepicker.min.js"></script>
@@ -67,10 +65,10 @@
 	
 	<script src="${contextPath}/resources/js/main.js?v=${version}"></script>
 </head>
-<body>
+<body data-spy="scroll" data-target="#sidebar">
 	<a id="skippy" class="sr-only sr-only-focusable" href="#content"><div class="container"><span class="skiplink-text">Skip to main content</span></div></a>
 	<!-- master nav -->
-	<header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
+	<header class="navbar navbar-static-top" id="top" role="banner">
 		<div class="container">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="#">Logo</a>
