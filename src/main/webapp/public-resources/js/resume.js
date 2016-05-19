@@ -188,6 +188,7 @@ $(function() {
 			}
 		});
 	}
+    
     $(document).on("click",".mr-works-container .add", function(){
 		$(this).parents(".mr-blk-work").hide();
 		var oForm = $("#work-form-template").clone().attr("id", "work-form").removeClass("hidden");
@@ -208,15 +209,29 @@ $(function() {
 		
 		$(".work-id",oForm).val($(this).data("workexpid"));
 		$(".work-ref-id",oForm).val($(this).data("refid"));
-		$('input[name="companyName"]',oForm).val($(this).data("companyname"));
-		$('input[name="positionName"]',oForm).val($(this).data("positionname"));
-		$('input[name="startYear"]',oForm).val($(this).data("startyear"));
-		$('input[name="endYear"]',oForm).val($(this).data("endyear"));
-		$('input[name="positionDesc"]',oForm).val($(this).data("positiondesc"));
+		$("input[name='companyName']",oForm).val($(this).data("companyname"));
+		$("input[name='positionName']",oForm).val($(this).data("positionname"));
+		$("input[name='startYear']",oForm).val($(this).data("startyear"));
+		$("input[name='endYear']",oForm).val($(this).data("endyear"));
+		$("textarea[name='positionDesc']",oForm).val($(this).data("positiondesc"));
 		
 		$(".mr-works-container .add").attr("disabled",true);
 		$(".mr-works-container .edit").attr("disabled",true);
 		
+		$("textarea[name='positionDesc']", oForm).wysihtml5({
+			  toolbar: {
+				  "blockquote": false, //Blockquote  
+				  "font-styles": false, //Font styling, e.g. h1, h2, etc. Default true
+				  "emphasis": false, //Italics, bold, etc. Default true
+				  "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+				  "html": false, //Button which allows you to edit the generated HTML. Default false
+				  "link": false, //Button to insert a link. Default true
+				  "image": false, //Button to insert an image. Default true,
+				  "color": false //Button to change color of font  
+			  }
+		});
+		$('a[data-wysihtml5-command=Outdent]').hide();
+		$('a[data-wysihtml5-command=Indent]').hide();
 	});
     
     $(document).on("click", "#work-form .save", function(){
@@ -240,7 +255,7 @@ $(function() {
 			positionName : $('input[name="positionName"]',oForm).val(),
 			startYear : $('input[name="startYear"]',oForm).val(),
 			endYear : $('input[name="endYear"]',oForm).val(),
-			positionDesc : $('input[name="positionDesc"]',oForm).val()
+			positionDesc : $('textarea[name="positionDesc"]',oForm).val()
 		});
 		
 		$.ajax({
@@ -283,33 +298,6 @@ $(function() {
 		$('#modal').modal('show');
 	});
 	
-	function initWorkExpList(workExpList){
-		$(".mr-works").empty();
-		var html = "";
-		for(var i = 0; i < workExpList.length; i++){
-			var workExpId = workExpList[i].id;
-			var companyName = workExpList[i].companyName;
-			var positionName = workExpList[i].positionName;
-			var positionDesc = workExpList[i].positionDesc;
-			var startYear = workExpList[i].startYear;
-			var endYear = workExpList[i].endYear;
-			html += '<div class="mr-work-item" id="edu-'+i+'">';
-			html += 	'<div class="row mr-blk-work">';
-			html +=			'<div class="col-md-10">';
-			html +=				'<p><span class="glyphicon glyphicon-pushpin company-name" aria-hidden="true"> '+companyName+'</p>';
-			html +=				'<p>'+startYear+' - '+endYear+'</p>';
-			html +=				'<p><span class="position-name">'+positionName+'</span>';
-			html +=				'<p><span class="position-desc">'+positionDesc+'</span>';
-			html +=			'</div>';
-			html +=			'<div class="col-md-2">';
-			html +=				'<input type="button" class="btn btn-default btn-xs edit" value="Edit" data-workexpid="'+workExpId+'" data-companyname="'+companyName+'" data-positionname="'+positionName+'" data-positiondesc="'+positionDesc+'" data-startyear="'+startYear+'" data-endyear="'+endYear+'" data-refid="work-'+i+'" />';
-			html +=			'</div>';
-			html +=		'</div>';
-			html +=	'</div>';
-		}
-		$(".mr-works").append(html);
-	}
-    
     /**Update education**/
 	function validateEducationForm(oForm) {
 		$(oForm).validate({
@@ -498,6 +486,32 @@ $(function() {
 	
 });
 
+function initWorkExpList(workExpList){
+	$(".mr-works").empty();
+	var html = "";
+	for(var i = 0; i < workExpList.length; i++){
+		var workExpId = workExpList[i].id;
+		var companyName = workExpList[i].companyName;
+		var positionName = workExpList[i].positionName;
+		var positionDesc = workExpList[i].positionDesc;
+		var startYear = workExpList[i].startYear;
+		var endYear = workExpList[i].endYear;
+		html += '<div class="mr-work-item" id="edu-'+i+'">';
+		html += 	'<div class="row mr-blk-work">';
+		html +=			'<div class="col-md-10">';
+		html +=				'<p><span class="glyphicon glyphicon-pushpin company-name" aria-hidden="true"> '+companyName+'</p>';
+		html +=				'<p>'+startYear+' - '+endYear+'</p>';
+		html +=				'<p><span class="position-name">'+positionName+'</span>';
+		html +=				'<p><span class="position-desc">'+positionDesc+'</span>';
+		html +=			'</div>';
+		html +=			'<div class="col-md-2">';
+		html +=				'<input type="button" class="btn btn-default btn-xs edit" value="Edit" data-workexpid="'+workExpId+'" data-companyname="'+companyName+'" data-positionname="'+positionName+'" data-positiondesc="'+positionDesc+'" data-startyear="'+startYear+'" data-endyear="'+endYear+'" data-refid="work-'+i+'" />';
+		html +=			'</div>';
+		html +=		'</div>';
+		html +=	'</div>';
+	}
+	$(".mr-works").append(html);
+}
 
 function initEducationList(eduItems){
 	$(".mr-educations").empty();

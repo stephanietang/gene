@@ -24,9 +24,9 @@
 	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-theme-3.3.5.css">
 	<link rel="stylesheet" href="${contextPath}/resources/css/docs.min.css" />
 	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-datepicker3.standalone.min.css" />
-	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-markdown.min.css" />
 	<link rel="stylesheet" href="${contextPath}/resources/css/fileinput.css" />
 	<link rel="stylesheet" href="${contextPath}/resources/css/jquery.fileupload-9.12.1.css" />
+	<link rel="stylesheet" href="${contextPath}/resources/css/bootstrap3-wysihtml5.css" />
 	<link rel="stylesheet" href="${contextPath}/resources/css/main.css?v=${version}">
 	
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -43,9 +43,7 @@
 	<script src="${contextPath}/resources/js/additional-methods.js"></script>
 	<script src="${contextPath}/resources/js/message_zh.js"></script>
 	<script src="${contextPath}/resources/js/bootstrap-datepicker.min.js"></script>
-	<script src="${contextPath}/resources/js/bootstrap-markdown.js"></script>
-	<script src="${contextPath}/resources/js/markdown.js"></script>
-	<script src="${contextPath}/resources/js/to-markdown.js"></script>
+	<script src="${contextPath}/resources/js/bootstrap3-wysihtml5.all.js"></script>
 	
 	<!-- jquery file upload support -->
 	<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->

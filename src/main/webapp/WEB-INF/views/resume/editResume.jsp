@@ -211,7 +211,9 @@
 						</div>
 						<div class="form-group">
 							<label for="positionDesc" class="col-md-2 control-label"><spring:message code="label.resume.positionDesc" /></label>
-							<div class="col-md-8"><input name="positionDesc" class="form-control" autocomplete="off" /></div>
+							<div class="col-md-8">
+								<textarea name="positionDesc" class="form-control" rows="10"></textarea>
+							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-md-8">
