@@ -121,6 +121,7 @@ $(function() {
 		
 		json = JSON.stringify({
 			id : $("#basicInfoId").val(),
+			userId : $("#userId").val(),
 			sex : $("#sex").val(),
 			birthYear : $("#birthYear").val(),
 			degree : $("#degree").val(),

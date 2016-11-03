@@ -92,11 +92,14 @@ public final class ResumeServiceImpl implements ResumeService {
 	public BasicInfo saveBasicInfo(BasicInfo basicInfo){
 		if(basicInfo.getId() != null){
 			basicInfoMapper.updateByPrimaryKeySelective(basicInfo);
+			return basicInfoMapper.selectByPrimaryKey(basicInfo.getId());
+		} else {
+			basicInfoMapper.insertSelective(basicInfo);
+			User user = new User();
+			user.setId(basicInfo.getUserId());
+			return retrieveBasicInfo(user);
 		}
-		
-		return basicInfoMapper.selectByPrimaryKey(basicInfo.getId());
 	}
-	
 	
 	@Override
 	public BasicInfo retrieveBasicInfo(User user) {
